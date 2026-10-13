@@ -1,0 +1,28 @@
+# Validation — 13 October 2026
+
+Environment: Xcode 27.0, iPhone 17 Simulator, iOS 27.0.
+
+## Passed
+
+- App and embedded keyboard extension build, install, and launch without build errors.
+- Extension registered in Settings, added as AirType and enabled with Full Access on the test simulator.
+- Actual extension renders in a normal `UITextView` using the system keyboard flow; this is separate from the containing-app preview.
+- Original icon, grey Web Access panel, connected indicator, address strip, QWERTY key arrangement, cyan Wi-Fi toggle and blue return inspected visually.
+- Browser Enter sent `AirType extension: 你好 👋` through the extension's document proxy.
+- Remote Delete removed the emoji, preserving the Chinese text.
+- Remote newline followed by `Second line` produced a separate second line in the host field.
+- A local A key inserted A and released one-shot Shift to lowercase.
+- Changing the host field to dark keyboard appearance produced the charcoal keyboard.
+- The extension globe key successfully switched to the Apple English keyboard.
+- Missing token and invalid token returned HTTP 403. Foreign Origin returned 403.
+- Two identical command IDs both received HTTP 200; host text contained `Duplicate test ✓` once.
+- Browser connected again after the app/extension was rebuilt and relaunched, without changing the existing pairing address.
+- 3 XCTest cases pass: fragmented UTF-8 body handling; ambiguous/oversized request rejection; Unicode and payload validation.
+
+Network response evidence: `Validation/network-checks.json`. Screenshots in `Validation` show the actual extension unless named preview.
+
+## Remaining acceptance
+
+Physical iPhone/iPad signing and installation; real Local Network permission prompts; Wi-Fi between two physical devices/computers; router client isolation; screen lock/background reconnection; physical touch and repeat-delete feel; third-party host applications; iPad and landscape rendered UI; VoiceOver interaction; cross-browser desktop testing. Simulator network traffic uses the host Mac network and does not establish these device-level results.
+
+The supplied references are App Store promotional screenshots, with a small keyboard embedded in each. This is a faithful recreation of their visible layout and documented functionality, not a pixel comparison against full-resolution original UI captures or source code.

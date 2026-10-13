@@ -1,0 +1,72 @@
+# AirType
+
+Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The separate `com.invivo.AirTypeReplica` identifiers avoid replacing the original app.
+
+## Features
+
+- Type from a computer browser into an iPhone or iPad over the same Wi-Fi.
+- Switch between Web Access and a local QWERTY keyboard with light and dark appearances.
+- Send Unicode text, delete a character, or insert a newline remotely.
+- Reconnect automatically while retaining unsent drafts.
+- Pair using the keyboard's complete connection URL or QR code; no desktop installation or cloud account is required.
+
+## Screenshots
+
+| Web Access | Dark QWERTY |
+| --- | --- |
+| <img src="Docs/Validation/extension-web-access.jpg" width="280" alt="AirType Web Access keyboard"> | <img src="Docs/Validation/extension-qwerty-dark.jpg" width="280" alt="AirType dark QWERTY keyboard"> |
+
+These screenshots show the installed keyboard extension in the iOS Simulator.
+
+## Requirements
+
+- iOS/iPadOS 17 or later.
+- Xcode with an iOS 17-or-later SDK; this project was validated with Xcode 27.
+- An Apple development team for installation on physical devices.
+- A computer browser and a shared Wi-Fi network for remote typing.
+- XcodeGen only if you want to regenerate the checked-in Xcode project.
+
+## Design reference
+
+AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/airtype-type-from-your-computer/id922932291), using its public description and screenshots as the design reference. Reference assets are included in [Docs/References](Docs/References). The native setup screen and pairing/QR detail screen support the new implementation.
+
+## Setup
+
+1. Install and open AirType. Tap **Enable local network connection** and permit local network access if prompted.
+2. In Settings → General → Keyboard → Keyboards → Add New Keyboard, add **AirType**.
+3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
+4. Focus a normal text field and select AirType using the system globe key.
+5. Keep your computer and device on the same Wi-Fi. Tap the keyboard address bar, then open the complete address, including the pairing token after `#`, in a computer browser.
+6. Type and press Enter or Send. Shift+Enter adds a line break to the draft; the ↵ button sends a newline to the device. Delete removes one character from the device.
+
+Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to Web Access. The globe supports Apple's input-mode menu. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Hold Delete to repeat.
+
+## Implementation
+
+- `AirTypeKeyboard/KeyboardViewController.swift`: real keyboard extension using `UITextDocumentProxy`.
+- `Shared/AirKeyboardView.swift`: shared UIKit keyboard, light/dark palettes, adaptive extension height, pairing details, QR code, local controls.
+- `Shared/AirTypeServer.swift`: Network.framework HTTP server in the active keyboard process, preferred port 8307 with dynamic fallback if occupied, Bonjour advertisement, lifecycle cleanup.
+- `Shared/Resources/Portal.html`: bundled offline browser interface with reconnect polling and Unicode/IME-aware Enter handling.
+- `Shared/HTTPProtocol.swift`: bounded incremental HTTP parser and validated command model.
+- `AirTypeApp`: native setup and both preview/system-keyboard test fields.
+
+The portal authenticates commands with a random device-local token, rejects foreign browser origins, and deduplicates recently received command IDs. It does not read or send the surrounding text in the host app. HTTP is local and unencrypted: use a trusted network and keep the complete connection address private. Browser drafts remain in the open page, without local storage. An uncertain send retains the draft instead of automatically retrying a possibly delivered command.
+
+The server runs only while Web Access is visible. Returning to Web Access lets the portal reconnect without refreshing. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
+
+## Build and validation
+
+The checked-in Xcode project is ready to open. `project.yml` can regenerate it using XcodeGen:
+
+```sh
+xcodegen generate
+xcodebuild -project AirType.xcodeproj -scheme AirType -destination 'platform=iOS Simulator,name=iPhone 17' test
+```
+
+Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Default launch opens setup.
+
+See [validation results](Docs/VALIDATION.md) for completed checks and physical-device gates, and the [implementation checklist](Docs/PLAN.md) for the design contract.
+
+## Ownership
+
+AirType branding and original reference artwork belong to invivo. This repository was created at the owner’s request. No open-source license has been assigned; public visibility alone does not grant a license to redistribute the code or artwork.

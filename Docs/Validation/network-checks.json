@@ -1,0 +1,7 @@
+{
+  "missing_token": 403,
+  "invalid_token": 403,
+  "foreign_origin": 403,
+  "first_command": 200,
+  "duplicate_command": 200
+}
