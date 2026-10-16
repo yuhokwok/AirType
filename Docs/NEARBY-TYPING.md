@@ -1,5 +1,8 @@
 # Nearby typing architecture
 
+Current presentation (17 October 2026): nearby typing is temporarily disabled behind `AirTypeFeatures.nearbyTypingEnabled`. The app exposes only Keyboard setup; the keyboard offers only Web. The native implementation and validation notes below are retained for future development.
+
+
 The requested direction is **computer → keyboard extension → iPhone/iPad app text field**. AirTypeDesktop sends commands. The visible AirType keyboard receives and calls textDocumentProxy. The containing app configures permissions and the preferred transport; it does not receive and forward commands in the background.
 
 ## Implemented developer transports

@@ -4,10 +4,14 @@ import Combine
 
 struct AirTypeHomeView: View {
     var body: some View {
-        TabView {
-            KeyboardConnectionView().tabItem { Label("Connect", systemImage: "laptopcomputer.and.iphone") }
-            SetupView().tabItem { Label("Keyboard setup", systemImage: "keyboard") }
-        }.tint(Color(red: 0.35, green: 0.38, blue: 0.78))
+        if AirTypeFeatures.nearbyTypingEnabled {
+            TabView {
+                KeyboardConnectionView().tabItem { Label("Connect", systemImage: "laptopcomputer.and.iphone") }
+                SetupView().tabItem { Label("Keyboard setup", systemImage: "keyboard") }
+            }.tint(Color(red: 0.35, green: 0.38, blue: 0.78))
+        } else {
+            SetupView()
+        }
     }
 }
 

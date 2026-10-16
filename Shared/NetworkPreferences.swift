@@ -1,5 +1,13 @@
 import Foundation
 
+/// Temporarily keep the shipping app and keyboard on browser-based AirType.
+enum AirTypeFeatures {
+    static let nearbyTypingEnabled = false
+    static func availableInputMode(_ requested: RemoteInputMode) -> RemoteInputMode {
+        nearbyTypingEnabled ? requested : .web
+    }
+}
+
 /// Shared by the containing app and keyboard extension through their App Group.
 enum RemoteInputMode: String, CaseIterable, Identifiable {
     case web = "Web", wifi = "Direct Wi-Fi", bluetooth = "Bluetooth"
@@ -9,7 +17,7 @@ enum RemoteInputMode: String, CaseIterable, Identifiable {
 enum NetworkPreferences {
     static let appGroup = "group.com.invivo.AirTypeReplica"
     static var inputMode: RemoteInputMode {
-        get { RemoteInputMode(rawValue: UserDefaults(suiteName: appGroup)?.string(forKey: "AirTypeInputMode") ?? "") ?? .web }
+        get { AirTypeFeatures.availableInputMode(RemoteInputMode(rawValue: UserDefaults(suiteName: appGroup)?.string(forKey: "AirTypeInputMode") ?? "") ?? .web) }
         set { UserDefaults(suiteName: appGroup)?.set(newValue.rawValue, forKey: "AirTypeInputMode") }
     }
     static let nameKey = "AirTypeBonjourHostname"

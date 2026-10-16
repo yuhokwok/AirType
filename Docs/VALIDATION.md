@@ -92,3 +92,9 @@ Phone keys use radius 10 and wide iPad keys 14. Character popups use a rounded c
 All 47 XCTest cases pass on iOS 27 Simulator. The new checks cover Shift drag, held Shift with another finger, symbol drag and source restoration, reverse release order, repeat delivery, cancellation, manual Shift, caps lock, actual touch-surface rollover and popups, spelling-choice replacement, space cursor control and timed delete cancellation. The app and embedded extension build without compiler warnings. This uses the production contact handlers with deterministic contact identities; it is not physical multi-finger touch evidence.
 
 Screenshots: [running shared keyboard preview](Validation/qwerty-wifi-spelling.jpg) and [rendered XCTest rollover/key-popup attachment](Validation/keyboard-rollover-popup.png). The latter is a UIKit test render of the actual local keyboard, not a device screenshot. Device feel, installed-extension sizing across orientations and third-party-editor acceptance remain hardware checks.
+
+## Temporarily expose setup and Web only — 17 October 2026
+
+AirTypeHomeView now displays SetupView directly, with no Connect tab or tab bar. AirTypeFeatures.nearbyTypingEnabled is false: keyboard transport selection is hidden, receive-mode assignments resolve to Web, and previously saved native preferences are ignored while disabled. Native source is retained.
+
+The iOS app/extension build and all 47 tests pass. The existing connection layout regression now verifies equal halves, no segmented transport control, and Web mode after a native-mode request. Simulator screenshots show [setup-only app](Validation/setup-only.jpg) and [Web-only keyboard preview](Validation/web-only-keyboard.jpg). Physical networking acceptance remains separate.

@@ -15,7 +15,7 @@
 
 ## Design contract
 
-Connection mode (updated 17 October 2026): grey keyboard background, a 16-point inset segmented connection selector, and equal-width status/icon and pairing-code halves. Bottom-left returns to the local keyboard; bottom-right deletes. Both are 44-point circular buttons using native Liquid Glass on iOS 26+ and solid circle fallbacks on iOS 17–25. The address/details control stays between them. The original AirType branding remains visible.
+Connection mode (updated 17 October 2026): grey keyboard background, the transport selector temporarily hidden, and equal-width status/icon and pairing-code halves. Bottom-left returns to the local keyboard; bottom-right deletes. Both are 44-point circular buttons using native Liquid Glass on iOS 26+ and solid circle fallbacks on iOS 17–25. The address/details control stays between them. The original AirType branding remains visible.
 
 Local mode: QWERTY / ASDF / shift-ZXCV-delete rows, followed by 123, Wi-Fi beside 123/ABC, optional globe, wide space, period and blue return. The extension follows needsInputModeSwitchKey instead of hard-coded iPhone models, preserving the system globe on Face ID phones. Capitalization follows the current text field, Shift supports one-shot capitals and caps lock, and delete uses CInput's one-second delay, 100 ms cadence and left-drag acceleration down to 35 ms. Dark keys retain solid charcoal styling.
 
@@ -33,3 +33,11 @@ The setup app and connection-token/QR detail screen are new supporting UI. The r
 - [x] Add a 34-point local English spelling/completion row and space-hold cursor control.
 - [x] Build app/extension and run 47 tests including reducer, actual surface and timer paths.
 - [ ] Physical-device acceptance for simultaneous fingers, drag feel, VoiceOver and third-party editors.
+
+## Web-only presentation — 17 October 2026
+
+- [x] Show Keyboard setup directly; temporarily hide Connect and its tab bar.
+- [x] Hide the keyboard's transport segmented control and reclaim its space.
+- [x] Force Web for UI mode requests and previously saved native-mode preferences.
+- [x] Preserve nearby source behind AirTypeFeatures.nearbyTypingEnabled for later development.
+- [x] Build and pass 47 tests; inspect setup and Web keyboard simulator previews.

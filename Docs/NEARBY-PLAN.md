@@ -1,5 +1,8 @@
 # Native nearby typing developer build
 
+Current presentation (17 October 2026): nearby typing is temporarily disabled behind `AirTypeFeatures.nearbyTypingEnabled`. The app exposes only Keyboard setup; the keyboard offers only Web. The native implementation and validation notes below are retained for future development.
+
+
 Direction: **Mac → visible iPhone/iPad keyboard extension → focused app text field**. The containing app saves connection preferences and prepares permissions. It is not a background relay.
 
 - [x] Shared bounded AES-GCM command framing, fresh challenge, sequence checks and acknowledgements.

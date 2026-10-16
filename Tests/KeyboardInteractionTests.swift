@@ -33,7 +33,7 @@ final class KeyboardInteractionTests: XCTestCase {
     private func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap { descendants($0) } }
 
     @MainActor
-    func testConnectionPanelHasEqualHalvesAndInsetSelectorAtCompactSizes() throws {
+    func testWebOnlyConnectionPanelHasEqualHalvesWithoutTransportSelector() throws {
         for size in [CGSize(width: 320, height: 216), CGSize(width: 852, height: 162), CGSize(width: 1024, height: 264)] {
             let keyboard = AirKeyboardView(frame: CGRect(origin: .zero, size: size))
             keyboard.showsGlobe = false; keyboard.receiveMode = .wifi
@@ -44,10 +44,8 @@ final class KeyboardInteractionTests: XCTestCase {
             let right = try XCTUnwrap(views.first { $0.accessibilityIdentifier == "AirTypePairingHalf" })
             XCTAssertEqual(left.bounds.width, size.width / 2, accuracy: 0.5)
             XCTAssertEqual(right.bounds.width, size.width / 2, accuracy: 0.5)
-            let selector = try XCTUnwrap(views.compactMap { $0 as? UISegmentedControl }.first)
-            let rect = selector.convert(selector.bounds, to: keyboard)
-            XCTAssertEqual(rect.minX, 16, accuracy: 0.5)
-            XCTAssertEqual(size.width - rect.maxX, 16, accuracy: 0.5)
+            XCTAssertFalse(views.contains { $0 is UISegmentedControl })
+            XCTAssertEqual(keyboard.receiveMode, .web)
             XCTAssertFalse(views.contains { $0.accessibilityLabel == "Next keyboard" })
             for name in ["Back to keyboard", "Delete"] {
                 let button = try XCTUnwrap(views.compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == name })

@@ -14,10 +14,16 @@ final class AirKeyboardView: UIView {
     var showsGlobe = true { didSet { if showsGlobe != oldValue { render() } } }
     var configureGlobe: ((UIButton) -> Void)? { didSet { render() } }
     var onReceiveModeChange: (() -> Void)?
-    var receiveMode: RemoteInputMode = .web { didSet {
-        guard receiveMode != oldValue else { return }
-        pairing = false; render(); onReceiveModeChange?()
-    } }
+    private var selectedReceiveMode: RemoteInputMode = .web
+    var receiveMode: RemoteInputMode {
+        get { selectedReceiveMode }
+        set {
+            let mode = AirTypeFeatures.availableInputMode(newValue)
+            guard mode != selectedReceiveMode else { return }
+            selectedReceiveMode = mode
+            pairing = false; render(); onReceiveModeChange?()
+        }
+    }
     var onWebModeChange: ((Bool) -> Void)?
     var webMode = true { didSet { render(); onWebModeChange?(webMode) } }
     var dark = false { didSet { render() } }
@@ -70,24 +76,26 @@ final class AirKeyboardView: UIView {
         if compactPanel != compact { compactPanel = compact; render() }
     }
     private func renderWeb() {
-        let selector = UISegmentedControl(items: RemoteInputMode.allCases.map(\.rawValue))
-        selector.selectedSegmentIndex = RemoteInputMode.allCases.firstIndex(of: receiveMode) ?? 0
-        selector.accessibilityLabel = "Computer connection mode"
-        selector.addAction(UIAction { [weak self, weak selector] _ in
-            guard let self, let selector else { return }
-            self.receiveMode = RemoteInputMode.allCases[selector.selectedSegmentIndex]
-        }, for: .valueChanged)
-        selector.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        let selectorRow = UIView()
-        selector.translatesAutoresizingMaskIntoConstraints = false
-        selectorRow.addSubview(selector)
-        NSLayoutConstraint.activate([
-            selectorRow.heightAnchor.constraint(equalToConstant: 42),
-            selector.leadingAnchor.constraint(equalTo: selectorRow.leadingAnchor, constant: 16),
-            selector.trailingAnchor.constraint(equalTo: selectorRow.trailingAnchor, constant: -16),
-            selector.centerYAnchor.constraint(equalTo: selectorRow.centerYAnchor)
-        ])
-        content.addArrangedSubview(selectorRow)
+        if AirTypeFeatures.nearbyTypingEnabled {
+            let selector = UISegmentedControl(items: RemoteInputMode.allCases.map(\.rawValue))
+            selector.selectedSegmentIndex = RemoteInputMode.allCases.firstIndex(of: receiveMode) ?? 0
+            selector.accessibilityLabel = "Computer connection mode"
+            selector.addAction(UIAction { [weak self, weak selector] _ in
+                guard let self, let selector else { return }
+                self.receiveMode = RemoteInputMode.allCases[selector.selectedSegmentIndex]
+            }, for: .valueChanged)
+            selector.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            let selectorRow = UIView()
+            selector.translatesAutoresizingMaskIntoConstraints = false
+            selectorRow.addSubview(selector)
+            NSLayoutConstraint.activate([
+                selectorRow.heightAnchor.constraint(equalToConstant: 42),
+                selector.leadingAnchor.constraint(equalTo: selectorRow.leadingAnchor, constant: 16),
+                selector.trailingAnchor.constraint(equalTo: selectorRow.trailingAnchor, constant: -16),
+                selector.centerYAnchor.constraint(equalTo: selectorRow.centerYAnchor)
+            ])
+            content.addArrangedSubview(selectorRow)
+        }
         let panel = UIStackView(); panel.axis = .horizontal; panel.distribution = .fillEqually
         panel.accessibilityIdentifier = "AirTypeConnectionPanel"
         let logo = button("", symbol: nil) { [weak self] in self?.webMode = false }
