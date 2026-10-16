@@ -4,3 +4,4 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 .xcodebuildmcp/
+website/*.zip

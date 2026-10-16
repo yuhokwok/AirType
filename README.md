@@ -85,6 +85,8 @@ The server runs only while Web Access is visible. After a failed connection atte
 
 ## Build and validation
 
+The companion landing page lives in [`website/`](website/README.md). It follows invivo's CInput website styling and links to the existing AirType App Store listing. It is a separate static site; the keyboard's bundled Web Access portal remains in `Shared/Resources/Portal.html`.
+
 The checked-in Xcode project is ready to open. `project.yml` can regenerate it using XcodeGen:
 
 ```sh
