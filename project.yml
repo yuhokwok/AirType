@@ -21,6 +21,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.invivo.AirTypeReplica
         INFOPLIST_FILE: AirTypeApp/Info.plist
+        CODE_SIGN_ENTITLEMENTS: AirTypeApp/AirType.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
       - target: AirTypeKeyboard
@@ -36,6 +37,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.invivo.AirTypeReplica.Keyboard
         INFOPLIST_FILE: AirTypeKeyboard/Info.plist
+        CODE_SIGN_ENTITLEMENTS: AirTypeKeyboard/AirType.entitlements
         APPLICATION_EXTENSION_API_ONLY: YES
         SKIP_INSTALL: YES
   AirTypeTests:

@@ -7,6 +7,9 @@ final class AirTypeServer {
     var onCommand: ((RemoteCommand) -> Void)?
     var onStateChange: (() -> Void)?
     private(set) var address: String?
+    private(set) var ipAddress: String?
+    private let hostnamePublisher = BonjourHostname()
+    private var advertisedName = NetworkPreferences.hostname
     private(set) var status = "Disconnected"
     private var listener: NWListener?
     private var connections: [ObjectIdentifier: NWConnection] = [:]
@@ -24,10 +27,15 @@ final class AirTypeServer {
         let key = "AirTypePairingToken"
         token = UserDefaults.standard.string(forKey: key) ?? UUID().uuidString.replacingOccurrences(of: "-", with: "")
         UserDefaults.standard.set(token, forKey: key)
+        hostnamePublisher.onChange = { [weak self] in
+            self?.updateAddress()
+            self?.onStateChange?()
+        }
     }
     func start(useDynamicPort: Bool = false) {
         guard listener == nil else { return }
         pairing = PairingCode()
+        advertisedName = NetworkPreferences.hostname
         let parameters = NWParameters.tcp
         parameters.prohibitedInterfaceTypes = [.cellular]
         do {
@@ -36,7 +44,9 @@ final class AirTypeServer {
             catch { server = try NWListener(using: parameters, on: .any) }
             listener = server
             status = "Starting…"
-            server.service = NWListener.Service(name: "AirType", type: "_airtype._tcp")
+            var service = NWListener.Service(name: advertisedName, type: "_airtype._tcp")
+            service.noAutoRename = false
+            server.service = service
             server.stateUpdateHandler = { [weak self, weak server] state in
                 guard let self, let server, self.listener === server else { return }
                 switch state {
@@ -65,16 +75,21 @@ final class AirTypeServer {
     }
     func stop() {
         timer?.invalidate(); timer = nil
+        hostnamePublisher.stop()
         listener?.cancel(); listener = nil
         for connection in connections.values { connection.cancel() }
         for deadline in deadlines.values { deadline.cancel() }
         connections.removeAll(); deadlines.removeAll()
-        address = nil; lastContact = nil; status = "Disconnected"
+        address = nil; ipAddress = nil; lastContact = nil; status = "Disconnected"
         onStateChange?()
     }
     private func updateAddress() {
-        guard let port = listener?.port, let ip = Self.localAddress() else { address = nil; return }
-        address = "http://\(ip):\(port.rawValue)/#\(token)"
+        guard let port = listener?.port, let ip = Self.localAddress() else {
+            hostnamePublisher.stop(); address = nil; ipAddress = nil; return
+        }
+        ipAddress = "http://\(ip):\(port.rawValue)/#\(token)"
+        hostnamePublisher.publish(name: advertisedName, ipv4: ip)
+        address = "http://\(hostnamePublisher.hostname ?? ip):\(port.rawValue)/#\(token)"
     }
     static func localAddress() -> String? {
         var list: UnsafeMutablePointer<ifaddrs>?

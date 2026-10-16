@@ -10,7 +10,12 @@ final class AirKeyboardView: UIView {
     var webMode = true { didSet { render(); onWebModeChange?(webMode) } }
     var dark = false { didSet { render() } }
     var returnTitle = "return" { didSet { if !webMode { render() } } }
-    var address: String? { didSet { updateStatus() } }
+    var address: String? { didSet {
+        if pairing && address != oldValue { render() } else { updateStatus() }
+    } }
+    var ipAddress: String? { didSet {
+        if pairing && ipAddress != oldValue { render() }
+    } }
     var pairingCode: String? { didSet { updateStatus() } }
     var connectionStatus = "Disconnected" { didSet { updateStatus() } }
     var connected = false { didSet { updateStatus() } }
@@ -103,6 +108,11 @@ final class AirKeyboardView: UIView {
         details.addArrangedSubview(label("Open on your computer",size: 17))
         let code = label("", size: 18); codeLabel = code; details.addArrangedSubview(code)
         let url = label(address ?? connectionStatus,size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
+        if let ipAddress, ipAddress != address {
+            let fallback = label("IP fallback: " + String(ipAddress.split(separator: "#")[0]), size: 10)
+            fallback.numberOfLines = 0
+            details.addArrangedSubview(fallback)
+        }
         let hint = label("Same Wi-Fi · Keep this keyboard open",size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
         row.addArrangedSubview(details)
         if let address {

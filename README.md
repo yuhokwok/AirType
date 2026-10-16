@@ -22,7 +22,7 @@ These screenshots show the installed keyboard extension in the iOS Simulator.
 
 - iOS/iPadOS 17 or later.
 - Xcode with an iOS 17-or-later SDK; this project was validated with Xcode 27.
-- An Apple development team for installation on physical devices.
+- An Apple development team for installation on physical devices. Enable the App Groups capability and `group.com.invivo.AirTypeReplica` on both targets so the app and keyboard share the custom Bonjour name.
 - A computer browser and a shared Wi-Fi network for remote typing.
 - XcodeGen only if you want to regenerate the checked-in Xcode project.
 
@@ -33,13 +33,21 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 ## Setup
 
 1. Install and open AirType. Tap **Enable local network connection** and permit local network access if prompted.
-2. In Settings → General → Keyboard → Keyboards → Add New Keyboard, add **AirType**.
+2. Tap **Open Keyboard Settings** on the app page. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
-5. Keep your computer and device on the same Wi-Fi. Open the IP address and port shown on the keyboard in your computer browser, enter the six-digit **Pairing code** shown beside Web Access, and click **Connect**. You can also tap the address bar to open the complete tokenized URL or QR code.
+5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser, enter the six-digit **Pairing code** shown beside Web Access, and click **Connect**. You can also tap the address bar to open the complete tokenized URL or QR code.
 6. Type and press Enter or Send. Shift+Enter adds a line break to the draft; the ↵ button sends a newline to the device. Delete removes one character from the device.
 
 Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to Web Access. The globe supports Apple's input-mode menu. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Hold Delete to repeat.
+
+## Bonjour and custom names
+
+The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
+
+On the app page, edit **Bonjour address** and tap **Save Bonjour Name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
+
+Both targets include the shared App Group entitlement. Use your own unique group identifier consistently in the entitlements and `NetworkPreferences.swift` if you change the bundle identifiers. Custom settings require a properly provisioned App Group on physical devices.
 
 ## If the page loads but will not connect
 
@@ -53,6 +61,8 @@ The updated build shows a Pairing code on the keyboard and a Connect form when y
 - `Shared/AirKeyboardView.swift`: shared UIKit keyboard, light/dark palettes, adaptive extension height, pairing details, QR code, local controls.
 - `Shared/AirTypeServer.swift`: Network.framework HTTP server in the active keyboard process, preferred port 8307 with dynamic fallback if occupied, Bonjour advertisement, lifecycle cleanup.
 - `Shared/Resources/Portal.html`: bundled offline browser interface with reconnect polling and Unicode/IME-aware Enter handling.
+- `Shared/BonjourHostname.swift`: actual mDNS host registration, collision suffixes, and teardown.
+- `Shared/NetworkPreferences.swift`: shared custom hostname and DNS-label normalization.
 - `Shared/HTTPProtocol.swift`: bounded incremental HTTP parser and validated command model.
 - `AirTypeApp`: native setup and both preview/system-keyboard test fields.
 

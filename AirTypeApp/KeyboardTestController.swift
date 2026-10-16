@@ -31,7 +31,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             keyboard.deleteText = { [weak self] in self?.field.deleteBackward() }
             keyboard.nextKeyboard = { [weak self] in self?.field.resignFirstResponder() }
             keyboard.onWebModeChange = { [weak self] web in if web { self?.server.start() } else { self?.server.stop() } }
-            server.onStateChange = { [weak self] in guard let self else { return }; self.keyboard.pairingCode = self.server.pairingCode; self.keyboard.address = self.server.address; self.keyboard.connectionStatus = self.server.status; self.keyboard.connected = self.server.connected }
+            server.onStateChange = { [weak self] in guard let self else { return }; self.keyboard.pairingCode = self.server.pairingCode; self.keyboard.ipAddress = self.server.ipAddress; self.keyboard.address = self.server.address; self.keyboard.connectionStatus = self.server.status; self.keyboard.connected = self.server.connected }
             server.onCommand = { [weak self] command in
                 guard let self, self.field.isFirstResponder else { return }
                 switch command.action { case .insert: self.field.insertText(command.text ?? ""); case .delete: self.field.deleteBackward(); case .newline: self.field.insertText("\n") }

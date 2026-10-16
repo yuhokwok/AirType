@@ -44,3 +44,16 @@ Validation on Keyboard-Trail-Host-QA / iOS 27 Simulator using the shared keyboar
 - App and embedded extension build succeeded after the change. A further system-extension UI run was attempted on iPhone 17; Device Hub failed to reopen, so this run does not establish fresh installed-extension UI or physical-device proof.
 
 Evidence: `Validation/pairing-code-connected.jpg` and `Validation/pairing-portal-connected.jpg`. The native screenshot shows the shared keyboard preview. Physical-device acceptance remains open. Install the rebuilt app and refresh the browser page to use the updated protocol/UI.
+
+## Bonjour hostname and setup shortcut — 16 October 2026
+
+- Added actual IPv4 mDNS host registration in addition to the existing `_airtype._tcp` service advertisement. Default browser address: `http://airtype.local:8307/`.
+- Added a custom Bonjour name on the app page, shared with the keyboard using App Group `group.com.invivo.AirTypeReplica`. DNS labels are normalized and bounded; a name conflict tries `-2` through `-20`, then retains the IP fallback. The displayed address uses a hostname only after successful registration.
+- Added Open Keyboard Settings using `UIApplication.openSettingsURLString`, with the manual setup path shown below it and an alert if opening Settings is rejected. This supported API opens AirType's app settings; it does not promise a private deep link to the global Add New Keyboard screen.
+- Build succeeded. All 9 tests passed. Tests include a live DNS-SD conflict between two distinct address records, suffix registration, deregistration, normalized names, and shared App Group persistence.
+- `dns-sd -G v4 airtype.local` resolved the hostname to the Mac-hosted Simulator address. Both the hostname and IP portal returned HTTP 200.
+- In the browser, opened `http://airtype.local:8307/`, paired with the keyboard-visible code, and sent `Bonjour works — airtype.local 你好 👋` successfully to the shared keyboard preview field. Native screenshot: `Validation/bonjour-connected.jpg`.
+- Setup button was checked in the rendered app (`Validation/keyboard-settings-link.jpg`). A Device Hub crash prevented normal native interaction; the browser mirror rendered live frames, but this run does not establish a completed Settings-navigation flow on a physical device.
+- Remaining device checks: provision the App Group for both targets, custom-name sharing with the installed extension, actual Wi-Fi mDNS across devices/router configurations, and the Settings shortcut's final destination on the supported iOS versions. The simulator uses the Mac's mDNS environment.
+
+Implementation references: Apple's [Bonjour Concepts](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/NetServices/Articles/about.html), [DNS Service Discovery C](https://developer.apple.com/documentation/dnssd/dns-service-discovery-c), and [app-settings URL](https://developer.apple.com/documentation/uikit/uiapplication/opensettingsurlstring).

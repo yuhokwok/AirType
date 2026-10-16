@@ -15,7 +15,11 @@ struct AirTypeApp: App {
 }
 
 struct SetupView: View {
+    @Environment(\.openURL) private var openURL
     @State private var networkBrowser: NWBrowser?
+    @State private var bonjourName = NetworkPreferences.hostname
+    @State private var nameSaved = false
+    @State private var settingsUnavailable = false
     private let cyan = Color(red:0.08,green:0.75,blue:0.79)
     var body: some View {
         NavigationStack {
@@ -31,6 +35,33 @@ struct SetupView: View {
                         step("2", "Allow Full Access", "Tap AirType in Keyboards and enable Allow Full Access for the Wi-Fi connection. Local typing works without it.")
                         step("3", "Connect your computer", "Switch to AirType with the globe key. Open its address on a computer using the same Wi-Fi, then enter the six-digit code shown on the keyboard.")
                     }
+                    Button {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                        openURL(url) { accepted in settingsUnavailable = !accepted }
+                    } label: {
+                        Label("Open Keyboard Settings", systemImage: "keyboard")
+                            .frame(maxWidth: .infinity).padding(6)
+                    }.buttonStyle(.borderedProminent).tint(cyan)
+                    Text("In AirType settings, choose Keyboards, enable AirType, then Allow Full Access. If Keyboards is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Bonjour address").font(.headline)
+                        HStack {
+                            TextField("airtype", text: $bonjourName)
+                                .textInputAutocapitalization(.never).autocorrectionDisabled()
+                                .textFieldStyle(.roundedBorder)
+                                .accessibilityLabel("Bonjour name")
+                                .onChange(of: bonjourName) { nameSaved = false }
+                            Text(".local").foregroundStyle(.secondary)
+                        }
+                        Button("Save Bonjour Name") {
+                            NetworkPreferences.saveHostname(bonjourName)
+                            bonjourName = NetworkPreferences.hostname
+                            nameSaved = true
+                        }.buttonStyle(.bordered).tint(cyan)
+                        Text(nameSaved ? "Saved. Reopen the AirType keyboard to apply." : "Default: airtype.local:8307. Name conflicts automatically use -2, -3, and so on. Use the final address shown on the keyboard; its IP address remains available as a fallback.")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
                     Button("Enable local network connection") { enableNetwork() }.buttonStyle(.bordered).tint(cyan)
                     NavigationLink { KeyboardTestScreen(useSystemKeyboard:true).ignoresSafeArea(.keyboard).navigationTitle("Try AirType") } label: {
                         Text("Try the installed keyboard").frame(maxWidth:.infinity).padding(6)
@@ -43,6 +74,11 @@ struct SetupView: View {
                     Text("invivo").font(.footnote).foregroundStyle(.secondary)
                 }.padding(28).frame(maxWidth:600).frame(maxWidth:.infinity)
             }.background(Color(.systemBackground))
+                .alert("Open Settings manually", isPresented: $settingsUnavailable) {
+                    Button("OK", role: .cancel) {}
+                } message: {
+                    Text("Open Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.")
+                }
         }
     }
     private func step(_ number:String,_ title:String,_ detail:String) -> some View {
