@@ -5,6 +5,9 @@ final class AirKeyboardView: UIView {
     var insertText: ((String) -> Void)?
     var deleteText: (() -> Void)?
     var nextKeyboard: (() -> Void)?
+    var contextBeforeInput: (() -> String?)?
+    var autocapitalizationType: UITextAutocapitalizationType = .sentences
+    var showsGlobe = true { didSet { if showsGlobe != oldValue { render() } } }
     var configureGlobe: ((UIButton) -> Void)? { didSet { render() } }
     var onReceiveModeChange: (() -> Void)?
     var receiveMode: RemoteInputMode = .web { didSet {
@@ -34,6 +37,10 @@ final class AirKeyboardView: UIView {
     private var lastShift: TimeInterval = 0
     private var page = 0
     private var deleteTimer: Timer?
+    private var deleting = false
+    private var deleteOrigin: CGFloat = 0
+    private var deleteDrag: CGFloat = 0
+    private var compactPanel = false
     private var pairing = false
     private var bg: UIColor { dark ? UIColor(white: 0.13, alpha: 1) : UIColor(red: 0.82, green: 0.83, blue: 0.85, alpha: 1) }
     private var ink: UIColor { dark ? .white : UIColor(white: 0.18, alpha: 1) }
@@ -48,13 +55,18 @@ final class AirKeyboardView: UIView {
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     private func render() {
-        deleteTimer?.invalidate(); deleteTimer = nil
+        stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         statusLabel = nil; addressLabel = nil; dot = nil; codeLabel = nil
         backgroundColor = bg
         if pairing && webMode { renderPairing(); return }
         if webMode { renderWeb() } else { renderKeys() }
         updateStatus()
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let compact = bounds.height > 0 && bounds.height < 200
+        if compactPanel != compact { compactPanel = compact; render() }
     }
     private func renderWeb() {
         let selector = UISegmentedControl(items: RemoteInputMode.allCases.map(\.rawValue))
@@ -65,21 +77,40 @@ final class AirKeyboardView: UIView {
             self.receiveMode = RemoteInputMode.allCases[selector.selectedSegmentIndex]
         }, for: .valueChanged)
         selector.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        content.addArrangedSubview(selector)
-        let panel = UIView()
+        let selectorRow = UIView()
+        selector.translatesAutoresizingMaskIntoConstraints = false
+        selectorRow.addSubview(selector)
+        NSLayoutConstraint.activate([
+            selectorRow.heightAnchor.constraint(equalToConstant: 42),
+            selector.leadingAnchor.constraint(equalTo: selectorRow.leadingAnchor, constant: 16),
+            selector.trailingAnchor.constraint(equalTo: selectorRow.trailingAnchor, constant: -16),
+            selector.centerYAnchor.constraint(equalTo: selectorRow.centerYAnchor)
+        ])
+        content.addArrangedSubview(selectorRow)
+        let panel = UIStackView(); panel.axis = .horizontal; panel.distribution = .fillEqually
+        panel.accessibilityIdentifier = "AirTypeConnectionPanel"
         let logo = button("", symbol: nil) { [weak self] in self?.webMode = false }
         logo.backgroundColor = .clear
         logo.setImage(UIImage(named: "AirTypeLogo"), for: .normal)
         logo.imageView?.contentMode = .scaleAspectFit
         logo.layer.cornerRadius = 42; logo.clipsToBounds = true
         logo.accessibilityLabel = "Switch to traditional keyboard"
-        let title = label(receiveMode == .web ? "Web Access" : receiveMode.rawValue, size: 14)
-        let status = label(connectionStatus, size: 11); statusLabel = status
-        let line = UIView(); line.backgroundColor = cyan
-        let badge = UIStackView(arrangedSubviews: [logo, title, line, status])
+        let title = label(receiveMode == .web ? "Web Access" : receiveMode.rawValue, size: compactPanel ? 12 : 14)
+        let status = label(connectionStatus, size: compactPanel ? 9 : 11); statusLabel = status
+        status.adjustsFontSizeToFitWidth = true; status.minimumScaleFactor = 0.75
+        let badge = UIStackView(arrangedSubviews: [logo, title, status])
         badge.axis = .vertical; badge.alignment = .center; badge.spacing = 4
-        badge.translatesAutoresizingMaskIntoConstraints = false; panel.addSubview(badge)
-        NSLayoutConstraint.activate([logo.widthAnchor.constraint(equalToConstant: 84), logo.heightAnchor.constraint(equalToConstant: 84), line.widthAnchor.constraint(equalToConstant: 24), line.heightAnchor.constraint(equalToConstant: 1),badge.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 26),badge.centerYAnchor.constraint(equalTo: panel.centerYAnchor)])
+        let statusHalf = UIView(); statusHalf.accessibilityIdentifier = "AirTypeStatusHalf"
+        badge.translatesAutoresizingMaskIntoConstraints = false; statusHalf.addSubview(badge)
+        panel.addArrangedSubview(statusHalf)
+        NSLayoutConstraint.activate([
+            logo.heightAnchor.constraint(equalTo: panel.heightAnchor, multiplier: compactPanel ? 0.40 : 0.48),
+            logo.widthAnchor.constraint(equalTo: logo.heightAnchor),
+            badge.leadingAnchor.constraint(equalTo: statusHalf.leadingAnchor, constant: 8),
+            badge.trailingAnchor.constraint(equalTo: statusHalf.trailingAnchor, constant: -8),
+            badge.centerYAnchor.constraint(equalTo: statusHalf.centerYAnchor),
+            status.widthAnchor.constraint(lessThanOrEqualTo: badge.widthAnchor)
+        ])
         let code = label("", size: receiveMode == .web ? 24 : 15)
         code.font = .monospacedSystemFont(ofSize: receiveMode == .web ? 24 : 15, weight: .medium)
         code.numberOfLines = 2
@@ -91,20 +122,26 @@ final class AirKeyboardView: UIView {
         codeHint.numberOfLines = 0
         let connection = UIStackView(arrangedSubviews: [label(receiveMode == .web ? "Pairing code" : "Pairing key", size: 12), code, codeHint])
         connection.axis = .vertical; connection.spacing = 6; connection.alignment = .center
-        connection.translatesAutoresizingMaskIntoConstraints = false
-        panel.addSubview(connection)
+        connection.alignment = .fill
+        let codeHalf = UIView(); codeHalf.accessibilityIdentifier = "AirTypePairingHalf"
+        connection.translatesAutoresizingMaskIntoConstraints = false; codeHalf.addSubview(connection)
+        panel.addArrangedSubview(codeHalf)
         NSLayoutConstraint.activate([
-            connection.leadingAnchor.constraint(greaterThanOrEqualTo: badge.trailingAnchor, constant: 12),
-            connection.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -16),
-            connection.centerYAnchor.constraint(equalTo: panel.centerYAnchor),
-            connection.widthAnchor.constraint(lessThanOrEqualTo: panel.widthAnchor, multiplier: 0.53)
+            connection.leadingAnchor.constraint(equalTo: codeHalf.leadingAnchor, constant: 8),
+            connection.trailingAnchor.constraint(equalTo: codeHalf.trailingAnchor, constant: -8),
+            connection.centerYAnchor.constraint(equalTo: codeHalf.centerYAnchor)
         ])
         content.addArrangedSubview(panel)
-        let bar = UIStackView(); bar.axis = .horizontal; bar.spacing = 1
-        bar.backgroundColor = dark ? UIColor(white: 0.28, alpha: 1) : UIColor(white: 0.69, alpha: 1)
-        let globe = globeButton()
+        let bar = UIStackView(); bar.axis = .horizontal; bar.spacing = 8; bar.alignment = .center
+        bar.isLayoutMarginsRelativeArrangement = true
+        bar.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        let back = button("", symbol: "keyboard") { [weak self] in self?.pairing = false; self?.webMode = false }
+        back.accessibilityLabel = "Back to keyboard"
+        styleCircularControl(back)
+        bar.addArrangedSubview(back)
+        if showsGlobe { let globe = globeButton(); styleCircularControl(globe); bar.addArrangedSubview(globe) }
         let addressButton = button("", symbol: nil) { [weak self] in self?.pairing = true; self?.render() }
-        addressButton.backgroundColor = bg
+        addressButton.backgroundColor = .clear
         addressButton.accessibilityLabel = "Show computer connection address and QR code"
         let addressRow = UIStackView(); addressRow.axis = .horizontal; addressRow.spacing = 5; addressRow.alignment = .center
         addressRow.isUserInteractionEnabled = false; addressRow.translatesAutoresizingMaskIntoConstraints = false
@@ -113,9 +150,10 @@ final class AirKeyboardView: UIView {
         addressRow.addArrangedSubview(indicator); addressRow.addArrangedSubview(url)
         addressButton.addSubview(addressRow)
         NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addressRow.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addressRow.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addressRow.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 8),addressRow.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -8)])
-        let delete = deleteButton()
-        for item in [globe,addressButton,delete] { bar.addArrangedSubview(item) }
-        NSLayoutConstraint.activate([bar.heightAnchor.constraint(equalToConstant: 44),globe.widthAnchor.constraint(equalToConstant: 44),delete.widthAnchor.constraint(equalToConstant: 44)])
+        let delete = deleteButton(); styleCircularControl(delete)
+        bar.addArrangedSubview(addressButton); bar.addArrangedSubview(delete)
+        bar.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        addressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(bar)
     }
     private func renderPairing() {
@@ -179,8 +217,11 @@ final class AirKeyboardView: UIView {
             for letter in letters {
                 let display = page == 0 && shifted ? letter.uppercased() : letter
                 let key = button(display,symbol:nil) { [weak self] in
-                    guard let self else { return }; self.insertText?(display)
-                    if self.page == 0 && self.shifted && !self.capsLock { self.shifted = false; self.render() }
+                    guard let self else { return }
+                    self.insertText?(display)
+                    if self.page == 0 && !self.capsLock {
+                        self.shifted = false; self.synchronizeCapitalization(); self.render()
+                    }
                 }
                 key.backgroundColor = dark ? UIColor(white:0.23,alpha:1) : .white
                 key.titleLabel?.font = .systemFont(ofSize:22)
@@ -192,37 +233,87 @@ final class AirKeyboardView: UIView {
         let bottom = UIStackView(); bottom.axis = .horizontal; bottom.spacing = 5
         let numeric = button(page == 0 ? "123" : "ABC",symbol:nil) { [weak self] in guard let self else { return }; self.page = self.page == 0 ? 1 : 0; self.render() }
         let globe = globeButton()
-        let space = button("space",symbol:nil) { [weak self] in self?.insertText?(" ") }
+        let space = button("space",symbol:nil) { [weak self] in self?.insertText?(" "); self?.synchronizeCapitalization() }
         space.backgroundColor = dark ? UIColor(white:0.23,alpha:1) : .white
-        let wifi = button("",symbol:"wifi") { [weak self] in self?.webMode = true }
-        wifi.tintColor = cyan; wifi.accessibilityLabel = "Switch to Web Access"
-        let enter = button(returnTitle,symbol:nil) { [weak self] in self?.insertText?("\n") }
+        let wifi = button("",symbol:nil) { [weak self] in self?.webMode = true }
+        let logo = UIImage(named: "AirTypeLogo")
+        let logoImage = logo.map { original in
+            UIGraphicsImageRenderer(size: CGSize(width: 28, height: 28)).image { _ in
+                original.draw(in: CGRect(x: 0, y: 0, width: 28, height: 28))
+            }.withRenderingMode(.alwaysOriginal)
+        }
+        wifi.setImage(logoImage, for: .normal)
+        wifi.imageView?.contentMode = .scaleAspectFit
+        wifi.accessibilityLabel = "Switch to AirType"
+        wifi.accessibilityIdentifier = "AirTypeModeButton"
+        let enter = button(returnTitle,symbol:nil) { [weak self] in self?.insertText?("\n"); self?.synchronizeCapitalization() }
         enter.backgroundColor = .systemBlue; enter.setTitleColor(.white,for:.normal)
-        [numeric,globe,space,wifi,enter].forEach { bottom.addArrangedSubview($0) }
-        NSLayoutConstraint.activate([numeric.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.105),globe.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.105),wifi.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.11),enter.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.21)])
+        [numeric,space,wifi,enter].forEach { bottom.addArrangedSubview($0) }
+        if showsGlobe {
+            bottom.insertArrangedSubview(globe, at: 1)
+            globe.widthAnchor.constraint(equalTo: bottom.widthAnchor, multiplier: 0.105).isActive = true
+        }
+        NSLayoutConstraint.activate([numeric.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.105),wifi.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.11),enter.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.21)])
         grid.addArrangedSubview(bottom); content.addArrangedSubview(grid)
     }
     private func globeButton() -> UIButton {
         let key = button("",symbol:"globe") { [weak self] in self?.nextKeyboard?() }
         key.accessibilityLabel = "Next keyboard"; configureGlobe?(key); return key
     }
+    private func styleCircularControl(_ key: UIButton) {
+        key.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        key.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        if #available(iOS 26, *) {
+            var config = UIButton.Configuration.glass()
+            config.cornerStyle = .capsule
+            config.image = key.image(for: .normal)
+            config.baseForegroundColor = ink
+            key.backgroundColor = .clear
+            key.configuration = config
+        } else {
+            key.layer.cornerRadius = 22
+            key.backgroundColor = dark ? UIColor(white: 0.25, alpha: 1) : UIColor(white: 0.95, alpha: 0.8)
+        }
+    }
     private func deleteButton() -> UIButton {
-        let key = button("",symbol:"delete.left.fill") { [weak self] in self?.deleteText?() }
+        let key = KeyboardDeleteButton(type: .custom)
+        _ = button("", symbol: "delete.left", key: key) {}
+        key.onAccessibleDelete = { [weak self] in self?.deleteText?(); self?.synchronizeCapitalization() }
         key.accessibilityLabel = "Delete"
-        key.addGestureRecognizer(UILongPressGestureRecognizer(target:self,action:#selector(repeatDelete(_:))))
+        key.addTarget(self, action: #selector(beginDelete(_:event:)), for: .touchDown)
+        key.addTarget(self, action: #selector(dragDelete(_:event:)), for: [.touchDragInside, .touchDragOutside])
+        key.addTarget(self, action: #selector(endDelete), for: [.touchUpInside, .touchUpOutside, .touchCancel])
         return key
     }
-    @objc private func repeatDelete(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began {
-            deleteText?()
-            deleteTimer = Timer.scheduledTimer(withTimeInterval:0.09,repeats:true) { [weak self] _ in self?.deleteText?() }
-        } else if gesture.state != .changed { deleteTimer?.invalidate(); deleteTimer = nil }
+    @objc private func beginDelete(_ key: UIButton, event: UIEvent?) {
+        stopRepeating(); deleting = true
+        deleteOrigin = event?.allTouches?.first?.location(in: self).x ?? 0; deleteDrag = 0
+        deleteText?()
+        scheduleDelete(after: 1)
+    }
+    @objc private func dragDelete(_ key: UIButton, event: UIEvent?) {
+        guard let touch = event?.allTouches?.first else { return }
+        deleteDrag = deleteOrigin - touch.location(in: self).x
+    }
+    private func scheduleDelete(after delay: TimeInterval) {
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in
+            guard let self, self.deleting else { return }
+            self.deleteText?()
+            self.scheduleDelete(after: KeyboardTypingBehavior.deleteInterval(leftDrag: self.deleteDrag))
+        }
+        deleteTimer = timer; RunLoop.main.add(timer, forMode: .common)
+    }
+    @objc private func endDelete() { stopRepeating(); synchronizeCapitalization() }
+    func synchronizeCapitalization() {
+        guard !capsLock, !deleting, let automatic = KeyboardTypingBehavior.automaticShift(type: autocapitalizationType, context: contextBeforeInput?()), automatic != shifted else { return }
+        shifted = automatic
+        if !webMode && page == 0 { render() }
     }
     private func label(_ text: String,size:CGFloat) -> UILabel {
         let label = UILabel(); label.text = text; label.font = .systemFont(ofSize:size,weight:.light); label.textColor = dark ? .lightGray : .gray; label.textAlignment = .center; return label
     }
-    private func button(_ title:String,symbol:String?,action:@escaping ()->Void) -> UIButton {
-        let key = UIButton(type:.custom); key.setTitle(title,for:.normal); key.setTitleColor(ink,for:.normal); key.tintColor = ink
+    private func button(_ title:String,symbol:String?,key: UIButton = UIButton(type: .custom),action:@escaping ()->Void) -> UIButton {
+        key.setTitle(title,for:.normal); key.setTitleColor(ink,for:.normal); key.tintColor = ink
         key.titleLabel?.font = .systemFont(ofSize:14); key.backgroundColor = dark ? UIColor(white:0.19,alpha:1) : UIColor(white:0.69,alpha:1)
         key.layer.cornerRadius = webMode ? 0 : 5
         if let symbol { key.setImage(UIImage(systemName:symbol,withConfiguration:UIImage.SymbolConfiguration(pointSize:21,weight:.regular)),for:.normal) }
@@ -244,6 +335,14 @@ final class AirKeyboardView: UIView {
         addressLabel?.text = receiveMode == .web ? (address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }
-    func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil }
+    func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil; deleting = false }
     deinit { deleteTimer?.invalidate() }
+}
+
+private final class KeyboardDeleteButton: UIButton {
+    var onAccessibleDelete: (() -> Void)?
+    override func accessibilityActivate() -> Bool {
+        onAccessibleDelete?()
+        return true
+    }
 }

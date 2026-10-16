@@ -58,7 +58,9 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 
 Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
 
-Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to Web Access. The globe supports Apple's input-mode menu. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Hold Delete to repeat.
+Tap the bottom-left keyboard button to switch to QWERTY; tap the AirType icon on the bottom row to return to the connection panel. The panel splits status and pairing into equal halves, with a 16-point inset around the connection selector. Its keyboard and delete controls are 44-point circles using native Liquid Glass on iOS 26+, with solid circular backgrounds on earlier versions.
+
+The extension shows a globe only when iOS requests an input-mode switch key; Face ID iPhones normally use the system globe below the keyboard. Local capitalization follows the text field's autocapitalization trait and current context, including Chinese sentence punctuation. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Delete acts on touch-down, repeats after one second at 100 ms, and accelerates to 35 ms when dragged left. Release, cancellation, mode changes and leaving the keyboard stop repetition. These basic behaviors were compared with CInput's current keyboard implementation.
 
 ## Bonjour and custom names
 

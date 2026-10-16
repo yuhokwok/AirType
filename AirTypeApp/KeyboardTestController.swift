@@ -12,7 +12,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad(); view.backgroundColor = .systemBackground
         let title = UILabel(); title.text = useSystemKeyboard ? "Try your AirType keyboard" : "AirType keyboard preview"; title.font = .systemFont(ofSize:25,weight:.light)
-        let hint = UILabel(); hint.text = useSystemKeyboard ? "Tap below, then use the globe key to select AirType." : "Type here or send text from the browser portal.\nTap the AirType icon to use the traditional keyboard."; hint.numberOfLines = 0; hint.textColor = .secondaryLabel; hint.font = .systemFont(ofSize:14)
+        let hint = UILabel(); hint.text = useSystemKeyboard ? "Tap below, then use the globe key to select AirType." : "Type here or send text from your computer.\nUse the keyboard button to return to local typing."; hint.numberOfLines = 0; hint.textColor = .secondaryLabel; hint.font = .systemFont(ofSize:14)
         field.font = .systemFont(ofSize:24); field.backgroundColor = .secondarySystemBackground; field.layer.cornerRadius = 12
         field.textContainerInset = UIEdgeInsets(top:16,left:12,bottom:16,right:12)
         field.accessibilityLabel = "AirType test text"; field.delegate = self
@@ -31,6 +31,12 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             keyboard.translatesAutoresizingMaskIntoConstraints = false; input.addSubview(keyboard)
             NSLayoutConstraint.activate([keyboard.topAnchor.constraint(equalTo:input.topAnchor),keyboard.bottomAnchor.constraint(equalTo:input.bottomAnchor),keyboard.leadingAnchor.constraint(equalTo:input.leadingAnchor),keyboard.trailingAnchor.constraint(equalTo:input.trailingAnchor),input.heightAnchor.constraint(equalToConstant:keyboardHeight)])
             field.inputView = input
+            keyboard.contextBeforeInput = { [weak self] in
+                guard let field = self?.field, let position = field.selectedTextRange?.start,
+                      let range = field.textRange(from: field.beginningOfDocument, to: position) else { return nil }
+                return field.text(in: range)
+            }
+            if ProcessInfo.processInfo.arguments.contains("--keyboard-qwerty") { keyboard.webMode = false }
             keyboard.insertText = { [weak self] in self?.field.insertText($0) }
             keyboard.deleteText = { [weak self] in self?.field.deleteBackward() }
             keyboard.nextKeyboard = { [weak self] in self?.field.resignFirstResponder() }
@@ -51,7 +57,13 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             }
         }
     }
-    override func viewDidAppear(_ animated:Bool) { super.viewDidAppear(animated); field.becomeFirstResponder() }
+    override func viewDidAppear(_ animated:Bool) {
+        super.viewDidAppear(animated)
+        keyboard.showsGlobe = ProcessInfo.processInfo.arguments.contains("--keyboard-legacy-globe") || traitCollection.userInterfaceIdiom != .phone || (view.window?.safeAreaInsets.bottom ?? 0) == 0
+        keyboard.autocapitalizationType = field.autocapitalizationType
+        field.becomeFirstResponder(); keyboard.synchronizeCapitalization()
+    }
+    func textViewDidChange(_ textView: UITextView) { keyboard.synchronizeCapitalization() }
     override func viewWillDisappear(_ animated:Bool) { super.viewWillDisappear(animated); stopPreviewTransport(); keyboard.stopRepeating(); field.resignFirstResponder() }
     func textViewDidBeginEditing(_ textView:UITextView) { updatePreviewTransport() }
     func textViewDidEndEditing(_ textView:UITextView) { stopPreviewTransport(); keyboard.stopRepeating() }

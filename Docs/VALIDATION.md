@@ -72,3 +72,13 @@ Reported symptom: local-network connection still fails. The exact browser error 
 ## Native keyboard receiving — 16 October 2026
 
 The native modes now send from AirTypeDesktop on Mac into the visible keyboard extension, which applies commands through textDocumentProxy. The containing app prepares settings/permissions. Both platform builds and all 24 XCTest cases pass. Real Bonjour/TCP integration passes, including a Mac sender delivering Chinese and emoji into the iOS Simulator preview UITextView with encrypted acknowledgement. See [the detailed checklist](NEARBY-PLAN.md) and [preview evidence](Validation/native-keyboard-preview.jpg). Installed-extension Bluetooth, no-router Wi-Fi and editing across physical-device apps remain unverified.
+
+## CInput basic behavior and connection controls — 17 October 2026
+
+Compared CInput's KeyboardViewModel, KeyboardHandler and KeyboardTouchStateMachine with AirType. AirType now follows host capitalization/context, retains one-shot Shift/caps lock and symbol pages, and uses CInput's immediate delete, one-second repeat delay, 100–35 ms left-drag cadence. Native keyboard switching follows UIInputViewController.needsInputModeSwitchKey. The AirType brand image is retained on the connection panel and local mode toggle.
+
+The connection panel uses equal status/pairing halves and a selector inset 16 points on both sides. Keyboard-return/delete controls are 44-point circles with UIButton.Configuration.glass() on iOS 26+ and solid fallbacks.
+
+All 32 XCTest cases pass on the iOS 27 Simulator, including capitalization, hidden context, actual local button input, immediate/repeated/cancelled delete, accessible deletion, mode transitions and layout at 320×216, 852×162 and 1024×264. Tests also exercise both globe visibility states. App and embedded keyboard extension compile. Shared-view simulator screenshots: [connection controls](Validation/connection-controls-ios26.jpg), [QWERTY and AirType icon](Validation/qwerty-airtype-icon.jpg). Fresh physical-device touch/VoiceOver, older-iOS fallback appearance and installed-extension rendering remain separate acceptance checks.
+
+API references: [needsInputModeSwitchKey](https://developer.apple.com/documentation/uikit/uiinputviewcontroller/needsinputmodeswitchkey), [UIKit glass button configuration](https://developer.apple.com/documentation/uikit/uibutton/configuration-swift.struct/glass()).

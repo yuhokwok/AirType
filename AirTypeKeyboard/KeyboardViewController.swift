@@ -13,6 +13,7 @@ final class KeyboardViewController: UIInputViewController {
             // UIAction-based nextKeyboard is nil in the extension; the system owns the globe menu.
             button.addTarget(self,action:#selector(UIInputViewController.handleInputModeList(from:with:)),for:.allTouchEvents)
         }
+        keyboard.contextBeforeInput = { [weak self] in self?.textDocumentProxy.documentContextBeforeInput }
         keyboard.insertText = { [weak self] in self?.textDocumentProxy.insertText($0) }
         keyboard.deleteText = { [weak self] in self?.textDocumentProxy.deleteBackward() }
         keyboard.onWebModeChange = { [weak self] _ in self?.updateServer() }
@@ -49,7 +50,8 @@ final class KeyboardViewController: UIInputViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if hasFullAccess { keyboard.receiveMode = NetworkPreferences.inputMode }
-        updateAppearance(); updateServer()
+        keyboard.showsGlobe = needsInputModeSwitchKey
+        updateAppearance(); keyboard.synchronizeCapitalization(); updateServer()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated); stopReceivers(); keyboard.stopRepeating()
@@ -60,8 +62,10 @@ final class KeyboardViewController: UIInputViewController {
         let landscape = view.bounds.width > 600 && traitCollection.userInterfaceIdiom == .phone
         height?.constant = traitCollection.userInterfaceIdiom == .pad ? 264 : (landscape ? 162 : 216)
     }
-    override func textDidChange(_ textInput: UITextInput?) { updateAppearance() }
+    override func textDidChange(_ textInput: UITextInput?) { updateAppearance(); keyboard.synchronizeCapitalization() }
     private func updateAppearance() {
+        keyboard.showsGlobe = needsInputModeSwitchKey
+        keyboard.autocapitalizationType = textDocumentProxy.autocapitalizationType ?? .sentences
         let dark = textDocumentProxy.keyboardAppearance == .dark || traitCollection.userInterfaceStyle == .dark
         if keyboard.dark != dark { keyboard.dark = dark }
         let title: String
