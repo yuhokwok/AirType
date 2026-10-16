@@ -71,7 +71,7 @@
 /* Begin PBXFileReference section */
 		00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AirType.icon; sourceTree = "<group>"; };
 		016CE0BD38FF153C97CC6AD3 /* AirTypeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirTypeApp.swift; sourceTree = "<group>"; };
-		298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AirTypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirTypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPreferences.swift; sourceTree = "<group>"; };
 		4FF78E80E76F0D8AF7C83295 /* PairingCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingCodeTests.swift; sourceTree = "<group>"; };
 		57858285BBD79ADC669B3149 /* AirKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirKeyboardView.swift; sourceTree = "<group>"; };
@@ -91,8 +91,8 @@
 		B607E9A35875E3C7F029368E /* AirType.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirType.entitlements; sourceTree = "<group>"; };
 		BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkFailure.swift; sourceTree = "<group>"; };
 		C55E2DA166626D2FDDD56D7A /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
-		C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = AirTypeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		C61ED4DFED8D2F288BDBEA99 /* AirType.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AirType.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AirTypeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C61ED4DFED8D2F288BDBEA99 /* AirType.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirType.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -364,12 +364,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
 				CODE_SIGN_ENTITLEMENTS = AirTypeApp/AirType.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				INFOPLIST_FILE = AirTypeApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeReplica;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirType;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -381,12 +382,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
 				CODE_SIGN_ENTITLEMENTS = AirTypeApp/AirType.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				INFOPLIST_FILE = AirTypeApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeReplica;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirType;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -456,13 +458,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirTypeTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirType.app/AirType";
@@ -473,13 +476,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirTypeTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AirType.app/AirType";
@@ -491,13 +495,14 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = AirTypeKeyboard/AirType.entitlements;
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				INFOPLIST_FILE = AirTypeKeyboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeReplica.Keyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirType.Keyboard;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,13 +581,14 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = AirTypeKeyboard/AirType.entitlements;
+				DEVELOPMENT_TEAM = 5778F83X4J;
 				INFOPLIST_FILE = AirTypeKeyboard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.AirTypeReplica.Keyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.ios.AirType.Keyboard;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

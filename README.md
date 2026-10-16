@@ -1,6 +1,6 @@
 # AirType
 
-Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The separate `com.invivo.AirTypeReplica` identifiers avoid replacing the original app.
+Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
 
 ## Features
 
