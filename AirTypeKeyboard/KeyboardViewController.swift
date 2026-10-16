@@ -61,6 +61,7 @@ final class KeyboardViewController: UIInputViewController {
         syncState()
     }
     private func syncState() {
+        keyboard.pairingCode = server.pairingCode
         keyboard.address = server.address
         keyboard.connected = server.connected
         keyboard.connectionStatus = hasFullAccess ? server.status : "Enable Full Access for Wi-Fi"

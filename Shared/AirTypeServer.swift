@@ -15,6 +15,8 @@ final class AirTypeServer {
     private var order: [UUID] = []
     private var lastContact: Date?
     private var timer: Timer?
+    private var pairing = PairingCode()
+    var pairingCode: String? { listener == nil ? nil : pairing.value }
     private let token: String
     var connected: Bool { lastContact.map { Date().timeIntervalSince($0) < 5 } ?? false }
 
@@ -25,6 +27,7 @@ final class AirTypeServer {
     }
     func start(useDynamicPort: Bool = false) {
         guard listener == nil else { return }
+        pairing = PairingCode()
         let parameters = NWParameters.tcp
         parameters.prohibitedInterfaceTypes = [.cellular]
         do {
@@ -125,11 +128,27 @@ final class AirTypeServer {
             let html = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? "Portal unavailable"
             respond(connection, body: html, contentType: "text/html; charset=utf-8"); return
         }
-        guard request.headers["authorization"] == "Bearer \(token)" else {
-            respond(connection, code: "403 Forbidden", body: "Open the full address shown on AirType."); return
-        }
         if let origin = request.headers["origin"], origin != "http://" + (request.headers["host"] ?? "") {
             respond(connection, code: "403 Forbidden", body: "Invalid origin"); return
+        }
+        if request.method == "POST", request.path == "/pair" {
+            guard let payload = try? JSONDecoder().decode([String: String].self, from: request.body),
+                  let code = payload["code"] else {
+                respond(connection, code: "400 Bad Request", body: "Enter the code shown on your keyboard."); return
+            }
+            switch pairing.verify(code) {
+            case .accepted:
+                let data = try! JSONEncoder().encode(["token": token])
+                respond(connection, body: String(decoding: data, as: UTF8.self), contentType: "application/json")
+            case .incorrect:
+                respond(connection, code: "403 Forbidden", body: "Incorrect pairing code. Check the code on your keyboard.")
+            case .rateLimited:
+                respond(connection, code: "429 Too Many Requests", body: "Too many pairing attempts. Wait one minute and try again.")
+            }
+            return
+        }
+        guard request.headers["authorization"] == "Bearer \(token)" else {
+            respond(connection, code: "403 Forbidden", body: "Pair with the code shown on your AirType keyboard."); return
         }
         if request.method == "GET", request.path == "/status" {
             lastContact = Date(); status = "Connected"; onStateChange?()

@@ -26,3 +26,21 @@ Network response evidence: `Validation/network-checks.json`. Screenshots in `Val
 Physical iPhone/iPad signing and installation; real Local Network permission prompts; Wi-Fi between two physical devices/computers; router client isolation; screen lock/background reconnection; physical touch and repeat-delete feel; third-party host applications; iPad and landscape rendered UI; VoiceOver interaction; cross-browser desktop testing. Simulator network traffic uses the host Mac network and does not establish these device-level results.
 
 The supplied references are App Store promotional screenshots, with a small keyboard embedded in each. This is a faithful recreation of their visible layout and documented functionality, not a pixel comparison against full-resolution original UI captures or source code.
+
+## Pairing correction — 16 October 2026
+
+Reported symptom: opening the keyboard's IP/port loads the page, but neither side shows Connected and sending is unavailable. Source inspection found that the address strip hid the `#token`, while `/status` required it. The original portal therefore loaded successfully without being authorized to type.
+
+The keyboard now shows a six-digit pairing code. The IP-only page presents a Connect form that exchanges this code for the existing bearer token; command and status authentication remain required. Incorrect codes show an explicit error, repeated guessing is limited to five failures per minute, and invalid/outdated token URLs return to pairing. Full tokenized URLs and QR codes continue to work.
+
+Validation on Keyboard-Trail-Host-QA / iOS 27 Simulator using the shared keyboard preview and actual Network.framework server:
+
+- Opened only `http://<LAN IP>:8307/`: pairing form visible; Send disabled until authentication.
+- Incorrect code rejected, with an actionable error on the page.
+- Correct keyboard-visible code accepted: browser and native preview both showed Connected.
+- Browser Enter inserted `IP-only pairing works — 你好 👋` into the preview text field.
+- An outdated URL token returned to pairing. A draft entered before re-pairing remained intact afterward.
+- All 6 XCTest cases passed, including incorrect/correct code checks and rate-limit expiry.
+- App and embedded extension build succeeded after the change. A further system-extension UI run was attempted on iPhone 17; Device Hub failed to reopen, so this run does not establish fresh installed-extension UI or physical-device proof.
+
+Evidence: `Validation/pairing-code-connected.jpg` and `Validation/pairing-portal-connected.jpg`. The native screenshot shows the shared keyboard preview. Physical-device acceptance remains open. Install the rebuilt app and refresh the browser page to use the updated protocol/UI.

@@ -29,7 +29,7 @@ struct SetupView: View {
                     VStack(alignment:.leading,spacing:20) {
                         step("1", "Add the keyboard", "Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.")
                         step("2", "Allow Full Access", "Tap AirType in Keyboards and enable Allow Full Access for the Wi-Fi connection. Local typing works without it.")
-                        step("3", "Connect your computer", "Switch to AirType with the globe key. Tap the address bar and open the complete address on a computer using the same Wi-Fi.")
+                        step("3", "Connect your computer", "Switch to AirType with the globe key. Open its address on a computer using the same Wi-Fi, then enter the six-digit code shown on the keyboard.")
                     }
                     Button("Enable local network connection") { enableNetwork() }.buttonStyle(.bordered).tint(cyan)
                     NavigationLink { KeyboardTestScreen(useSystemKeyboard:true).ignoresSafeArea(.keyboard).navigationTitle("Try AirType") } label: {

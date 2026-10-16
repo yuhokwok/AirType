@@ -11,12 +11,14 @@ final class AirKeyboardView: UIView {
     var dark = false { didSet { render() } }
     var returnTitle = "return" { didSet { if !webMode { render() } } }
     var address: String? { didSet { updateStatus() } }
+    var pairingCode: String? { didSet { updateStatus() } }
     var connectionStatus = "Disconnected" { didSet { updateStatus() } }
     var connected = false { didSet { updateStatus() } }
     private let content = UIStackView()
     private var statusLabel: UILabel?
     private var addressLabel: UILabel?
     private var dot: UIView?
+    private var codeLabel: UILabel?
     private var shifted = true
     private var capsLock = false
     private var lastShift: TimeInterval = 0
@@ -38,7 +40,7 @@ final class AirKeyboardView: UIView {
     private func render() {
         deleteTimer?.invalidate(); deleteTimer = nil
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
-        statusLabel = nil; addressLabel = nil; dot = nil
+        statusLabel = nil; addressLabel = nil; dot = nil; codeLabel = nil
         backgroundColor = bg
         if pairing && webMode { renderPairing(); return }
         if webMode { renderWeb() } else { renderKeys() }
@@ -59,6 +61,22 @@ final class AirKeyboardView: UIView {
         badge.axis = .vertical; badge.alignment = .center; badge.spacing = 4
         badge.translatesAutoresizingMaskIntoConstraints = false; panel.addSubview(badge)
         NSLayoutConstraint.activate([logo.widthAnchor.constraint(equalToConstant: 84), logo.heightAnchor.constraint(equalToConstant: 84), line.widthAnchor.constraint(equalToConstant: 24), line.heightAnchor.constraint(equalToConstant: 1),badge.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 26),badge.centerYAnchor.constraint(equalTo: panel.centerYAnchor)])
+        let code = label("", size: 24)
+        code.font = .monospacedDigitSystemFont(ofSize: 24, weight: .medium)
+        code.textColor = ink
+        codeLabel = code
+        let codeHint = label("Enter this code on the web page", size: 10)
+        codeHint.numberOfLines = 0
+        let connection = UIStackView(arrangedSubviews: [label("Pairing code", size: 12), code, codeHint])
+        connection.axis = .vertical; connection.spacing = 6; connection.alignment = .center
+        connection.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(connection)
+        NSLayoutConstraint.activate([
+            connection.leadingAnchor.constraint(greaterThanOrEqualTo: badge.trailingAnchor, constant: 12),
+            connection.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -16),
+            connection.centerYAnchor.constraint(equalTo: panel.centerYAnchor),
+            connection.widthAnchor.constraint(lessThanOrEqualTo: panel.widthAnchor, multiplier: 0.53)
+        ])
         content.addArrangedSubview(panel)
         let bar = UIStackView(); bar.axis = .horizontal; bar.spacing = 1
         bar.backgroundColor = dark ? UIColor(white: 0.28, alpha: 1) : UIColor(white: 0.69, alpha: 1)
@@ -83,6 +101,7 @@ final class AirKeyboardView: UIView {
         row.isLayoutMarginsRelativeArrangement = true; row.layoutMargins = UIEdgeInsets(top: 12,left: 16,bottom: 8,right: 16)
         let details = UIStackView(); details.axis = .vertical; details.spacing = 8
         details.addArrangedSubview(label("Open on your computer",size: 17))
+        let code = label("", size: 18); codeLabel = code; details.addArrangedSubview(code)
         let url = label(address ?? connectionStatus,size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
         let hint = label("Same Wi-Fi · Keep this keyboard open",size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
         row.addArrangedSubview(details)
@@ -101,6 +120,7 @@ final class AirKeyboardView: UIView {
         let close = button("Back to Web Access",symbol: nil) { [weak self] in self?.pairing = false; self?.render() }
         close.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(close)
+        updateStatus()
     }
     private func renderKeys() {
         let grid = UIStackView(); grid.axis = .vertical; grid.spacing = 8; grid.distribution = .fillEqually
@@ -187,6 +207,9 @@ final class AirKeyboardView: UIView {
     @objc private func press(_ button:UIButton) { button.alpha = 0.55 }
     @objc private func releaseKey(_ button:UIButton) { button.alpha = 1 }
     private func updateStatus() {
+        codeLabel?.text = pairingCode ?? "— — —"
+        codeLabel?.accessibilityLabel = "Pairing code"
+        codeLabel?.accessibilityValue = pairingCode
         statusLabel?.text = connectionStatus
         addressLabel?.text = address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray

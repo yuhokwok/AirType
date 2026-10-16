@@ -8,7 +8,7 @@ Native iOS/iPadOS containing app and keyboard extension recreated from invivo's 
 - Switch between Web Access and a local QWERTY keyboard with light and dark appearances.
 - Send Unicode text, delete a character, or insert a newline remotely.
 - Reconnect automatically while retaining unsent drafts.
-- Pair using the keyboard's complete connection URL or QR code; no desktop installation or cloud account is required.
+- Pair using the six-digit code shown on the keyboard, or its complete connection URL/QR code; no desktop installation or cloud account is required.
 
 ## Screenshots
 
@@ -36,10 +36,16 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 2. In Settings → General → Keyboard → Keyboards → Add New Keyboard, add **AirType**.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
-5. Keep your computer and device on the same Wi-Fi. Tap the keyboard address bar, then open the complete address, including the pairing token after `#`, in a computer browser.
+5. Keep your computer and device on the same Wi-Fi. Open the IP address and port shown on the keyboard in your computer browser, enter the six-digit **Pairing code** shown beside Web Access, and click **Connect**. You can also tap the address bar to open the complete tokenized URL or QR code.
 6. Type and press Enter or Send. Shift+Enter adds a line break to the draft; the ↵ button sends a newline to the device. Delete removes one character from the device.
 
 Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to Web Access. The globe supports Apple's input-mode menu. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Hold Delete to repeat.
+
+## If the page loads but will not connect
+
+With the original build, opening only the IP and port loaded the public page but omitted the token required to connect. As a workaround for that build, tap the keyboard address bar and use the complete URL, including everything after `#`.
+
+The updated build shows a Pairing code on the keyboard and a Connect form when you open the IP address. Rebuild/reinstall the app and refresh the browser page to use it. An outdated or invalid token also returns to this form. Keep Web Access visible while connecting and typing.
 
 ## Implementation
 
@@ -50,7 +56,7 @@ Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to W
 - `Shared/HTTPProtocol.swift`: bounded incremental HTTP parser and validated command model.
 - `AirTypeApp`: native setup and both preview/system-keyboard test fields.
 
-The portal authenticates commands with a random device-local token, rejects foreign browser origins, and deduplicates recently received command IDs. It does not read or send the surrounding text in the host app. HTTP is local and unencrypted: use a trusted network and keep the complete connection address private. Browser drafts remain in the open page, without local storage. An uncertain send retains the draft instead of automatically retrying a possibly delivered command.
+The portal exchanges the keyboard-visible six-digit pairing code for a random device-local token, limits incorrect pairing attempts to five per minute, and authenticates commands with that token. It rejects foreign browser origins and deduplicates recently received command IDs. It does not read or send the surrounding text in the host app. HTTP is local and unencrypted: use a trusted network and keep the complete connection address private. Browser drafts remain in the open page, without local storage. An uncertain send retains the draft instead of automatically retrying a possibly delivered command.
 
 The server runs only while Web Access is visible. Returning to Web Access lets the portal reconnect without refreshing. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
 
