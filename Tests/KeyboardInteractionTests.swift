@@ -60,7 +60,7 @@ final class KeyboardInteractionTests: XCTestCase {
         }
     }
     @MainActor
-    func testBackButtonOpensLocalKeyboardAndAirTypeIconReturnsToConnection() throws {
+    func testBackButtonOpensLocalKeyboardAndWiFiReturnsToConnection() throws {
         let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
         keyboard.showsGlobe = false
         let back = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == "Back to keyboard" })

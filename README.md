@@ -58,9 +58,13 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 
 Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
 
-Tap the bottom-left keyboard button to switch to QWERTY; tap the AirType icon on the bottom row to return to the connection panel. The panel splits status and pairing into equal halves, with a 16-point inset around the connection selector. Its keyboard and delete controls are 44-point circles using native Liquid Glass on iOS 26+, with solid circular backgrounds on earlier versions.
+Tap the bottom-left keyboard button to switch to QWERTY; tap the Wi-Fi symbol beside 123/ABC to return to the connection panel. The panel splits status and pairing into equal halves, with a 16-point inset around the connection selector. Its keyboard and delete controls are 44-point circles using native Liquid Glass on iOS 26+, with solid circular backgrounds on earlier versions.
 
 The extension shows a globe only when iOS requests an input-mode switch key; Face ID iPhones normally use the system globe below the keyboard. Local capitalization follows the text field's autocapitalization trait and current context, including Chinese sentence punctuation. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Delete acts on touch-down, repeats after one second at 100 ms, and accelerates to 35 ms when dragged left. Release, cancellation, mode changes and leaving the keyboard stop repetition. These basic behaviors were compared with CInput's current keyboard implementation.
+
+Local keys use CInput's 10-point phone / 14-point wide-iPad corner radius. Hold Shift and slide to a letter to insert a capital, or hold it while typing with another finger. Hold 123/ABC or #+= and slide to a character to temporarily type from that page and return to the source page; a tap keeps the selected page. Multi-touch rollover commits older pending letter/space contacts in press order when the next input finger lands, then consumes their later release. Each finger keeps its own ownership through layout changes. Character presses show an enlarged key preview; sliding corrects the selected key, and cancellation inserts nothing.
+
+The bottom row is 123/ABC, Wi-Fi, optional system globe, space, period, return. The original AirType brand remains on the connection panel. Hold space for 0.4 seconds and drag horizontally to move the cursor; release does not insert a space in cursor mode. A 34-point row above the local keys offers on-device English spelling/completion choices using UITextChecker. Tapping a choice replaces only the current matching word and appends a space; automatic replacement and next-word prediction are not enabled. The row respects the text field's spelling setting.
 
 ## Bonjour and custom names
 
@@ -90,6 +94,7 @@ The app checks its own temporary `_airtype._tcp` advertisement and removes it af
 
 - `AirTypeKeyboard/KeyboardViewController.swift`: real keyboard extension using `UITextDocumentProxy`.
 - `Shared/AirKeyboardView.swift`: shared UIKit keyboard, light/dark palettes, adaptive extension height, pairing details, QR code, local controls.
+- `Shared/LocalKeyboardView.swift` and `LocalKeyboardInteraction.swift`: stable multi-touch surface, per-contact modifiers/rollover, key popups, spelling choices and space cursor control.
 - `Shared/AirTypeServer.swift`: Network.framework HTTP server in the active keyboard process, preferred port 8307 with dynamic fallback if occupied, Bonjour advertisement, lifecycle cleanup.
 - `Shared/Resources/Portal.html`: bundled offline browser interface with reconnect polling and Unicode/IME-aware Enter handling.
 - `Shared/BonjourHostname.swift`: actual mDNS host registration, collision suffixes, and teardown.
@@ -99,7 +104,7 @@ The app checks its own temporary `_airtype._tcp` advertisement and removes it af
 
 The portal exchanges the keyboard-visible six-digit pairing code for a random device-local token, limits incorrect pairing attempts to five per minute, and authenticates commands with that token. It rejects foreign browser origins and deduplicates recently received command IDs. It does not read or send the surrounding text in the host app. HTTP is local and unencrypted: use a trusted network and keep the complete connection address private. Browser drafts remain in the open page, without local storage. An uncertain send retains the draft instead of automatically retrying a possibly delivered command.
 
-The server runs only while Web Access is visible. After a failed connection attempt, the portal retries for up to 10 seconds, then stops requests and displays **Reconnect**. Reopen Web Access and click Reconnect to start another attempt; the draft is retained. If the server returns within the retry window, the portal reconnects automatically. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
+The server runs only while Web Access is visible. After a failed connection attempt, the portal retries for up to 10 seconds, then stops requests and displays **Reconnect**. Reopen Web Access and click Reconnect to start another attempt; the draft is retained. If the server returns within the retry window, the portal reconnects automatically. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Automatic correction, next-word prediction, and glide typing are not implemented; local spelling/completion choices are available in the row above the keys.
 
 ## Build and validation
 

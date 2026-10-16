@@ -13,10 +13,12 @@ final class KeyboardViewController: UIInputViewController {
             // UIAction-based nextKeyboard is nil in the extension; the system owns the globe menu.
             button.addTarget(self,action:#selector(UIInputViewController.handleInputModeList(from:with:)),for:.allTouchEvents)
         }
+        keyboard.hasSelection = { [weak self] in self?.textDocumentProxy.selectedText?.isEmpty == false }
         keyboard.contextBeforeInput = { [weak self] in self?.textDocumentProxy.documentContextBeforeInput }
         keyboard.insertText = { [weak self] in self?.textDocumentProxy.insertText($0) }
+        keyboard.moveCursor = { [weak self] in self?.textDocumentProxy.adjustTextPosition(byCharacterOffset: $0) }
         keyboard.deleteText = { [weak self] in self?.textDocumentProxy.deleteBackward() }
-        keyboard.onWebModeChange = { [weak self] _ in self?.updateServer() }
+        keyboard.onWebModeChange = { [weak self] _ in self?.updateServer(); self?.view.setNeedsLayout() }
         keyboard.onReceiveModeChange = { [weak self] in
             guard let self else { return }
             if self.hasFullAccess { NetworkPreferences.inputMode = self.keyboard.receiveMode }
@@ -60,11 +62,12 @@ final class KeyboardViewController: UIInputViewController {
         super.viewDidLayoutSubviews()
         updateAppearance()
         let landscape = view.bounds.width > 600 && traitCollection.userInterfaceIdiom == .phone
-        height?.constant = traitCollection.userInterfaceIdiom == .pad ? 264 : (landscape ? 162 : 216)
+        height?.constant = (traitCollection.userInterfaceIdiom == .pad ? 264 : (landscape ? 162 : 216)) + (keyboard.webMode ? 0 : 34)
     }
     override func textDidChange(_ textInput: UITextInput?) { updateAppearance(); keyboard.synchronizeCapitalization() }
     private func updateAppearance() {
         keyboard.showsGlobe = needsInputModeSwitchKey
+        keyboard.spellCheckingEnabled = textDocumentProxy.spellCheckingType != .no
         keyboard.autocapitalizationType = textDocumentProxy.autocapitalizationType ?? .sentences
         let dark = textDocumentProxy.keyboardAppearance == .dark || traitCollection.userInterfaceStyle == .dark
         if keyboard.dark != dark { keyboard.dark = dark }
@@ -94,7 +97,7 @@ final class KeyboardViewController: UIInputViewController {
             case .bluetooth: nearby.startBluetooth()
             }
         }
-        syncState()
+        syncState(); view.setNeedsLayout()
     }
     private func syncState() {
         if keyboard.receiveMode == .web {

@@ -25,12 +25,13 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
         if !useSystemKeyboard {
             if ProcessInfo.processInfo.arguments.contains("--native-keyboard-wifi") { keyboard.receiveMode = .wifi }
             if ProcessInfo.processInfo.arguments.contains("--native-keyboard-bluetooth") { keyboard.receiveMode = .bluetooth }
-            let keyboardHeight: CGFloat = traitCollection.userInterfaceIdiom == .pad ? 298 : 250
+            let keyboardHeight: CGFloat = traitCollection.userInterfaceIdiom == .pad ? 332 : 284
             let input = UIInputView(frame:CGRect(x:0,y:0,width:0,height:keyboardHeight),inputViewStyle:.keyboard)
             input.allowsSelfSizing = true
             keyboard.translatesAutoresizingMaskIntoConstraints = false; input.addSubview(keyboard)
             NSLayoutConstraint.activate([keyboard.topAnchor.constraint(equalTo:input.topAnchor),keyboard.bottomAnchor.constraint(equalTo:input.bottomAnchor),keyboard.leadingAnchor.constraint(equalTo:input.leadingAnchor),keyboard.trailingAnchor.constraint(equalTo:input.trailingAnchor),input.heightAnchor.constraint(equalToConstant:keyboardHeight)])
             field.inputView = input
+            keyboard.hasSelection = { [weak self] in self?.field.selectedTextRange?.isEmpty == false }
             keyboard.contextBeforeInput = { [weak self] in
                 guard let field = self?.field, let position = field.selectedTextRange?.start,
                       let range = field.textRange(from: field.beginningOfDocument, to: position) else { return nil }
@@ -38,6 +39,11 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             }
             if ProcessInfo.processInfo.arguments.contains("--keyboard-qwerty") { keyboard.webMode = false }
             keyboard.insertText = { [weak self] in self?.field.insertText($0) }
+            keyboard.moveCursor = { [weak self] offset in
+                guard let field = self?.field, let range = field.selectedTextRange,
+                      let position = field.position(from: range.start, offset: offset) else { return }
+                field.selectedTextRange = field.textRange(from: position, to: position)
+            }
             keyboard.deleteText = { [weak self] in self?.field.deleteBackward() }
             keyboard.nextKeyboard = { [weak self] in self?.field.resignFirstResponder() }
             keyboard.onWebModeChange = { [weak self] _ in self?.updatePreviewTransport() }

@@ -6,6 +6,10 @@ final class AirKeyboardView: UIView {
     var deleteText: (() -> Void)?
     var nextKeyboard: (() -> Void)?
     var contextBeforeInput: (() -> String?)?
+    var moveCursor: ((Int) -> Void)?
+    var hasSelection: (() -> Bool)?
+    var spellCheckingEnabled = true
+    private var localKeyboard: LocalKeyboardView?
     var autocapitalizationType: UITextAutocapitalizationType = .sentences
     var showsGlobe = true { didSet { if showsGlobe != oldValue { render() } } }
     var configureGlobe: ((UIButton) -> Void)? { didSet { render() } }
@@ -32,10 +36,6 @@ final class AirKeyboardView: UIView {
     private var addressLabel: UILabel?
     private var dot: UIView?
     private var codeLabel: UILabel?
-    private var shifted = true
-    private var capsLock = false
-    private var lastShift: TimeInterval = 0
-    private var page = 0
     private var deleteTimer: Timer?
     private var deleting = false
     private var deleteOrigin: CGFloat = 0
@@ -57,6 +57,7 @@ final class AirKeyboardView: UIView {
     private func render() {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
+        localKeyboard = nil
         statusLabel = nil; addressLabel = nil; dot = nil; codeLabel = nil
         backgroundColor = bg
         if pairing && webMode { renderPairing(); return }
@@ -188,73 +189,23 @@ final class AirKeyboardView: UIView {
         updateStatus()
     }
     private func renderKeys() {
-        let grid = UIStackView(); grid.axis = .vertical; grid.spacing = 8; grid.distribution = .fillEqually
-        grid.isLayoutMarginsRelativeArrangement = true; grid.layoutMargins = UIEdgeInsets(top: 5,left: 3,bottom: 5,right: 3)
-        let rows: [[String]]
-        switch page {
-        case 1: rows = [Array("1234567890").map(String.init),["-","/",":",";","(",")","$","&","@","\""],[".",",","?","!","'"]]
-        case 2: rows = [["[","]","{","}","#","%","^","*","+","="],["_","\\","|","~","<",">","€","£","¥","•"],[".",",","?","!","'"]]
-        default: rows = [Array("qwertyuiop").map(String.init),Array("asdfghjkl").map(String.init),Array("zxcvbnm").map(String.init)]
+        let keys = LocalKeyboardView()
+        keys.insertText = { [weak self] in self?.insertText?($0) }
+        keys.deleteText = { [weak self] in self?.deleteText?() }
+        keys.moveCursor = { [weak self] in self?.moveCursor?($0) }
+        keys.openAirType = { [weak self] in self?.webMode = true }
+        keys.configureGlobe = { [weak self] button in
+            if let configure = self?.configureGlobe { configure(button) }
+            else { button.addAction(UIAction { [weak self] _ in self?.nextKeyboard?() }, for: .touchUpInside) }
         }
-        for (index, letters) in rows.enumerated() {
-            let row = UIStackView(); row.axis = .horizontal; row.spacing = 5; row.distribution = .fillEqually
-            if index == 1 && page == 0 { row.isLayoutMarginsRelativeArrangement = true; row.layoutMargins = UIEdgeInsets(top:0,left:18,bottom:0,right:18) }
-            if index == 2 {
-                let shift = button(page == 0 ? "" : (page == 1 ? "#+=" : "123"),symbol: page == 0 ? (capsLock ? "capslock.fill" : (shifted ? "shift.fill" : "shift")) : nil) { [weak self] in
-                    guard let self else { return }
-                    if self.page > 0 { self.page = self.page == 1 ? 2 : 1 }
-                    else {
-                        let now = Date.timeIntervalSinceReferenceDate
-                        if now - self.lastShift < 0.35 { self.capsLock = true; self.shifted = true }
-                        else { self.capsLock = false; self.shifted.toggle() }
-                        self.lastShift = now
-                    }
-                    self.render()
-                }
-                shift.accessibilityLabel = page == 0 ? (capsLock ? "Caps lock on" : "Shift") : "More symbols"
-                row.addArrangedSubview(shift)
-            }
-            for letter in letters {
-                let display = page == 0 && shifted ? letter.uppercased() : letter
-                let key = button(display,symbol:nil) { [weak self] in
-                    guard let self else { return }
-                    self.insertText?(display)
-                    if self.page == 0 && !self.capsLock {
-                        self.shifted = false; self.synchronizeCapitalization(); self.render()
-                    }
-                }
-                key.backgroundColor = dark ? UIColor(white:0.23,alpha:1) : .white
-                key.titleLabel?.font = .systemFont(ofSize:22)
-                row.addArrangedSubview(key)
-            }
-            if index == 2 { row.addArrangedSubview(deleteButton()) }
-            grid.addArrangedSubview(row)
-        }
-        let bottom = UIStackView(); bottom.axis = .horizontal; bottom.spacing = 5
-        let numeric = button(page == 0 ? "123" : "ABC",symbol:nil) { [weak self] in guard let self else { return }; self.page = self.page == 0 ? 1 : 0; self.render() }
-        let globe = globeButton()
-        let space = button("space",symbol:nil) { [weak self] in self?.insertText?(" "); self?.synchronizeCapitalization() }
-        space.backgroundColor = dark ? UIColor(white:0.23,alpha:1) : .white
-        let wifi = button("",symbol:nil) { [weak self] in self?.webMode = true }
-        let logo = UIImage(named: "AirTypeLogo")
-        let logoImage = logo.map { original in
-            UIGraphicsImageRenderer(size: CGSize(width: 28, height: 28)).image { _ in
-                original.draw(in: CGRect(x: 0, y: 0, width: 28, height: 28))
-            }.withRenderingMode(.alwaysOriginal)
-        }
-        wifi.setImage(logoImage, for: .normal)
-        wifi.imageView?.contentMode = .scaleAspectFit
-        wifi.accessibilityLabel = "Switch to AirType"
-        wifi.accessibilityIdentifier = "AirTypeModeButton"
-        let enter = button(returnTitle,symbol:nil) { [weak self] in self?.insertText?("\n"); self?.synchronizeCapitalization() }
-        enter.backgroundColor = .systemBlue; enter.setTitleColor(.white,for:.normal)
-        [numeric,space,wifi,enter].forEach { bottom.addArrangedSubview($0) }
-        if showsGlobe {
-            bottom.insertArrangedSubview(globe, at: 1)
-            globe.widthAnchor.constraint(equalTo: bottom.widthAnchor, multiplier: 0.105).isActive = true
-        }
-        NSLayoutConstraint.activate([numeric.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.105),wifi.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.11),enter.widthAnchor.constraint(equalTo:bottom.widthAnchor,multiplier:0.21)])
-        grid.addArrangedSubview(bottom); content.addArrangedSubview(grid)
+        keys.hasSelection = { [weak self] in self?.hasSelection?() ?? false }
+        keys.contextBeforeInput = { [weak self] in self?.contextBeforeInput?() }
+        keys.autocapitalizationType = autocapitalizationType
+        keys.spellCheckingEnabled = spellCheckingEnabled
+        keys.dark = dark; keys.returnTitle = returnTitle; keys.showsGlobe = showsGlobe
+        localKeyboard = keys
+        content.addArrangedSubview(keys)
+        keys.synchronizeCapitalization()
     }
     private func globeButton() -> UIButton {
         let key = button("",symbol:"globe") { [weak self] in self?.nextKeyboard?() }
@@ -305,9 +256,9 @@ final class AirKeyboardView: UIView {
     }
     @objc private func endDelete() { stopRepeating(); synchronizeCapitalization() }
     func synchronizeCapitalization() {
-        guard !capsLock, !deleting, let automatic = KeyboardTypingBehavior.automaticShift(type: autocapitalizationType, context: contextBeforeInput?()), automatic != shifted else { return }
-        shifted = automatic
-        if !webMode && page == 0 { render() }
+        localKeyboard?.autocapitalizationType = autocapitalizationType
+        localKeyboard?.spellCheckingEnabled = spellCheckingEnabled
+        localKeyboard?.synchronizeCapitalization()
     }
     private func label(_ text: String,size:CGFloat) -> UILabel {
         let label = UILabel(); label.text = text; label.font = .systemFont(ofSize:size,weight:.light); label.textColor = dark ? .lightGray : .gray; label.textAlignment = .center; return label
@@ -335,7 +286,7 @@ final class AirKeyboardView: UIView {
         addressLabel?.text = receiveMode == .web ? (address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }
-    func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil; deleting = false }
+    func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil; deleting = false; localKeyboard?.cancelTouches() }
     deinit { deleteTimer?.invalidate() }
 }
 
