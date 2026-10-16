@@ -3,6 +3,8 @@ import UIKit
 final class KeyboardViewController: UIInputViewController {
     private let keyboard = AirKeyboardView()
     private let server = AirTypeServer()
+    private lazy var nearby = NearbyReceiver(displayName: "AirType " + NetworkPreferences.hostname)
+    private var activeMode: RemoteInputMode?
     private var height: NSLayoutConstraint?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,6 +16,22 @@ final class KeyboardViewController: UIInputViewController {
         keyboard.insertText = { [weak self] in self?.textDocumentProxy.insertText($0) }
         keyboard.deleteText = { [weak self] in self?.textDocumentProxy.deleteBackward() }
         keyboard.onWebModeChange = { [weak self] _ in self?.updateServer() }
+        keyboard.onReceiveModeChange = { [weak self] in
+            guard let self else { return }
+            if self.hasFullAccess { NetworkPreferences.inputMode = self.keyboard.receiveMode }
+            self.updateServer()
+        }
+        nearby.onStateChange = { [weak self] in self?.syncState() }
+        nearby.onCommand = { [weak self] packet in
+            guard let self, self.hasFullAccess, self.keyboard.webMode, self.view.window != nil else {
+                return "Open the AirType keyboard in a text field first."
+            }
+            return NativeKeyboardInput(
+                insert: { self.textDocumentProxy.insertText($0) },
+                delete: { self.textDocumentProxy.deleteBackward() },
+                move: { self.textDocumentProxy.adjustTextPosition(byCharacterOffset: $0) }
+            ).execute(packet)
+        }
         server.onCommand = { [weak self] command in
             guard let self else { return }
             switch command.action {
@@ -29,10 +47,12 @@ final class KeyboardViewController: UIInputViewController {
         let constraint = view.heightAnchor.constraint(equalToConstant:216); constraint.priority = .init(999); constraint.isActive = true; height = constraint
     }
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated); updateAppearance(); updateServer()
+        super.viewWillAppear(animated)
+        if hasFullAccess { keyboard.receiveMode = NetworkPreferences.inputMode }
+        updateAppearance(); updateServer()
     }
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated); server.stop(); keyboard.stopRepeating()
+        super.viewWillDisappear(animated); stopReceivers(); keyboard.stopRepeating()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -55,16 +75,36 @@ final class KeyboardViewController: UIInputViewController {
         }
         if keyboard.returnTitle != title { keyboard.returnTitle = title }
     }
+    private func stopReceivers() {
+        activeMode = nil
+        server.stop(); nearby.stopWiFi(); nearby.stopBluetooth()
+    }
     private func updateServer() {
-        if keyboard.webMode && hasFullAccess { server.start() }
-        else { server.stop() }
+        guard keyboard.webMode, hasFullAccess else { stopReceivers(); syncState(); return }
+        let mode = keyboard.receiveMode
+        if activeMode != mode {
+            stopReceivers(); activeMode = mode
+            switch mode {
+            case .web: server.start()
+            case .wifi: nearby.startWiFi()
+            case .bluetooth: nearby.startBluetooth()
+            }
+        }
         syncState()
     }
     private func syncState() {
-        keyboard.pairingCode = server.pairingCode
-        keyboard.ipAddress = server.ipAddress
-        keyboard.address = server.address
-        keyboard.connected = server.connected
-        keyboard.connectionStatus = hasFullAccess ? server.status : "Enable Full Access for Wi-Fi"
+        if keyboard.receiveMode == .web {
+            keyboard.pairingCode = server.pairingCode
+            keyboard.ipAddress = server.ipAddress
+            keyboard.address = server.address
+            keyboard.connected = server.connected
+            keyboard.connectionStatus = hasFullAccess ? server.status : "Enable Full Access to connect"
+        } else {
+            keyboard.pairingCode = hasFullAccess && keyboard.webMode ? nearby.pairingKey : nil
+            keyboard.ipAddress = nil; keyboard.address = nil
+            keyboard.connected = nearby.connections > 0
+            keyboard.connectionStatus = hasFullAccess ? (nearby.connections > 0 ? "Computer connected" :
+                (keyboard.receiveMode == .wifi ? nearby.wifiStatus : nearby.bluetoothStatus)) : "Enable Full Access to connect"
+        }
     }
 }

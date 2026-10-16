@@ -6,6 +6,11 @@ final class AirKeyboardView: UIView {
     var deleteText: (() -> Void)?
     var nextKeyboard: (() -> Void)?
     var configureGlobe: ((UIButton) -> Void)? { didSet { render() } }
+    var onReceiveModeChange: (() -> Void)?
+    var receiveMode: RemoteInputMode = .web { didSet {
+        guard receiveMode != oldValue else { return }
+        pairing = false; render(); onReceiveModeChange?()
+    } }
     var onWebModeChange: ((Bool) -> Void)?
     var webMode = true { didSet { render(); onWebModeChange?(webMode) } }
     var dark = false { didSet { render() } }
@@ -52,6 +57,15 @@ final class AirKeyboardView: UIView {
         updateStatus()
     }
     private func renderWeb() {
+        let selector = UISegmentedControl(items: RemoteInputMode.allCases.map(\.rawValue))
+        selector.selectedSegmentIndex = RemoteInputMode.allCases.firstIndex(of: receiveMode) ?? 0
+        selector.accessibilityLabel = "Computer connection mode"
+        selector.addAction(UIAction { [weak self, weak selector] _ in
+            guard let self, let selector else { return }
+            self.receiveMode = RemoteInputMode.allCases[selector.selectedSegmentIndex]
+        }, for: .valueChanged)
+        selector.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        content.addArrangedSubview(selector)
         let panel = UIView()
         let logo = button("", symbol: nil) { [weak self] in self?.webMode = false }
         logo.backgroundColor = .clear
@@ -59,20 +73,23 @@ final class AirKeyboardView: UIView {
         logo.imageView?.contentMode = .scaleAspectFit
         logo.layer.cornerRadius = 42; logo.clipsToBounds = true
         logo.accessibilityLabel = "Switch to traditional keyboard"
-        let title = label("Web Access", size: 14)
+        let title = label(receiveMode == .web ? "Web Access" : receiveMode.rawValue, size: 14)
         let status = label(connectionStatus, size: 11); statusLabel = status
         let line = UIView(); line.backgroundColor = cyan
         let badge = UIStackView(arrangedSubviews: [logo, title, line, status])
         badge.axis = .vertical; badge.alignment = .center; badge.spacing = 4
         badge.translatesAutoresizingMaskIntoConstraints = false; panel.addSubview(badge)
         NSLayoutConstraint.activate([logo.widthAnchor.constraint(equalToConstant: 84), logo.heightAnchor.constraint(equalToConstant: 84), line.widthAnchor.constraint(equalToConstant: 24), line.heightAnchor.constraint(equalToConstant: 1),badge.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 26),badge.centerYAnchor.constraint(equalTo: panel.centerYAnchor)])
-        let code = label("", size: 24)
-        code.font = .monospacedDigitSystemFont(ofSize: 24, weight: .medium)
+        let code = label("", size: receiveMode == .web ? 24 : 15)
+        code.font = .monospacedSystemFont(ofSize: receiveMode == .web ? 24 : 15, weight: .medium)
+        code.numberOfLines = 2
+        code.textAlignment = .center
+        code.adjustsFontSizeToFitWidth = true
         code.textColor = ink
         codeLabel = code
-        let codeHint = label("Enter this code on the web page", size: 10)
+        let codeHint = label(receiveMode == .web ? "Enter this code on the web page" : "Enter this key in AirType Desktop", size: 10)
         codeHint.numberOfLines = 0
-        let connection = UIStackView(arrangedSubviews: [label("Pairing code", size: 12), code, codeHint])
+        let connection = UIStackView(arrangedSubviews: [label(receiveMode == .web ? "Pairing code" : "Pairing key", size: 12), code, codeHint])
         connection.axis = .vertical; connection.spacing = 6; connection.alignment = .center
         connection.translatesAutoresizingMaskIntoConstraints = false
         panel.addSubview(connection)
@@ -105,17 +122,17 @@ final class AirKeyboardView: UIView {
         let row = UIStackView(); row.axis = .horizontal; row.spacing = 12; row.alignment = .center
         row.isLayoutMarginsRelativeArrangement = true; row.layoutMargins = UIEdgeInsets(top: 12,left: 16,bottom: 8,right: 16)
         let details = UIStackView(); details.axis = .vertical; details.spacing = 8
-        details.addArrangedSubview(label("Open on your computer",size: 17))
-        let code = label("", size: 18); codeLabel = code; details.addArrangedSubview(code)
-        let url = label(address ?? connectionStatus,size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
-        if let ipAddress, ipAddress != address {
+        details.addArrangedSubview(label(receiveMode == .web ? "Open on your computer" : "Open AirType Desktop on Mac",size: 17))
+        let code = label("", size: 18); code.numberOfLines = 2; code.font = .monospacedSystemFont(ofSize: 16, weight: .medium); codeLabel = code; details.addArrangedSubview(code)
+        let url = label(receiveMode == .web ? (address ?? connectionStatus) : "Choose \(receiveMode.rawValue), select this keyboard, and enter its pairing key.",size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
+        if receiveMode == .web, let ipAddress, ipAddress != address {
             let fallback = label("IP fallback: " + String(ipAddress.split(separator: "#")[0]), size: 10)
             fallback.numberOfLines = 0
             details.addArrangedSubview(fallback)
         }
-        let hint = label("Same Wi-Fi · Keep this keyboard open",size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
+        let hint = label(receiveMode == .web ? "Same Wi-Fi · Keep this keyboard open" : "Keep this keyboard visible while receiving",size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
         row.addArrangedSubview(details)
-        if let address {
+        if receiveMode == .web, let address {
             let filter = CIFilter.qrCodeGenerator(); filter.message = Data(address.utf8)
             if let output = filter.outputImage,
                let image = CIContext().createCGImage(output.transformed(by: CGAffineTransform(scaleX: 6,y: 6)),from:output.extent.applying(CGAffineTransform(scaleX: 6,y: 6))) {
@@ -127,7 +144,7 @@ final class AirKeyboardView: UIView {
             }
         }
         content.addArrangedSubview(row)
-        let close = button("Back to Web Access",symbol: nil) { [weak self] in self?.pairing = false; self?.render() }
+        let close = button("Back to connection",symbol: nil) { [weak self] in self?.pairing = false; self?.render() }
         close.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(close)
         updateStatus()
@@ -217,11 +234,14 @@ final class AirKeyboardView: UIView {
     @objc private func press(_ button:UIButton) { button.alpha = 0.55 }
     @objc private func releaseKey(_ button:UIButton) { button.alpha = 1 }
     private func updateStatus() {
-        codeLabel?.text = pairingCode ?? "— — —"
-        codeLabel?.accessibilityLabel = "Pairing code"
+        if receiveMode != .web, let pairingCode, pairingCode.count == 20 {
+            let middle = pairingCode.index(pairingCode.startIndex, offsetBy: 10)
+            codeLabel?.text = String(pairingCode[..<middle]) + "\n" + String(pairingCode[middle...])
+        } else { codeLabel?.text = pairingCode ?? "— — —" }
+        codeLabel?.accessibilityLabel = receiveMode == .web ? "Pairing code" : "Pairing key"
         codeLabel?.accessibilityValue = pairingCode
         statusLabel?.text = connectionStatus
-        addressLabel?.text = address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus
+        addressLabel?.text = receiveMode == .web ? (address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }
     func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil }

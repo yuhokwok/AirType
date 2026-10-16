@@ -23,6 +23,7 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_airtype._tcp</string>
+		<string>_airtype-near._tcp</string>
 	</array>
 	<key>NSExtension</key>
 	<dict>
@@ -41,6 +42,8 @@
 		<string>$(PRODUCT_MODULE_NAME).KeyboardViewController</string>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>AirType connects to your computer on the same Wi-Fi so you can type into your iPhone or iPad.</string>
+	<string>AirType receives text from your computer over local or nearby Wi-Fi while you use the keyboard.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>AirType receives typing from your computer over Bluetooth while the keyboard is visible.</string>
 </dict>
 </plist>

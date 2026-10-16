@@ -1,8 +1,17 @@
 import Foundation
 
 /// Shared by the containing app and keyboard extension through their App Group.
+enum RemoteInputMode: String, CaseIterable, Identifiable {
+    case web = "Web", wifi = "Direct Wi-Fi", bluetooth = "Bluetooth"
+    var id: String { rawValue }
+}
+
 enum NetworkPreferences {
     static let appGroup = "group.com.invivo.AirTypeReplica"
+    static var inputMode: RemoteInputMode {
+        get { RemoteInputMode(rawValue: UserDefaults(suiteName: appGroup)?.string(forKey: "AirTypeInputMode") ?? "") ?? .web }
+        set { UserDefaults(suiteName: appGroup)?.set(newValue.rawValue, forKey: "AirTypeInputMode") }
+    }
     static let nameKey = "AirTypeBonjourHostname"
     static var hostname: String {
         normalizedHostname(UserDefaults(suiteName: appGroup)?.string(forKey: nameKey) ?? "airtype")

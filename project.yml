@@ -36,6 +36,7 @@ targets:
     platform: iOS
     sources:
       - AirTypeKeyboard
+      - NativeShared
       - path: Shared
         excludes: ['Assets.xcassets/AppIcon.appiconset']
     settings:
@@ -45,12 +46,13 @@ targets:
         CODE_SIGN_ENTITLEMENTS: AirTypeKeyboard/AirType.entitlements
         APPLICATION_EXTENSION_API_ONLY: YES
         SKIP_INSTALL: YES
-  AirTypeReceiver:
+  AirTypeDesktop:
     type: application
     platform: macOS
     deploymentTarget: '14.0'
     sources:
       - AirTypeMac
+      - Shared/LocalNetworkFailure.swift
       - NativeShared
       - path: Shared/Assets.xcassets
         excludes: ['AppIcon.appiconset']
@@ -59,7 +61,7 @@ targets:
         buildPhase: resources
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.invivo.mac.AirTypeReceiver
+        PRODUCT_BUNDLE_IDENTIFIER: com.invivo.mac.AirTypeDesktop
         INFOPLIST_FILE: AirTypeMac/Info.plist
         TARGETED_DEVICE_FAMILY: ''
         ENABLE_HARDENED_RUNTIME: YES
@@ -82,7 +84,7 @@ schemes:
         AirType: all
     test:
       targets: [AirTypeTests]
-  AirTypeReceiver:
+  AirTypeDesktop:
     build:
       targets:
-        AirTypeReceiver: all
+        AirTypeDesktop: all

@@ -5,7 +5,7 @@ import Network
 struct AirTypeApp: App {
     var body: some Scene {
         WindowGroup {
-            if ProcessInfo.processInfo.arguments.contains("--keyboard-demo") {
+            if ProcessInfo.processInfo.arguments.contains("--keyboard-demo") || ProcessInfo.processInfo.arguments.contains("--native-keyboard-wifi") || ProcessInfo.processInfo.arguments.contains("--native-keyboard-bluetooth") {
                 KeyboardTestScreen(useSystemKeyboard: false).ignoresSafeArea(.keyboard)
             } else if ProcessInfo.processInfo.arguments.contains("--system-test") {
                 KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)

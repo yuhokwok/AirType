@@ -9,10 +9,13 @@
 /* Begin PBXBuildFile section */
 		03418135D62AB179AC559C90 /* NetworkPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */; };
 		05403FE112DB26AFF6B14F19 /* PairingCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF6D4BDB334B854BC05B366 /* PairingCode.swift */; };
+		0607637933DF66E2DAACC57C /* AirType.icon in Resources */ = {isa = PBXBuildFile; fileRef = 00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */; };
+		0658F370A813BE220730C30F /* NativeKeyboardInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5402EDA801B2D20C32CC7BCB /* NativeKeyboardInputTests.swift */; };
 		15FDDD845FFD2E2B26E6D107 /* PairingCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF78E80E76F0D8AF7C83295 /* PairingCodeTests.swift */; };
-		18E83BAE9F3864F429025BF8 /* NearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */; };
+		19BCEFC6FB8CEB7775C365E2 /* NearbyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372E49B22542FFD49E3DED72 /* NearbyController.swift */; };
 		1E40C4E91D4722FC3EEEAF1B /* AirTypeKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3B6532EA3DE523CDF7533A88 /* NearbyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A201A8C5704AB25AD7AB5D4E /* NearbyController.swift */; };
+		27602174D5893502DBCC0E37 /* NearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */; };
+		3B9CB584FD8AD69C5B6D2366 /* NativeKeyboardInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86D77729EAADC796D72A903 /* NativeKeyboardInput.swift */; };
 		3E821F5FB7E0C71EA375893F /* NearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */; };
 		44CA8C9E064212D0C96F0B92 /* NearbyProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8A8B8BE3263234157D1C06 /* NearbyProtocolTests.swift */; };
 		46A79B0EF834D5CFB18A2D93 /* KeyboardTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AAA2E9333DDBD1E5B67135 /* KeyboardTestController.swift */; };
@@ -23,27 +26,32 @@
 		5C075C44CC794A63FC5B9127 /* BonjourHostname.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */; };
 		6A74EBB24020F11A5B5E0C4A /* NetworkPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */; };
 		6CB12146EE21A953184C9EE9 /* AirType.icon in Resources */ = {isa = PBXBuildFile; fileRef = 00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */; };
+		70A135CCAF4E093E0F4B12C6 /* NearbyReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F4C3A46E5F1163C759402C /* NearbyReceiver.swift */; };
+		7186CCCEF2CF6464C5B3B336 /* NearbyReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F4C3A46E5F1163C759402C /* NearbyReceiver.swift */; };
 		75CDBBF27888B9F8C89F4A20 /* HTTPProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333ED2B4A2E53858E3B0F00 /* HTTPProtocolTests.swift */; };
-		779BE95C0C2C977AE7D624A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		79592BD0E076DB26EEEE6A41 /* AirTypeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */; };
 		8055D732778D31FFDF431272 /* NetworkPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */; };
+		840E2E664474A613372448B5 /* NearbyReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F4C3A46E5F1163C759402C /* NearbyReceiver.swift */; };
+		85A15AA129FC6D3B17D5666A /* LocalNetworkFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */; };
+		880735CE679DE560D78FC6BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		93F10B4C041B0D6CD0034B39 /* LocalNetworkFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */; };
 		9599FED2B0D0A456D16197FE /* AirTypeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */; };
-		96B8914A1C747E88DDEB920D /* MacInputInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59661269C0C48423389D6C /* MacInputInjector.swift */; };
+		98C9E1B09EF61E1A162A1A42 /* NativeKeyboardInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86D77729EAADC796D72A903 /* NativeKeyboardInput.swift */; };
+		A1F8B70AEF2E9AB46C6BD24E /* NearbyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372E49B22542FFD49E3DED72 /* NearbyController.swift */; };
 		A53CF486C99F6C859F73800E /* LocalNetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */; };
 		A8E544EEEC7CBB7D73D09FE6 /* AirKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57858285BBD79ADC669B3149 /* AirKeyboardView.swift */; };
 		ACC5790F9ADC070355DE568E /* Portal.html in Resources */ = {isa = PBXBuildFile; fileRef = 60623C8DE539C00A0B92BE64 /* Portal.html */; };
-		AE28ADE19831E9DF1DE272E6 /* AirType.icon in Resources */ = {isa = PBXBuildFile; fileRef = 00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */; };
-		B2F2CA9D804BF072FA27D5A0 /* AirTypeMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8834B8D2B1DFE3FE722A07CD /* AirTypeMacApp.swift */; };
-		B39F28880F266C3E5E6DAA36 /* MacReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B0376F27BE80B3FC0EBC14 /* MacReceiver.swift */; };
 		B5374B42AF55989BCA79BB6F /* LocalNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */; };
 		B7A78DE784C71268125401AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		B882C415EE629FC809AFDD25 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E2DA166626D2FDDD56D7A /* KeyboardViewController.swift */; };
 		D0EA1E1802002FBB79E4C4DA /* Portal.html in Resources */ = {isa = PBXBuildFile; fileRef = 60623C8DE539C00A0B92BE64 /* Portal.html */; };
+		DABF21D7968815A9EB17E364 /* NearbyProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */; };
 		DCAAB9D323F3280FE27C37C9 /* LocalNetworkFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */; };
 		EC4829AD245209C4C0607A04 /* NearbyTypingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5580E9C6527024396471EBB6 /* NearbyTypingView.swift */; };
 		ECAC1A1EF578B643D3FEF26B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		EE0A01EEEAA1F5C1D372F2C2 /* AirKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57858285BBD79ADC669B3149 /* AirKeyboardView.swift */; };
+		EFAB8C9D7C168E38AB33B36F /* AirTypeMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8834B8D2B1DFE3FE722A07CD /* AirTypeMacApp.swift */; };
+		FADE6A56A9B9EE1647E63BF9 /* NearbyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372E49B22542FFD49E3DED72 /* NearbyController.swift */; };
 		FE2BDB38C485621D6AFD9962 /* BonjourHostname.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,11 +89,11 @@
 /* Begin PBXFileReference section */
 		00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AirType.icon; sourceTree = "<group>"; };
 		016CE0BD38FF153C97CC6AD3 /* AirTypeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirTypeApp.swift; sourceTree = "<group>"; };
-		1F59661269C0C48423389D6C /* MacInputInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacInputInjector.swift; sourceTree = "<group>"; };
-		22B0376F27BE80B3FC0EBC14 /* MacReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacReceiver.swift; sourceTree = "<group>"; };
 		298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AirTypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		372E49B22542FFD49E3DED72 /* NearbyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyController.swift; sourceTree = "<group>"; };
 		4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPreferences.swift; sourceTree = "<group>"; };
 		4FF78E80E76F0D8AF7C83295 /* PairingCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingCodeTests.swift; sourceTree = "<group>"; };
+		5402EDA801B2D20C32CC7BCB /* NativeKeyboardInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeKeyboardInputTests.swift; sourceTree = "<group>"; };
 		5580E9C6527024396471EBB6 /* NearbyTypingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyTypingView.swift; sourceTree = "<group>"; };
 		57858285BBD79ADC669B3149 /* AirKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirKeyboardView.swift; sourceTree = "<group>"; };
 		60623C8DE539C00A0B92BE64 /* Portal.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Portal.html; sourceTree = "<group>"; };
@@ -97,13 +105,13 @@
 		7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirTypeServer.swift; sourceTree = "<group>"; };
 		7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonjourHostname.swift; sourceTree = "<group>"; };
 		81E9B962CADD47E221D8C711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		81F4C3A46E5F1163C759402C /* NearbyReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyReceiver.swift; sourceTree = "<group>"; };
 		84C5DBC119457047CBBF6DA9 /* AirType.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirType.entitlements; sourceTree = "<group>"; };
 		8834B8D2B1DFE3FE722A07CD /* AirTypeMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirTypeMacApp.swift; sourceTree = "<group>"; };
 		8D8A8B8BE3263234157D1C06 /* NearbyProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyProtocolTests.swift; sourceTree = "<group>"; };
 		8EF6D4BDB334B854BC05B366 /* PairingCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingCode.swift; sourceTree = "<group>"; };
 		8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkTests.swift; sourceTree = "<group>"; };
 		98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyProtocol.swift; sourceTree = "<group>"; };
-		A201A8C5704AB25AD7AB5D4E /* NearbyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyController.swift; sourceTree = "<group>"; };
 		A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPreferencesTests.swift; sourceTree = "<group>"; };
 		AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkCheck.swift; sourceTree = "<group>"; };
 		B607E9A35875E3C7F029368E /* AirType.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirType.entitlements; sourceTree = "<group>"; };
@@ -111,8 +119,9 @@
 		C55E2DA166626D2FDDD56D7A /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = AirTypeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C61ED4DFED8D2F288BDBEA99 /* AirType.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AirType.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE02F1C85CA688083609C0CC /* AirTypeDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirTypeDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		ED85283343A8D677C698BDC0 /* AirTypeReceiver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirTypeReceiver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E86D77729EAADC796D72A903 /* NativeKeyboardInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeKeyboardInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -134,8 +143,8 @@
 			isa = PBXGroup;
 			children = (
 				C61ED4DFED8D2F288BDBEA99 /* AirType.app */,
+				CE02F1C85CA688083609C0CC /* AirTypeDesktop.app */,
 				C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */,
-				ED85283343A8D677C698BDC0 /* AirTypeReceiver.app */,
 				298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */,
 			);
 			name = Products;
@@ -149,7 +158,6 @@
 				70DA2951208A8F61BF1E685F /* Info.plist */,
 				68AAA2E9333DDBD1E5B67135 /* KeyboardTestController.swift */,
 				AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */,
-				A201A8C5704AB25AD7AB5D4E /* NearbyController.swift */,
 				5580E9C6527024396471EBB6 /* NearbyTypingView.swift */,
 			);
 			path = AirTypeApp;
@@ -172,6 +180,7 @@
 				7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */,
 				783253C86C4CB577BE46601D /* HTTPProtocol.swift */,
 				BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */,
+				E86D77729EAADC796D72A903 /* NativeKeyboardInput.swift */,
 				4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */,
 				8EF6D4BDB334B854BC05B366 /* PairingCode.swift */,
 				9D91D72FCD12F0DDB8299F9E /* Resources */,
@@ -184,6 +193,7 @@
 			children = (
 				6333ED2B4A2E53858E3B0F00 /* HTTPProtocolTests.swift */,
 				8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */,
+				5402EDA801B2D20C32CC7BCB /* NativeKeyboardInputTests.swift */,
 				8D8A8B8BE3263234157D1C06 /* NearbyProtocolTests.swift */,
 				A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */,
 				4FF78E80E76F0D8AF7C83295 /* PairingCodeTests.swift */,
@@ -194,7 +204,9 @@
 		CE6814E6EB1C3DA351194A75 /* NativeShared */ = {
 			isa = PBXGroup;
 			children = (
+				372E49B22542FFD49E3DED72 /* NearbyController.swift */,
 				98E4B7BDA42A0CB44CD9263F /* NearbyProtocol.swift */,
+				81F4C3A46E5F1163C759402C /* NearbyReceiver.swift */,
 			);
 			path = NativeShared;
 			sourceTree = "<group>";
@@ -214,8 +226,6 @@
 			children = (
 				8834B8D2B1DFE3FE722A07CD /* AirTypeMacApp.swift */,
 				6A89EF4C5EF1880A7C3C195A /* Info.plist */,
-				1F59661269C0C48423389D6C /* MacInputInjector.swift */,
-				22B0376F27BE80B3FC0EBC14 /* MacReceiver.swift */,
 			);
 			path = AirTypeMac;
 			sourceTree = "<group>";
@@ -223,6 +233,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		09D3E6DDD713A247EC81FD4A /* AirTypeDesktop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C31E38667847806C745A744 /* Build configuration list for PBXNativeTarget "AirTypeDesktop" */;
+			buildPhases = (
+				6DB5FB77E58BAC0560812EA1 /* Sources */,
+				AE434EB128C4E43569B0B69A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AirTypeDesktop;
+			packageProductDependencies = (
+			);
+			productName = AirTypeDesktop;
+			productReference = CE02F1C85CA688083609C0CC /* AirTypeDesktop.app */;
+			productType = "com.apple.product-type.application";
+		};
 		3561079CE7BCB1C7483D9172 /* AirTypeTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D97BD9E0F98BB66091ACF3DE /* Build configuration list for PBXNativeTarget "AirTypeTests" */;
@@ -240,24 +268,6 @@
 			productName = AirTypeTests;
 			productReference = 298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		5EB298596BE352AF811FEB9B /* AirTypeReceiver */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D88C3341A7D288803B0B1EE1 /* Build configuration list for PBXNativeTarget "AirTypeReceiver" */;
-			buildPhases = (
-				AF95DBFA51E76A9A8F9F4FBF /* Sources */,
-				CC78ED48699BE2656D050B27 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AirTypeReceiver;
-			packageProductDependencies = (
-			);
-			productName = AirTypeReceiver;
-			productReference = ED85283343A8D677C698BDC0 /* AirTypeReceiver.app */;
-			productType = "com.apple.product-type.application";
 		};
 		774A5AB7545C65DE42599FF4 /* AirType */ = {
 			isa = PBXNativeTarget;
@@ -306,11 +316,11 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					3561079CE7BCB1C7483D9172 = {
+					09D3E6DDD713A247EC81FD4A = {
 						DevelopmentTeam = 5778F83X4J;
 						ProvisioningStyle = Automatic;
 					};
-					5EB298596BE352AF811FEB9B = {
+					3561079CE7BCB1C7483D9172 = {
 						DevelopmentTeam = 5778F83X4J;
 						ProvisioningStyle = Automatic;
 					};
@@ -339,8 +349,8 @@
 			projectRoot = "";
 			targets = (
 				774A5AB7545C65DE42599FF4 /* AirType */,
+				09D3E6DDD713A247EC81FD4A /* AirTypeDesktop */,
 				FAD95838694EABCFF0E8FACC /* AirTypeKeyboard */,
-				5EB298596BE352AF811FEB9B /* AirTypeReceiver */,
 				3561079CE7BCB1C7483D9172 /* AirTypeTests */,
 			);
 		};
@@ -356,12 +366,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CC78ED48699BE2656D050B27 /* Resources */ = {
+		AE434EB128C4E43569B0B69A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE28ADE19831E9DF1DE272E6 /* AirType.icon in Resources */,
-				779BE95C0C2C977AE7D624A0 /* Assets.xcassets in Resources */,
+				0607637933DF66E2DAACC57C /* AirType.icon in Resources */,
+				880735CE679DE560D78FC6BF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,9 +394,22 @@
 			files = (
 				75CDBBF27888B9F8C89F4A20 /* HTTPProtocolTests.swift in Sources */,
 				B5374B42AF55989BCA79BB6F /* LocalNetworkTests.swift in Sources */,
+				0658F370A813BE220730C30F /* NativeKeyboardInputTests.swift in Sources */,
 				44CA8C9E064212D0C96F0B92 /* NearbyProtocolTests.swift in Sources */,
 				8055D732778D31FFDF431272 /* NetworkPreferencesTests.swift in Sources */,
 				15FDDD845FFD2E2B26E6D107 /* PairingCodeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DB5FB77E58BAC0560812EA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFAB8C9D7C168E38AB33B36F /* AirTypeMacApp.swift in Sources */,
+				85A15AA129FC6D3B17D5666A /* LocalNetworkFailure.swift in Sources */,
+				A1F8B70AEF2E9AB46C6BD24E /* NearbyController.swift in Sources */,
+				DABF21D7968815A9EB17E364 /* NearbyProtocol.swift in Sources */,
+				840E2E664474A613372448B5 /* NearbyReceiver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,22 +425,13 @@
 				46A79B0EF834D5CFB18A2D93 /* KeyboardTestController.swift in Sources */,
 				A53CF486C99F6C859F73800E /* LocalNetworkCheck.swift in Sources */,
 				93F10B4C041B0D6CD0034B39 /* LocalNetworkFailure.swift in Sources */,
-				3B6532EA3DE523CDF7533A88 /* NearbyController.swift in Sources */,
+				3B9CB584FD8AD69C5B6D2366 /* NativeKeyboardInput.swift in Sources */,
+				19BCEFC6FB8CEB7775C365E2 /* NearbyController.swift in Sources */,
 				3E821F5FB7E0C71EA375893F /* NearbyProtocol.swift in Sources */,
+				70A135CCAF4E093E0F4B12C6 /* NearbyReceiver.swift in Sources */,
 				EC4829AD245209C4C0607A04 /* NearbyTypingView.swift in Sources */,
 				03418135D62AB179AC559C90 /* NetworkPreferences.swift in Sources */,
 				05403FE112DB26AFF6B14F19 /* PairingCode.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AF95DBFA51E76A9A8F9F4FBF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B2F2CA9D804BF072FA27D5A0 /* AirTypeMacApp.swift in Sources */,
-				96B8914A1C747E88DDEB920D /* MacInputInjector.swift in Sources */,
-				B39F28880F266C3E5E6DAA36 /* MacReceiver.swift in Sources */,
-				18E83BAE9F3864F429025BF8 /* NearbyProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +445,10 @@
 				526E8FB074544838EB48CF17 /* HTTPProtocol.swift in Sources */,
 				B882C415EE629FC809AFDD25 /* KeyboardViewController.swift in Sources */,
 				DCAAB9D323F3280FE27C37C9 /* LocalNetworkFailure.swift in Sources */,
+				98C9E1B09EF61E1A162A1A42 /* NativeKeyboardInput.swift in Sources */,
+				FADE6A56A9B9EE1647E63BF9 /* NearbyController.swift in Sources */,
+				27602174D5893502DBCC0E37 /* NearbyProtocol.swift in Sources */,
+				7186CCCEF2CF6464C5B3B336 /* NearbyReceiver.swift in Sources */,
 				6A74EBB24020F11A5B5E0C4A /* NetworkPreferences.swift in Sources */,
 				4F2388EAD85C76419D476F5D /* PairingCode.swift in Sources */,
 			);
@@ -580,7 +598,7 @@
 			};
 			name = Debug;
 		};
-		9979BD787D6F797A78863441 /* Debug */ = {
+		BF001C40BD310CAB7834AF22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
@@ -592,7 +610,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.mac.AirTypeReceiver;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.mac.AirTypeDesktop;
 				SDKROOT = macosx;
 				TARGETED_DEVICE_FAMILY = "";
 			};
@@ -683,24 +701,6 @@
 			};
 			name = Debug;
 		};
-		E6DC50522869F532F9C017F4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = AirTypeMac/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.mac.AirTypeReceiver;
-				SDKROOT = macosx;
-				TARGETED_DEVICE_FAMILY = "";
-			};
-			name = Release;
-		};
 		E89CA29C9274B8B30145045E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -719,6 +719,24 @@
 			};
 			name = Debug;
 		};
+		E9ECE3C40DE0652F38B339CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = AirTypeMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.invivo.mac.AirTypeDesktop;
+				SDKROOT = macosx;
+				TARGETED_DEVICE_FAMILY = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -727,6 +745,15 @@
 			buildConfigurations = (
 				05E35E98C54FB19964F18AE1 /* Debug */,
 				10F851DCEE02090F9910040B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2C31E38667847806C745A744 /* Build configuration list for PBXNativeTarget "AirTypeDesktop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF001C40BD310CAB7834AF22 /* Debug */,
+				E9ECE3C40DE0652F38B339CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -745,15 +772,6 @@
 			buildConfigurations = (
 				DA3F3DBB9CF611E9D09A025E /* Debug */,
 				3BA0B502BB11914AC8027D95 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		D88C3341A7D288803B0B1EE1 /* Build configuration list for PBXNativeTarget "AirTypeReceiver" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9979BD787D6F797A78863441 /* Debug */,
-				E6DC50522869F532F9C017F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

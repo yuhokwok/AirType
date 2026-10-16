@@ -21,7 +21,7 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
     @Published var pairingKey = ""
     @Published var draft = ""
     @Published private(set) var peers: [NearbyPeer] = []
-    @Published private(set) var status = "Open AirType Receiver on your Mac, then find it here."
+    @Published private(set) var status = "Open the AirType keyboard on your iPhone or iPad, then find it here."
     @Published private(set) var connected = false
     @Published private(set) var busy = false
     @Published private(set) var searching = false
@@ -38,11 +38,11 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
     private var timeout: DispatchWorkItem?
     private var writeChunks: [Data] = []
     private var writeInFlight = false
-    private var peerName = "Mac"
+    private var peerName = "keyboard"
 
     func discover() {
         disconnect(); peers = []; searching = true
-        status = transport == .wifi ? "Looking for nearby Macs…" : "Looking for AirType Bluetooth receivers…"
+        status = transport == .wifi ? "Looking for nearby keyboards…" : "Looking for AirType Bluetooth keyboards…"
         if transport == .wifi {
             let parameters = NWParameters.tcp
             parameters.includePeerToPeer = true
@@ -123,7 +123,7 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
         do {
             let frame = try NearbyProtocol.seal(packet, key: key)
             pending = packet; busy = true
-            armTimeout("Delivery not confirmed. Draft kept; check your Mac before sending again.")
+            armTimeout("Delivery not confirmed. Draft kept; check your keyboard before sending again.")
             if let connection {
                 connection.send(content: frame, completion: .contentProcessed { [weak self, weak connection] error in
                     guard let self, let connection, self.connection === connection else { return }
@@ -141,7 +141,7 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
             guard let self, let connection, self.connection === connection else { return }
             if let data { self.received(data) }
             guard self.connection === connection else { return }
-            if complete || error != nil { self.fail("Mac disconnected. Your draft is kept.") }
+            if complete || error != nil { self.fail("Keyboard disconnected. Your draft is kept.") }
             else { self.receiveWiFi(connection) }
         }
     }
@@ -158,13 +158,13 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
                     guard ack.kind == .acknowledgement, ack.id == pending.id,
                           ack.challenge == challenge, ack.sequence == pending.sequence else { throw NearbyError.replay }
                     timeout?.cancel(); timeout = nil; self.pending = nil; busy = false
-                    guard ack.accepted == true else { status = ack.message ?? "Mac rejected the command."; return }
+                    guard ack.accepted == true else { status = ack.message ?? "Keyboard rejected the command."; return }
                     connected = true
                     if pending.action == .insert && draft == pending.text { draft = "" }
-                    status = pending.kind == .authenticate ? "Connected to \(peerName)" : "Mac acknowledged the command."
+                    status = pending.kind == .authenticate ? "Connected to \(peerName)" : "Keyboard acknowledged the command."
                 }
             }
-        } catch { fail("Pairing or message validation failed. Check your Mac's key.") }
+        } catch { fail("Pairing or message validation failed. Check the keyboard's key.") }
     }
     private func armTimeout(_ message: String) {
         timeout?.cancel()
@@ -193,7 +193,7 @@ final class NearbyController: NSObject, ObservableObject, CBCentralManagerDelega
     }
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         guard searching, transport == .bluetooth, !peers.contains(where: { $0.id == peripheral.identifier.uuidString }) else { return }
-        let name = advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? peripheral.name ?? "AirType Mac"
+        let name = advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? peripheral.name ?? "AirType keyboard"
         peers.append(NearbyPeer(id: peripheral.identifier.uuidString, name: name, peripheral: peripheral))
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {

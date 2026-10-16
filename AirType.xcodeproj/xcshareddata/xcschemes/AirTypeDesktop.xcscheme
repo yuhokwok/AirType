@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5EB298596BE352AF811FEB9B"
-               BuildableName = "AirTypeReceiver.app"
-               BlueprintName = "AirTypeReceiver"
+               BlueprintIdentifier = "09D3E6DDD713A247EC81FD4A"
+               BuildableName = "AirTypeDesktop.app"
+               BlueprintName = "AirTypeDesktop"
                ReferencedContainer = "container:AirType.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5EB298596BE352AF811FEB9B"
-            BuildableName = "AirTypeReceiver.app"
-            BlueprintName = "AirTypeReceiver"
+            BlueprintIdentifier = "09D3E6DDD713A247EC81FD4A"
+            BuildableName = "AirTypeDesktop.app"
+            BlueprintName = "AirTypeDesktop"
             ReferencedContainer = "container:AirType.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5EB298596BE352AF811FEB9B"
-            BuildableName = "AirTypeReceiver.app"
-            BlueprintName = "AirTypeReceiver"
+            BlueprintIdentifier = "09D3E6DDD713A247EC81FD4A"
+            BuildableName = "AirTypeDesktop.app"
+            BlueprintName = "AirTypeDesktop"
             ReferencedContainer = "container:AirType.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -72,9 +72,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5EB298596BE352AF811FEB9B"
-            BuildableName = "AirTypeReceiver.app"
-            BlueprintName = "AirTypeReceiver"
+            BlueprintIdentifier = "09D3E6DDD713A247EC81FD4A"
+            BuildableName = "AirTypeDesktop.app"
+            BlueprintName = "AirTypeDesktop"
             ReferencedContainer = "container:AirType.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

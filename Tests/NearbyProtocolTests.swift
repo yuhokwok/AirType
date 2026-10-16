@@ -83,14 +83,6 @@ final class NearbyProtocolTests: XCTestCase {
         for _ in 0..<512 { ledger.record(UUID()) }
         XCTAssertFalse(ledger.contains(id))
     }
-    func testUnicodeEventChunksNeverSplitSurrogatePairs() {
-        let text = String(repeating: "你好🧑‍💻", count: 20)
-        let chunks = NearbyTextChunks.utf16(text, limit: 5)
-        XCTAssertTrue(chunks.allSatisfy { $0.count <= 5 })
-        XCTAssertTrue(chunks.allSatisfy { !(0xD800...0xDBFF).contains($0.last!) })
-        XCTAssertEqual(chunks.flatMap { $0 }, Array(text.utf16))
-        XCTAssertEqual(chunks.map { String(decoding: $0, as: UTF16.self) }.joined(), text)
-    }
     func testLongUnicodeCommandSurvivesSmallBLEChunks() throws {
         let key = try NearbyProtocol.key(code: code)
         let session = try NearbyReceiverSession(code: code)

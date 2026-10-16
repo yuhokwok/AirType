@@ -2,80 +2,70 @@ import SwiftUI
 
 @main
 struct AirTypeMacApp: App {
-    @StateObject private var receiver = MacReceiver()
+    @StateObject private var sender = NearbyController()
     var body: some Scene {
-        WindowGroup("AirType Receiver") {
-            ReceiverView(receiver: receiver).frame(minWidth: 580, minHeight: 620)
-        }.defaultSize(width: 650, height: 730)
+        WindowGroup("AirType Desktop") {
+            DesktopSenderView(sender: sender).frame(minWidth: 570, minHeight: 650)
+        }.defaultSize(width: 630, height: 740)
     }
 }
 
-struct ReceiverView: View {
-    @ObservedObject var receiver: MacReceiver
-    private var formattedKey: String {
-        stride(from: 0, to: receiver.pairingKey.count, by: 5).map { offset in
-            let start = receiver.pairingKey.index(receiver.pairingKey.startIndex, offsetBy: offset)
-            return String(receiver.pairingKey[start..<receiver.pairingKey.index(start, offsetBy: 5)])
-        }.joined(separator: "-")
-    }
+struct DesktopSenderView: View {
+    @ObservedObject var sender: NearbyController
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                Label("AirType Receiver", systemImage: "laptopcomputer.and.iphone").font(.largeTitle)
-                Text("Type from your iPhone or iPad to this Mac. Start a transport, then find this receiver in the AirType host app.")
+                Label("AirType Desktop", systemImage: "laptopcomputer.and.iphone").font(.largeTitle)
+                Text("Mac → iPhone / iPad keyboard").font(.headline)
+                Text("Open a text field on your phone, switch to AirType, and choose Direct Wi-Fi or Bluetooth on the keyboard. This Mac sends text into that active field.")
                     .foregroundStyle(.secondary)
-                GroupBox("Pairing key") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(formattedKey).font(.system(.title2, design: .monospaced)).textSelection(.enabled)
-                        HStack {
-                            ShareLink(item: receiver.pairingKey) { Label("Share key", systemImage: "square.and.arrow.up") }
-                            Button("New key & disconnect") { receiver.rotateKey() }
-                        }
-                        Text("Enter this key on your iPhone. Commands are authenticated and encrypted over both transports.")
-                            .font(.caption).foregroundStyle(.secondary)
-                    }.padding(8).frame(maxWidth: .infinity, alignment: .leading)
-                }
-                GroupBox("Connections") {
+                GroupBox("Connect to your keyboard") {
                     VStack(alignment: .leading, spacing: 12) {
+                        Picker("Connection", selection: $sender.transport) {
+                            ForEach(NearbyTransport.allCases) { mode in Text(mode.rawValue).tag(mode) }
+                        }.pickerStyle(.segmented)
+                        TextField("20-character pairing key shown on the keyboard", text: $sender.pairingKey)
+                            .textFieldStyle(.roundedBorder).font(.system(.body, design: .monospaced))
+                            .disabled(sender.connected || sender.busy)
                         HStack {
-                            Label("Direct Wi-Fi", systemImage: "wifi"); Spacer()
-                            Button(receiver.wifiRunning ? "Stop Wi-Fi" : "Start Wi-Fi") {
-                                if receiver.wifiRunning { receiver.stopWiFi() } else { receiver.startWiFi() }
-                            }
+                            Button("Find keyboards") { sender.discover() }.disabled(sender.busy)
+                            if sender.connected || sender.busy { Button("Disconnect") { sender.disconnect() } }
+                            if sender.searching { ProgressView().controlSize(.small) }
                         }
-                        Text(receiver.wifiStatus).font(.caption).foregroundStyle(.secondary)
-                        Divider()
-                        HStack {
-                            Label("Bluetooth LE", systemImage: "antenna.radiowaves.left.and.right"); Spacer()
-                            Button(receiver.bluetoothRunning ? "Stop Bluetooth" : "Start Bluetooth") {
-                                if receiver.bluetoothRunning { receiver.stopBluetooth() } else { receiver.startBluetooth() }
-                            }
+                        ForEach(sender.peers) { peer in
+                            Button { sender.connect(peer) } label: {
+                                Label(peer.name, systemImage: "iphone")
+                            }.disabled(sender.busy || sender.connected)
                         }
-                        Text(receiver.bluetoothStatus).font(.caption).foregroundStyle(.secondary)
-                        Text("Connections: \(receiver.connections)").font(.caption)
+                        Text(sender.status).font(.caption).foregroundStyle(.secondary)
                     }.padding(8)
                 }
-                Toggle("Type into the focused Mac app", isOn: $receiver.typeIntoApps)
-                if receiver.typeIntoApps {
-                    HStack {
-                        Text("Allow Accessibility, then focus the destination app on this Mac.").font(.caption).foregroundStyle(.secondary)
-                        Button("Allow Accessibility…") { receiver.requestAccessibility() }
-                    }
-                } else {
-                    Text("Preview mode: received text appears below. Nothing is typed into other apps.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                GroupBox("Received preview") {
-                    VStack(alignment: .leading) {
-                        Text(receiver.receivedText.isEmpty ? "Waiting for text…" : receiver.receivedText)
-                            .textSelection(.enabled).frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
-                            .accessibilityLabel("Received text: " + receiver.receivedText)
-                        HStack { Text(receiver.lastAction).font(.caption).foregroundStyle(.secondary); Spacer(); Button("Clear") { receiver.clearPreview() } }
+                GroupBox("Type on your Mac, send to your phone") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        TextEditor(text: $sender.draft).frame(minHeight: 140)
+                            .font(.system(size: 18)).accessibilityLabel("Text to send to iPhone keyboard")
+                        HStack {
+                            Button("Send text", systemImage: "paperplane.fill") { sender.send(.insert) }
+                                .buttonStyle(.borderedProminent).disabled(!sender.connected || sender.busy || sender.draft.isEmpty)
+                            Spacer()
+                            key("Delete", "delete.left", .delete)
+                            key("Return", "return", .newline)
+                            key("Tab", "arrow.right.to.line", .tab)
+                            key("Move left", "arrow.left", .left)
+                            key("Move right", "arrow.right", .right)
+                        }
+                        Text("Keep the phone's AirType keyboard visible. Unconfirmed drafts are kept and never automatically resent. Arrow controls adjust the phone's insertion point where the host app permits.")
+                            .font(.caption).foregroundStyle(.secondary)
                     }.padding(8)
                 }
-                Text("Developer build · Apple peer-to-peer Wi-Fi and custom BLE require native apps at both ends. Bluetooth HID emulation is not included. Validate both transports on physical devices.")
+                Text("Developer build · Direct Wi-Fi uses Apple peer-to-peer-enabled networking; Bluetooth uses a custom BLE service. The browser Web mode remains available separately. No Mac Accessibility permission is needed.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(28)
         }.tint(Color(red: 0.35, green: 0.38, blue: 0.78))
+            .onChange(of: sender.transport) { _, _ in sender.disconnect(); sender.discover() }
+    }
+    private func key(_ title: String, _ symbol: String, _ action: NearbyPacket.Action) -> some View {
+        Button { sender.send(action) } label: { Image(systemName: symbol) }
+            .help(title).accessibilityLabel(title).disabled(!sender.connected || sender.busy)
     }
 }

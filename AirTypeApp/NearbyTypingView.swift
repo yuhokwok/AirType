@@ -1,84 +1,79 @@
 import SwiftUI
+import CoreBluetooth
+import Combine
 
 struct AirTypeHomeView: View {
     var body: some View {
         TabView {
-            NearbyTypingView().tabItem { Label("Type to Mac", systemImage: "laptopcomputer.and.iphone") }
+            KeyboardConnectionView().tabItem { Label("Connect", systemImage: "laptopcomputer.and.iphone") }
             SetupView().tabItem { Label("Keyboard setup", systemImage: "keyboard") }
         }.tint(Color(red: 0.35, green: 0.38, blue: 0.78))
     }
 }
 
-struct NearbyTypingView: View {
-    @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var controller = NearbyController()
+struct KeyboardConnectionView: View {
+    @State private var mode = NetworkPreferences.inputMode
+    @StateObject private var bluetooth = KeyboardBluetoothPermission()
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    Label("iPhone → Mac", systemImage: "laptopcomputer.and.iphone").font(.headline)
-                    Text("Open AirType Receiver on your Mac. Choose a connection, enter its pairing key, then select your Mac.")
-                        .foregroundStyle(.secondary)
-                } header: { Text("Nearby typing · Developer version") }
+                    Label("Computer → iPhone keyboard", systemImage: "keyboard").font(.headline)
+                    Text("Type on your computer. The AirType keyboard receives the text and inserts it into the app you are using on your iPhone or iPad.")
+                } header: { Text("AirType") }
                 Section {
-                    Picker("Connection", selection: $controller.transport) {
-                        ForEach(NearbyTransport.allCases) { transport in Text(transport.rawValue).tag(transport) }
+                    Picker("Connection", selection: $mode) {
+                        ForEach(RemoteInputMode.allCases) { mode in Text(mode.rawValue).tag(mode) }
                     }.pickerStyle(.segmented)
-                    Text(controller.transport == .wifi
-                        ? "Apple peer-to-peer Wi-Fi. Keep Wi-Fi enabled on both devices. A shared router is not required; macOS may use your existing network when available."
-                        : "Custom Bluetooth LE connection to AirType Receiver. This version does not pair as a standard Bluetooth keyboard.")
+                    Text(mode == .web
+                        ? "Use a browser on your computer and the address shown on the keyboard. Both devices must be on the same Wi-Fi."
+                        : "Use AirType Desktop on your Mac. Find this keyboard, then enter the 20-character pairing key displayed on it.")
                         .font(.footnote).foregroundStyle(.secondary)
-                    TextField("Pairing key shown on Mac", text: $controller.pairingKey)
-                        .textInputAutocapitalization(.characters).autocorrectionDisabled()
-                        .font(.system(.body, design: .monospaced))
-                        .disabled(controller.connected || controller.busy)
-                    Button(controller.searching ? "Find receivers again" : "Find receivers", systemImage: "antenna.radiowaves.left.and.right") { controller.discover() }
-                        .disabled(controller.busy)
-                    ForEach(controller.peers) { peer in
-                        Button { controller.connect(peer) } label: {
-                            Label(peer.name, systemImage: "desktopcomputer")
-                        }.disabled(controller.busy || controller.connected)
+                    if mode == .wifi {
+                        Text("Direct Wi-Fi uses Apple's peer-to-peer networking. Keep Wi-Fi enabled on both devices. The keyboard must stay visible while receiving.")
                     }
-                    if controller.connected || controller.busy {
-                        Button("Disconnect", role: .destructive) { controller.disconnect() }
+                    if mode == .bluetooth {
+                        Button("Enable Bluetooth access") { bluetooth.request() }
+                        Text(bluetooth.status).font(.footnote).foregroundStyle(.secondary)
+                        Text("Developer Bluetooth LE transport. It connects the Mac sender to the keyboard; it does not turn your iPhone into a Bluetooth keyboard for the Mac.")
+                            .font(.footnote).foregroundStyle(.secondary)
                     }
-                } header: { Text("Connect") }
+                } header: { Text("Keyboard connection") } footer: {
+                    Text("Saved for the next time you open the keyboard. You can also change connection mode directly on the keyboard.")
+                }
                 Section {
-                    Text(controller.status).accessibilityLabel("Connection status: " + controller.status)
-                    if controller.busy { ProgressView() }
-                } header: { Text(controller.connected ? "Connected" : "Status") }
+                    Text("1. Add AirType in system keyboard settings and allow Full Access.")
+                    Text("2. Open a text field in any supported app, switch to AirType, and keep its connection panel visible.")
+                    Text("3. Connect from the computer using the code or key shown on the keyboard.")
+                    NavigationLink("Try the installed keyboard") {
+                        KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard).navigationTitle("Try AirType")
+                    }
+                } header: { Text("Start typing into your phone") }
                 Section {
-                    TextEditor(text: $controller.draft).frame(minHeight: 125)
-                        .accessibilityLabel("Text to send to Mac")
-                    Button("Send text", systemImage: "paperplane.fill") { controller.send(.insert) }
-                        .disabled(!controller.connected || controller.busy || controller.draft.isEmpty)
-                    HStack {
-                        key("Delete", "delete.left", .delete)
-                        Spacer(); key("Return", "return", .newline)
-                        Spacer(); key("Tab", "arrow.right.to.line", .tab)
-                    }
-                    HStack {
-                        key("Escape", "escape", .escape)
-                        Spacer(); key("Left", "arrow.left", .left)
-                        key("Up", "arrow.up", .up)
-                        key("Down", "arrow.down", .down)
-                        key("Right", "arrow.right", .right)
-                    }
-                } header: { Text("Type") } footer: {
-                    Text("The Mac receiver starts in preview mode. Enable typing into other apps there when ready. Keep AirType open on your iPhone. If delivery is not confirmed, the draft is kept and is not automatically resent.")
+                    Text("This app prepares settings and permissions. Receiving and text insertion run inside the visible keyboard extension; this app does not need to stay in the foreground.")
+                        .font(.footnote).foregroundStyle(.secondary)
                 }
             }.navigationTitle("AirType")
-                .onChange(of: controller.transport) { controller.disconnect(); controller.discover() }
-                .onChange(of: controller.connected) { UIApplication.shared.isIdleTimerDisabled = controller.connected }
-                .onChange(of: scenePhase) {
-                    if scenePhase == .background { controller.disconnect(); UIApplication.shared.isIdleTimerDisabled = false }
-                }
-                .onDisappear { controller.disconnect(); UIApplication.shared.isIdleTimerDisabled = false }
+                .onChange(of: mode) { NetworkPreferences.inputMode = mode }
+                .onAppear { mode = NetworkPreferences.inputMode }
         }
     }
-    private func key(_ title: String, _ symbol: String, _ action: NearbyPacket.Action) -> some View {
-        Button { controller.send(action) } label: { Image(systemName: symbol).frame(minWidth: 30, minHeight: 36) }
-            .buttonStyle(.bordered).accessibilityLabel(title)
-            .disabled(!controller.connected || controller.busy)
+}
+
+final class KeyboardBluetoothPermission: NSObject, ObservableObject, CBPeripheralManagerDelegate {
+    @Published private(set) var status = "Allow Bluetooth here before trying Bluetooth in the keyboard."
+    private var manager: CBPeripheralManager?
+    func request() {
+        if manager == nil { manager = CBPeripheralManager(delegate: self, queue: .main) }
+        else if let manager { peripheralManagerDidUpdateState(manager) }
+    }
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        switch peripheral.state {
+        case .poweredOn: status = "Bluetooth is ready. Now open the AirType keyboard in a text field."
+        case .poweredOff: status = "Turn on Bluetooth in Settings."
+        case .unauthorized: status = "Allow AirType Bluetooth access in Settings → Privacy & Security → Bluetooth."
+        case .unsupported: status = "Bluetooth requires a supported physical device."
+        default: status = "Bluetooth is preparing. Try again when ready."
+        }
     }
 }

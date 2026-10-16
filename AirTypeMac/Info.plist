@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>AirType Receiver</string>
+	<string>AirType Desktop</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,12 +25,12 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>AirType receives typing commands from your nearby iPhone or iPad.</string>
+	<string>AirType sends text to your iPhone or iPad keyboard over nearby Wi-Fi.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_airtype-near._tcp</string>
 	</array>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>AirType receives typing commands over Bluetooth from your paired iPhone or iPad.</string>
+	<string>AirType sends text to your iPhone or iPad keyboard over Bluetooth.</string>
 </dict>
 </plist>

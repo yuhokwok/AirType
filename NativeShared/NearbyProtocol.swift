@@ -1,7 +1,7 @@
 import Foundation
 import CryptoKit
 
-/// Shared wire protocol for the native iOS sender and Mac receiver. Not Bluetooth HID.
+/// Shared wire protocol for the native desktop sender and keyboard receiver. Not Bluetooth HID.
 enum NearbyProtocol {
     static let serviceType = "_airtype-near._tcp"
     static let bleService = "92E3C878-EC81-49AF-83A0-7DD3A089FE21"
@@ -84,9 +84,9 @@ enum NearbyError: LocalizedError {
     case invalidCode, invalidFrame, unauthenticated, replay
     var errorDescription: String? {
         switch self {
-        case .invalidCode: return "Enter the 20-character pairing key shown on your Mac."
+        case .invalidCode: return "Enter the 20-character pairing key shown on your AirType keyboard."
         case .invalidFrame: return "Invalid or oversized nearby message."
-        case .unauthenticated: return "Pairing failed. Check the key on your Mac."
+        case .unauthenticated: return "Pairing failed. Check the key on your AirType keyboard."
         case .replay: return "Stale or repeated connection message rejected."
         }
     }
@@ -96,7 +96,7 @@ enum NearbyError: LocalizedError {
 final class NearbyReceiverSession {
     let challenge = UUID().uuidString
     private let key: SymmetricKey
-    private var authenticated = false
+    private(set) var authenticated = false
     private var sequence: UInt64 = 0
     init(code: String) throws { key = try NearbyProtocol.key(code: code) }
     func receive(_ envelope: NearbyEnvelope, execute: (NearbyPacket) -> String?) throws -> Data {
@@ -126,20 +126,5 @@ struct NearbyCommandLedger {
         guard ids.insert(id).inserted else { return }
         order.append(id)
         if order.count > 512 { ids.remove(order.removeFirst()) }
-    }
-}
-
-/// Keep UTF-16 surrogate pairs intact when building Quartz keyboard events.
-enum NearbyTextChunks {
-    static func utf16(_ text: String, limit: Int = 20) -> [[UInt16]] {
-        precondition(limit >= 2)
-        let units = Array(text.utf16)
-        var result: [[UInt16]] = [], start = 0
-        while start < units.count {
-            var end = min(start + limit, units.count)
-            if end < units.count, (0xD800...0xDBFF).contains(units[end - 1]) { end -= 1 }
-            result.append(Array(units[start..<end])); start = end
-        }
-        return result
     }
 }

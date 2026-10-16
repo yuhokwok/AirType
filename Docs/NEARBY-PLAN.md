@@ -1,26 +1,34 @@
 # Native nearby typing developer build
 
-First version: iPhone/iPad host app sends text and key commands to a native Mac receiver. The existing browser-to-iPhone extension remains separate.
+Direction: **Mac → visible iPhone/iPad keyboard extension → focused app text field**. The containing app saves connection preferences and prepares permissions. It is not a background relay.
 
-- [x] Shared bounded, authenticated-encrypted command framing; challenge, sequence and acknowledgement checks.
-- [x] iOS peer-to-peer-enabled Bonjour discovery and TCP connection.
-- [x] iOS Bluetooth LE central with serialized, MTU-sized writes and response handling.
-- [x] Mac receiver with Wi-Fi and BLE service publication, pairing, acknowledgements and bounded sessions.
-- [x] Mac preview receiving plus explicit Accessibility-based typing into other apps.
-- [x] Host-app transport selection, pairing and composer; keep legacy keyboard setup accessible.
-- [x] Build both targets and run protocol/security regression tests.
-- [ ] Physical-device verification: no-router Wi-Fi, Bluetooth-only delivery, long Unicode payloads, reconnection and focused-app typing.
-
-The Bluetooth implementation is custom GATT with a Mac receiver, not a standard Bluetooth HID keyboard. Peer-to-peer Wi-Fi is Apple's technology; macOS can also choose infrastructure Wi-Fi if available. The developer build must not claim which radio path was used without physical-device evidence.
+- [x] Shared bounded AES-GCM command framing, fresh challenge, sequence checks and acknowledgements.
+- [x] Keyboard-owned peer-to-peer-enabled Bonjour/TCP receiver.
+- [x] Keyboard-owned Bluetooth LE peripheral with MTU segmentation and notification backpressure.
+- [x] Mac sender discovery, pairing, composer and editing controls in AirTypeDesktop.
+- [x] Route accepted commands through the extension's textDocumentProxy.
+- [x] Web / Direct Wi-Fi / Bluetooth selector on the keyboard; retain browser workflow.
+- [x] Stop receiving when keyboard disappears or changes to local QWERTY.
+- [x] Build both platforms and run protocol/input routing tests.
+- [ ] Physical-device acceptance for installed-extension Bluetooth, permissions, no-router Wi-Fi and editing across supported apps.
 
 ## Validation — 16 October 2026
 
-- iOS app + embedded keyboard compile, install and launch on the iOS 27 Simulator with `com.invivo.ios.AirType`. The Type to Mac screen was inspected in a simulator screenshot.
-- The `AirTypeReceiver` macOS 14+ target builds. Xcode reports only the informational App Intents metadata-extraction warning for a target that does not use App Intents.
-- 22 XCTest cases pass: 10 native-protocol cases plus 12 existing regression cases. Coverage includes wrong keys, pre-auth commands, cross-session replay, repeated sequence numbers, ciphertext tampering, bounded fragmented/coalesced frames, receiver rejection, Unicode, and 20-byte BLE-style framing.
-- `scripts/check-nearby-macos.sh` compiles the actual sender controller and receiver model into a temporary headless test. Real Bonjour discovery and TCP exchange pass: encrypted authentication, Unicode delivery to preview, acknowledgement and clearing the confirmed draft. The test uses a unique service name and never enables event injection.
-- This local test does not establish that Apple peer-to-peer radio was used; infrastructure networking can be selected automatically. It is not an iPhone/Mac hardware test.
-- Native Mac UI automation failed twice with a closed computer-use connection, including after runtime reset. Mac window interaction and permission prompts remain unverified. The receiver's headless model and native app compilation are verified separately.
-- Physical-device acceptance remains open: BLE peripheral advertising, iPhone central discovery/subscription, MTU/backpressure, permission prompts, no-router Wi-Fi, reconnect and actual focused-app Unicode/key delivery after the user grants Accessibility.
+- AirType iOS app and embedded keyboard extension build; native Wi-Fi preview installs and launches on iOS 27 Simulator.
+- AirTypeDesktop macOS 14+ target builds. Mac Accessibility injection was removed; the Mac is the sender.
+- All 24 XCTest cases pass: existing regressions, native protocol validation and UITextView command routing, including Chinese, composed emoji, delete, newline/tab and unsupported key rejection.
+- The headless native integration test passes real Bonjour/TCP discovery, encrypted pairing, Unicode delivery, acknowledgement and confirmed-draft clearing using the actual shared transport controllers.
+- With `--native-keyboard-wifi`, the Mac sender also discovers the iOS Simulator's keyboard preview and sends `Mac → AirType keyboard — 你好 👋`. [A screenshot](Validation/native-keyboard-preview.jpg) confirms the received text in its UITextView. This is shared-view preview evidence, not a fresh installed-extension interaction test.
+- The Mac window could not be interacted with because native computer-use repeatedly returned a closed connection. Its build and headless sender behavior are verified separately.
+- Simulator networking does not prove peer-to-peer radio use or enforce physical-device Local Network permission. CoreBluetooth compiling in the extension does not establish working physical Bluetooth advertising, subscription or permission behavior.
 
-The uncommitted user changes to `AirType.icon` and `output/` were not modified by this work.
+## Device acceptance
+
+1. Install with provisioned App Groups; enable AirType and Full Access.
+2. Prepare Local Network and Bluetooth permissions in the containing app.
+3. In Notes or another supported app, open AirType and select Direct Wi-Fi; pair from AirType Desktop and check Unicode, Delete, Return, Tab and cursor movement.
+4. Repeat without a shared router and record whether discovery/delivery works.
+5. Select Bluetooth, disable Wi-Fi and check discovery, pairing, long Unicode payloads and repeated editing.
+6. Switch apps, hide/reopen the keyboard, change transport and interrupt connectivity. Confirm sessions stop, drafts survive uncertain sends and reconnect does not duplicate input.
+
+Bluetooth is a custom GATT transport, not standard Bluetooth HID. Unsupported Up, Down and Escape commands are rejected. The containing app does not keep a receiver alive after it backgrounds.

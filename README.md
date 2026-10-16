@@ -4,20 +4,19 @@ Native iOS/iPadOS containing app and keyboard extension recreated from invivo's 
 
 ## Native nearby typing — developer version
 
-The host app now opens **Type to Mac**, while **Keyboard setup** keeps the original browser-to-iPhone extension workflow available.
+The typing direction is **computer → AirType keyboard extension → the active text field on your iPhone/iPad**. The containing app configures settings and permissions; the visible keyboard owns the receiving connection.
 
-1. In Xcode, select the **AirTypeReceiver** scheme and run it on your Mac (macOS 14+).
-2. Click **Start Wi-Fi** or **Start Bluetooth** in the receiver. Allow the corresponding system permission if requested.
-3. Run the **AirType** scheme on your iPhone or iPad (iOS 17+). In **Type to Mac**, choose the matching transport and tap **Find receivers**.
-4. Enter the **20-character pairing key** shown on the Mac and select your receiver. Spaces and hyphens in that key are optional. This key is separate from the keyboard portal's six-digit code.
-5. Send text, Delete, Return, Tab, Escape or arrow keys. The Mac starts in **preview mode**, showing received text and the last command without affecting other apps.
-6. To type into another Mac app, enable **Type into the focused Mac app**, grant AirType Receiver Accessibility permission using its button, then focus the destination app before sending from the iPhone.
+1. Run the **AirTypeDesktop** scheme on your Mac (macOS 14+).
+2. Install **AirType** on your iPhone/iPad, add its keyboard and enable **Allow Full Access** under **Keyboard setup**. Grant Local Network access; for Bluetooth, use **Enable Bluetooth access** in the app's Connect tab.
+3. In a supported app's text field, switch to AirType. Choose **Direct Wi-Fi** or **Bluetooth** on its connection panel and keep the keyboard visible.
+4. In AirType Desktop, choose the matching transport, find the keyboard and enter its **20-character pairing key**. This key is separate from Web Access's six-digit code.
+5. Compose text on the Mac and click **Send**. Delete, Return, Tab and left/right cursor controls also operate on the phone's current field.
 
-**Direct Wi-Fi** uses Apple's peer-to-peer-enabled Network framework discovery and connections. Keep Wi-Fi enabled on both devices. It can work without a shared router, but may use infrastructure Wi-Fi when available; this is not generic cross-platform Wi-Fi Direct. **Bluetooth LE** uses a custom GATT service and requires the Mac receiver. It is not Bluetooth HID keyboard emulation and does not pair as a standard keyboard in system Bluetooth settings.
+**Direct Wi-Fi** uses peer-to-peer-enabled Network.framework discovery and connections. Keep Wi-Fi enabled on both devices. Apple may select infrastructure Wi-Fi when available; a no-router radio connection still requires physical-device validation. This is Apple's peer-to-peer networking, rather than generic cross-platform Wi-Fi Direct. **Bluetooth LE** uses a custom GATT service with AirType Desktop as central and the keyboard as peripheral. Pair inside AirType Desktop.
 
-Both native transports encrypt and authenticate commands with AES-GCM, a random session challenge and strict sequence numbers. The random pairing key is held in memory and can be rotated on the Mac to disconnect all sessions. The sender waits for an acknowledgement, keeps uncertain drafts, and does not automatically resend a command. Acknowledgement means the receiver accepted the command; individual destination apps may handle posted keyboard events differently.
+Both native transports authenticate and encrypt commands with AES-GCM, a fresh session challenge and strict sequence numbers. The keyboard holds a random pairing key in memory. The sender waits for acknowledgement, retains uncertain drafts and never automatically resends them. Acknowledgement reports that the keyboard accepted a command; the destination app controls its final editing behavior. The extension does not send surrounding text back to the computer.
 
-Keep AirType open on the iPhone; leaving the host-app screen or backgrounding disconnects its native transports. System-wide text input on the iPhone still uses the separate keyboard extension. Physical BLE radio, no-router Wi-Fi and Accessibility input acceptance remain to be validated. See [native developer validation](Docs/NEARBY-PLAN.md).
+Leaving the keyboard or switching to local QWERTY stops receiving. The containing app does not relay text in the background. Bluetooth inside the extension, no-router Wi-Fi, permission prompts and editing in other apps remain physical-device acceptance gates. See [native developer validation](Docs/NEARBY-PLAN.md).
 
 ## Features
 
@@ -102,13 +101,13 @@ The server runs only while Web Access is visible. After a failed connection atte
 
 ## Build and validation
 
-The native developer receiver uses the **AirTypeReceiver** scheme. On macOS, run the headless native Wi-Fi integration check with:
+The native Mac sender uses the **AirTypeDesktop** scheme. On macOS, run the headless native Wi-Fi integration check with:
 
 ```sh
 scripts/check-nearby-macos.sh
 ```
 
-It tests actual Bonjour/TCP discovery and the shared encrypted protocol in preview mode, without typing into other apps. Bluetooth hardware cannot be established by this test or the iOS Simulator.
+It tests actual Bonjour/TCP discovery, encrypted pairing, Unicode delivery and acknowledgement using the shared sender and receiver. To send into the running iOS developer preview, launch AirType with `--native-keyboard-wifi`, then run `scripts/check-nearby-macos.sh --keyboard-preview` and enter the key shown on the preview. This proves preview delivery, separately from installed-extension or Bluetooth hardware acceptance.
 
 The companion landing page lives in [`website/`](website/README.md). It follows invivo's CInput website styling and links to the existing AirType App Store listing. It is a separate static site; the keyboard's bundled Web Access portal remains in `Shared/Resources/Portal.html`.
 
@@ -127,7 +126,7 @@ node --test Tests/PortalConnectionTests.cjs
 
 These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, and draft retention.
 
-Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Default launch opens setup.
+Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens Connect, with Keyboard setup in the second tab.
 
 See [validation results](Docs/VALIDATION.md) for completed checks and physical-device gates, and the [implementation checklist](Docs/PLAN.md) for the design contract.
 

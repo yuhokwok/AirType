@@ -2,19 +2,16 @@ import Foundation
 import Combine
 import Network
 import CoreBluetooth
-import AppKit
-import ApplicationServices
 
-final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate {
-    @Published private(set) var pairingKey = NearbyProtocol.pairingCode()
-    @Published private(set) var wifiStatus = "Stopped"
-    @Published private(set) var bluetoothStatus = "Stopped"
-    @Published private(set) var wifiRunning = false
-    @Published private(set) var bluetoothRunning = false
-    @Published private(set) var receivedText = ""
-    @Published private(set) var lastAction = "No commands received yet."
-    @Published private(set) var connections = 0
-    @Published var typeIntoApps = false
+final class NearbyReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate {
+    @Published private(set) var pairingKey = NearbyProtocol.pairingCode() { didSet { onStateChange?() } }
+    @Published private(set) var wifiStatus = "Stopped" { didSet { onStateChange?() } }
+    @Published private(set) var bluetoothStatus = "Stopped" { didSet { onStateChange?() } }
+    @Published private(set) var wifiRunning = false { didSet { onStateChange?() } }
+    @Published private(set) var bluetoothRunning = false { didSet { onStateChange?() } }
+    @Published private(set) var connections = 0 { didSet { onStateChange?() } }
+    var onCommand: ((NearbyPacket) -> String?)?
+    var onStateChange: (() -> Void)?
     private var listener: NWListener?
     private var wifiChannels: [ObjectIdentifier: WiFiChannel] = [:]
     private var manager: CBPeripheralManager?
@@ -25,7 +22,7 @@ final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate
     private let label: String
 
     init(displayName: String? = nil) {
-        label = displayName ?? Host.current().localizedName ?? "AirType Mac"
+        label = displayName ?? "AirType keyboard"
         super.init()
     }
 
@@ -96,6 +93,7 @@ final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate
                 if let data {
                     for frame in try channel.decoder.append(data) {
                         let reply = try channel.session.receive(frame) { self.execute($0) }
+                    self.updateCount()
                         channel.deadline?.cancel(); channel.deadline = nil
                         self.sendWiFi(reply, channel: channel)
                     }
@@ -128,44 +126,25 @@ final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate
     func rotateKey() {
         stopWiFi(); stopBluetooth(); pairingKey = NearbyProtocol.pairingCode(); ledger = NearbyCommandLedger()
     }
-    func clearPreview() { receivedText = "" }
-    func requestAccessibility() {
-        _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary)
-    }
     private func execute(_ packet: NearbyPacket) -> String? {
         if ledger.contains(packet.id) { return nil }
-        guard let action = packet.action else { return "Missing key command." }
-        if typeIntoApps {
-            guard AXIsProcessTrusted() else { return "Enable Accessibility for AirType Receiver on your Mac, or use preview mode." }
-            guard NSWorkspace.shared.frontmostApplication?.bundleIdentifier != Bundle.main.bundleIdentifier else {
-                return "Focus the destination app on your Mac before sending."
-            }
-            guard MacInputInjector.post(packet) else { return "Unable to create the keyboard event." }
-        } else {
-            switch action {
-            case .insert: receivedText += packet.text ?? ""
-            case .delete: if !receivedText.isEmpty { receivedText.removeLast() }
-            case .newline: receivedText += "\n"
-            case .tab: receivedText += "\t"
-            default: break
-            }
-            // Preview is an inspection surface, not a permanent typing log.
-            if receivedText.count > 16_384 { receivedText = String(receivedText.suffix(16_384)) }
-        }
-        ledger.record(packet.id)
-        lastAction = "\(typeIntoApps ? "Posted to focused app" : "Received in preview"): \(action.rawValue)"
-        return nil
+        guard let onCommand else { return "AirType keyboard is not ready to receive text." }
+        let error = onCommand(packet)
+        if error == nil { ledger.record(packet.id) }
+        return error
     }
-    private func updateCount() { connections = wifiChannels.count + bleChannels.count }
+    private func updateCount() {
+        connections = wifiChannels.values.filter { $0.session.authenticated }.count + bleChannels.values.filter { $0.session.authenticated }.count
+    }
 
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) { updateBluetoothState() }
     private func updateBluetoothState() {
         guard wantsBluetooth, let manager else { return }
         if manager.state == .poweredOn { publishBLEService(); return }
         switch manager.state {
-        case .poweredOff: bluetoothStatus = "Turn on Bluetooth on this Mac."
-        case .unauthorized: bluetoothStatus = "Allow Bluetooth for AirType Receiver in System Settings."
-        case .unsupported: bluetoothStatus = "Bluetooth peripheral mode is unavailable on this Mac."
+        case .poweredOff: bluetoothStatus = "Turn on Bluetooth on this device."
+        case .unauthorized: bluetoothStatus = "Allow Bluetooth for AirType in Settings."
+        case .unsupported: bluetoothStatus = "Bluetooth peripheral mode is unavailable on this device."
         default: bluetoothStatus = "Bluetooth is not ready."
         }
         for channel in bleChannels.values { channel.deadline?.cancel() }
@@ -181,13 +160,13 @@ final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate
     func peripheralManager(_ peripheral: CBPeripheralManager, didAdd service: CBService, error: Error?) {
         guard wantsBluetooth, service.characteristics?.contains(where: { $0 === notifyCharacteristic }) == true else { return }
         if let error { stopBluetooth(); bluetoothStatus = error.localizedDescription; return }
-        peripheral.startAdvertising([CBAdvertisementDataLocalNameKey: "AirType " + label,
+        peripheral.startAdvertising([CBAdvertisementDataLocalNameKey: label,
             CBAdvertisementDataServiceUUIDsKey: [CBUUID(string: NearbyProtocol.bleService)]])
     }
     func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         guard wantsBluetooth else { return }
         if let error { stopBluetooth(); bluetoothStatus = error.localizedDescription }
-        else { bluetoothRunning = true; bluetoothStatus = "Advertising · AirType \(label)" }
+        else { bluetoothRunning = true; bluetoothStatus = "Advertising · \(label)" }
     }
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         guard wantsBluetooth, characteristic.uuid == CBUUID(string: NearbyProtocol.bleNotify), bleChannels.count < 4,
@@ -215,6 +194,7 @@ final class MacReceiver: NSObject, ObservableObject, CBPeripheralManagerDelegate
             do {
                 for frame in try channel.decoder.append(value) {
                     let reply = try channel.session.receive(frame) { self.execute($0) }
+                    self.updateCount()
                     channel.deadline?.cancel(); channel.deadline = nil
                     guard channel.outgoing.count + reply.count <= NearbyProtocol.maxFrame * 2 else { throw NearbyError.invalidFrame }
                     channel.outgoing.append(reply)
