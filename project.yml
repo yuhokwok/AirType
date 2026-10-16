@@ -17,6 +17,7 @@ targets:
     platform: iOS
     sources:
       - AirTypeApp
+      - NativeShared
       - Shared
       - path: AirType.icon
         type: file
@@ -44,6 +45,25 @@ targets:
         CODE_SIGN_ENTITLEMENTS: AirTypeKeyboard/AirType.entitlements
         APPLICATION_EXTENSION_API_ONLY: YES
         SKIP_INSTALL: YES
+  AirTypeReceiver:
+    type: application
+    platform: macOS
+    deploymentTarget: '14.0'
+    sources:
+      - AirTypeMac
+      - NativeShared
+      - path: Shared/Assets.xcassets
+        excludes: ['AppIcon.appiconset']
+      - path: AirType.icon
+        type: file
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.invivo.mac.AirTypeReceiver
+        INFOPLIST_FILE: AirTypeMac/Info.plist
+        TARGETED_DEVICE_FAMILY: ''
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AirType
   AirTypeTests:
     type: bundle.unit-test
     platform: iOS
@@ -62,3 +82,7 @@ schemes:
         AirType: all
     test:
       targets: [AirTypeTests]
+  AirTypeReceiver:
+    build:
+      targets:
+        AirTypeReceiver: all

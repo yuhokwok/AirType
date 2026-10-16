@@ -23,9 +23,10 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_airtype._tcp</string>
+		<string>_airtype-near._tcp</string>
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>AirType connects to your computer on the same Wi-Fi so you can type into your iPhone or iPad.</string>
+	<string>AirType connects to your nearby Mac for typing, and lets a computer send text to your AirType keyboard over Wi-Fi.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -34,5 +35,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>AirType connects to your Mac receiver over Bluetooth so you can type from your iPhone or iPad.</string>
 </dict>
 </plist>

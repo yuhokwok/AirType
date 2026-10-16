@@ -1,10 +1,10 @@
 # Nearby typing feasibility
 
-Research checked on 16 October 2026. No new transport is implemented by this note.
+Research checked on 16 October 2026. The first native developer implementation is now available; see [the build and validation checklist](NEARBY-PLAN.md).
 
 ## Product direction to confirm
 
-The existing keyboard receives text from a computer browser. The proposed host-app mode could instead make the iPhone a keyboard for a computer, or receive text in the host app. Confirm the direction and target computer platforms before implementing the transport and input UI.
+The existing keyboard receives text from a computer browser. The proposed host-app mode could instead make the iPhone a keyboard for a computer, or receive text in the host app. The first developer build takes the iPhone-to-Mac direction, with a native Mac receiver. Other directions and platforms remain separate follow-up scope.
 
 ## Transport choices
 

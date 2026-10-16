@@ -9,7 +9,7 @@ struct AirTypeApp: App {
                 KeyboardTestScreen(useSystemKeyboard: false).ignoresSafeArea(.keyboard)
             } else if ProcessInfo.processInfo.arguments.contains("--system-test") {
                 KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)
-            } else { SetupView() }
+            } else { AirTypeHomeView() }
         }
     }
 }

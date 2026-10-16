@@ -2,6 +2,23 @@
 
 Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
 
+## Native nearby typing — developer version
+
+The host app now opens **Type to Mac**, while **Keyboard setup** keeps the original browser-to-iPhone extension workflow available.
+
+1. In Xcode, select the **AirTypeReceiver** scheme and run it on your Mac (macOS 14+).
+2. Click **Start Wi-Fi** or **Start Bluetooth** in the receiver. Allow the corresponding system permission if requested.
+3. Run the **AirType** scheme on your iPhone or iPad (iOS 17+). In **Type to Mac**, choose the matching transport and tap **Find receivers**.
+4. Enter the **20-character pairing key** shown on the Mac and select your receiver. Spaces and hyphens in that key are optional. This key is separate from the keyboard portal's six-digit code.
+5. Send text, Delete, Return, Tab, Escape or arrow keys. The Mac starts in **preview mode**, showing received text and the last command without affecting other apps.
+6. To type into another Mac app, enable **Type into the focused Mac app**, grant AirType Receiver Accessibility permission using its button, then focus the destination app before sending from the iPhone.
+
+**Direct Wi-Fi** uses Apple's peer-to-peer-enabled Network framework discovery and connections. Keep Wi-Fi enabled on both devices. It can work without a shared router, but may use infrastructure Wi-Fi when available; this is not generic cross-platform Wi-Fi Direct. **Bluetooth LE** uses a custom GATT service and requires the Mac receiver. It is not Bluetooth HID keyboard emulation and does not pair as a standard keyboard in system Bluetooth settings.
+
+Both native transports encrypt and authenticate commands with AES-GCM, a random session challenge and strict sequence numbers. The random pairing key is held in memory and can be rotated on the Mac to disconnect all sessions. The sender waits for an acknowledgement, keeps uncertain drafts, and does not automatically resend a command. Acknowledgement means the receiver accepted the command; individual destination apps may handle posted keyboard events differently.
+
+Keep AirType open on the iPhone; leaving the host-app screen or backgrounding disconnects its native transports. System-wide text input on the iPhone still uses the separate keyboard extension. Physical BLE radio, no-router Wi-Fi and Accessibility input acceptance remain to be validated. See [native developer validation](Docs/NEARBY-PLAN.md).
+
 ## Features
 
 - Type from a computer browser into an iPhone or iPad over the same Wi-Fi.
@@ -84,6 +101,14 @@ The portal exchanges the keyboard-visible six-digit pairing code for a random de
 The server runs only while Web Access is visible. After a failed connection attempt, the portal retries for up to 10 seconds, then stops requests and displays **Reconnect**. Reopen Web Access and click Reconnect to start another attempt; the draft is retained. If the server returns within the retry window, the portal reconnects automatically. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
 
 ## Build and validation
+
+The native developer receiver uses the **AirTypeReceiver** scheme. On macOS, run the headless native Wi-Fi integration check with:
+
+```sh
+scripts/check-nearby-macos.sh
+```
+
+It tests actual Bonjour/TCP discovery and the shared encrypted protocol in preview mode, without typing into other apps. Bluetooth hardware cannot be established by this test or the iOS Simulator.
 
 The companion landing page lives in [`website/`](website/README.md). It follows invivo's CInput website styling and links to the existing AirType App Store listing. It is a separate static site; the keyboard's bundled Web Access portal remains in `Shared/Resources/Portal.html`.
 
