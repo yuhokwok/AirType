@@ -7,6 +7,7 @@ Native iOS/iPadOS containing app and keyboard extension recreated from invivo's 
 - Type from a computer browser into an iPhone or iPad over the same Wi-Fi.
 - Switch between Web Access and a local QWERTY keyboard with light and dark appearances.
 - Send Unicode text, delete a character, or insert a newline remotely.
+- Browse six emoji categories or search the offline browser emoji picker; insert choices at the cursor or replace selected draft text before sending.
 - Reconnect automatically while retaining unsent drafts.
 - Pair using the six-digit code shown on the keyboard, or its complete connection URL/QR code; no desktop installation or cloud account is required.
 
@@ -38,6 +39,8 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 4. Focus a normal text field and select AirType using the system globe key.
 5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser, enter the six-digit **Pairing code** shown beside Web Access, and click **Connect**. You can also tap the address bar to open the complete tokenized URL or QR code.
 6. Type and press Enter or Send. Shift+Enter adds a line break to the draft; the ↵ button sends a newline to the device. Delete removes one character from the device.
+
+Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
 
 Tap the circular icon to switch to QWERTY. Tap its cyan Wi-Fi key to return to Web Access. The globe supports Apple's input-mode menu. Shift toggles case; double-tap Shift locks capitals; 123 and #+= switch symbol pages. Hold Delete to repeat.
 

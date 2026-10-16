@@ -3,7 +3,11 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f8f8f8;color:#777;font:15px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:grid;place-items:center;min-height:100vh}.portal{width:min(560px,calc(100vw - 32px));background:white;border:1px solid #ddd;border-radius:4px;box-shadow:0 5px 16px #0002;overflow:hidden}header{text-align:center;padding:16px;background:linear-gradient(110deg,#effffb,#edf9ff,#eee9ff,#fff1ff);font-size:19px;font-weight:300}form{display:flex;align-items:stretch;padding:16px;gap:12px}textarea{border:0;outline:0;resize:vertical;width:100%;min-height:96px;font:20px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#444}button{border:0;background:transparent;color:#22bec5;font-size:17px;cursor:pointer;min-height:44px;padding:0 12px}button:disabled{opacity:.4;cursor:default}footer{border-top:1px solid #eee;padding:10px 16px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#aaa;margin-right:6px}.connected .dot{background:#82df37}.help{padding:0 16px 16px;font-size:12px;color:#999}#status{max-width:330px}button:focus-visible{outline:2px solid #22bec5;border-radius:3px}textarea:focus-visible{outline:1px solid #caf3f4}
 #pairing{padding:16px;border-bottom:1px solid #eee;background:#f6ffff}#pairing[hidden]{display:none}#pairing p{margin:0 0 12px;line-height:1.5}#pair-form{padding:0;align-items:center;flex-wrap:wrap}#code{width:150px;border:1px solid #badfe1;border-radius:4px;padding:10px;font-size:22px;letter-spacing:5px;color:#444}#pair-error{color:#a63333;font-size:13px;margin-top:10px}#pair-error:empty{display:none}
-</style></head><body><main class="portal"><header>AirType</header><section id="pairing" hidden><p>Enter the six-digit pairing code shown on your AirType keyboard.</p><form id="pair-form"><input id="code" aria-label="Pairing code" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required><button id="connect" type="submit">Connect</button></form><div id="pair-error" role="alert"></div></section><form id="form"><textarea id="text" aria-label="Text to send to your iPhone or iPad" placeholder="Type here…" autofocus></textarea><button id="send" data-command type="submit" disabled>Send</button></form><footer><span id="status" role="status"><i class="dot"></i>Switch to AirType on your iOS device.</span><div><button id="delete" data-command aria-label="Delete one character on your device" disabled>Delete</button><button id="return" data-command aria-label="Insert a new line on your device" disabled>↵</button></div></footer><div class="help">Enter to send · Shift + Enter for a new line. Keep AirType open on your device.</div></main>
+
+.composer-tools{padding:0 16px 10px;display:flex;align-items:center;gap:8px}.composer-tools button{border:1px solid #d7eeee;border-radius:6px;font-size:14px}.composer-tools button[aria-expanded="true"]{background:#e6fafa}.composer-tools span{font-size:12px;color:#999}
+#emoji-picker{margin:0 16px 16px;padding:12px;border:1px solid #d7eeee;border-radius:8px;background:#fbffff}#emoji-picker[hidden]{display:none}.emoji-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.emoji-heading h2{margin:0;font-size:15px;font-weight:500;color:#555}#emoji-search{width:100%;margin:8px 0;padding:10px;border:1px solid #cce3e4;border-radius:5px;font:inherit;color:#444;background:#fff}#emoji-categories{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}#emoji-categories button{font-size:12px;padding:0 8px;border-radius:5px;min-height:36px}#emoji-categories button[aria-pressed="true"]{background:#dff6f6;color:#147b80}#emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:3px;max-height:220px;overflow-y:auto}#emoji-grid button{font-size:25px;padding:3px;color:#333;border-radius:5px;min-height:44px}#emoji-grid button:hover{background:#e5f5f5}#emoji-empty{font-size:13px;margin:12px 0;color:#777}input:focus-visible{outline:2px solid #22bec5;outline-offset:2px}
+@media(max-width:420px){footer{align-items:flex-start;flex-wrap:wrap}#status{width:100%}.composer-tools span{max-width:180px}}
+</style></head><body><main class="portal"><header>AirType</header><section id="pairing" hidden><p>Enter the six-digit pairing code shown on your AirType keyboard.</p><form id="pair-form"><input id="code" aria-label="Pairing code" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required><button id="connect" type="submit">Connect</button></form><div id="pair-error" role="alert"></div></section><form id="form"><textarea id="text" aria-label="Text to send to your iPhone or iPad" placeholder="Type here…" autofocus></textarea><button id="send" data-command type="submit" disabled>Send</button></form><div class="composer-tools"><button id="emoji-toggle" type="button" aria-expanded="false" aria-controls="emoji-picker">☺ Emoji</button><span>Insert into your draft, then Send.</span></div><section id="emoji-picker" aria-labelledby="emoji-title" hidden><div class="emoji-heading"><h2 id="emoji-title">Emoji</h2><button id="emoji-close" type="button" aria-label="Close emoji picker">×</button></div><input id="emoji-search" type="search" placeholder="Search emoji…" aria-label="Search emoji" autocomplete="off"><div id="emoji-categories" role="group" aria-label="Emoji categories"></div><div id="emoji-grid" role="group" aria-label="Emoji choices"></div><p id="emoji-empty" role="status" hidden>No emoji found. Try another search.</p></section><footer><span id="status" role="status"><i class="dot"></i>Switch to AirType on your iOS device.</span><div><button id="delete" data-command aria-label="Delete one character on your device" disabled>Delete</button><button id="return" data-command aria-label="Insert a new line on your device" disabled>↵</button></div></footer><div class="help">Enter to send · Shift + Enter for a new line. Keep AirType open on your device.</div></main>
 <script>
 let token = location.hash.slice(1);
 const text = document.querySelector('#text');
@@ -14,6 +18,68 @@ const code = document.querySelector('#code');
 const connect = document.querySelector('#connect');
 const buttons = [...document.querySelectorAll('[data-command]')];
 let connected = false, busy = false, polling = false, pairingBusy = false, needsPairing = !token;
+
+// Curated, bundled choices: no CDN, external fonts, or network lookup required.
+const emojiGroups = {
+    'Smileys': '😀|grinning happy 😃|smile happy 😄|smile eyes 😁|beaming grin 😆|laughing 😅|sweat smile 😂|tears joy laughing 🤣|rolling laughing 😊|blush happy 🙂|slight smile 🙃|upside down 😉|wink 😍|heart eyes 🥰|love hearts 😘|kiss 😋|delicious tongue 😎|cool sunglasses 🤩|star eyes 🥳|party celebration 🤔|thinking 🤗|hug 🤭|giggle 🤫|shush 🤐|zipper mouth 😐|neutral 😏|smirk 🙄|eye roll 😴|sleeping 😢|cry 😭|sobbing 😤|frustrated 😡|angry 😱|scream scared 😳|flushed surprised 🥺|pleading 😬|grimace 🤯|mind blown 🤒|sick 🤮|vomit 🤧|sneeze 🫠|melting 🫡|salute 👻|ghost 💀|skull 🤖|robot 💩|poop',
+    'People': '👋|wave hello 🤚|raised hand ✋|stop hand 👌|ok hand ✌️|victory peace 🤞|fingers crossed 🤟|love you 🤘|rock on 🤙|call me 👈|point left 👉|point right 👆|point up 👇|point down 👍|thumbs up yes 👎|thumbs down no 👏|clap applause 🙌|celebrate raised hands 👐|open hands 🤝|handshake 🙏|thanks prayer 💪|strong muscle ✍️|writing 👀|eyes look 🧠|brain 👶|baby 🧒|child 👩|woman 👨|man 🧑|person 👩‍💻|woman technologist 👨‍💻|man technologist 🧑‍💻|technologist 🧑‍🍳|cook 🧑‍🎨|artist 🧑‍🚀|astronaut',
+    'Hearts': '❤️|red heart 🧡|orange heart 💛|yellow heart 💚|green heart 💙|blue heart 💜|purple heart 🖤|black heart 🤍|white heart 🤎|brown heart 🩷|pink heart 🩵|light blue heart 🩶|grey heart 💔|broken heart ❤️‍🔥|heart fire ❤️‍🩹|mending heart 💕|two hearts 💞|revolving hearts 💓|beating heart 💖|sparkling heart 💗|growing heart 💘|cupid 💝|gift heart 💯|hundred perfect ✅|check yes ❌|cross no ❓|question ❗|exclamation ⚠️|warning 💬|speech 🔔|bell 🎵|music ✨|sparkles 🔥|fire 💫|dizzy ⭐|star 🌟|glowing star',
+    'Nature': '🐶|dog 🐱|cat 🐭|mouse 🐹|hamster 🐰|rabbit 🦊|fox 🐻|bear 🐼|panda 🐨|koala 🐯|tiger 🦁|lion 🐮|cow 🐷|pig 🐸|frog 🐵|monkey 🐔|chicken 🐧|penguin 🐦|bird 🦋|butterfly 🐝|bee 🐢|turtle 🐬|dolphin 🐳|whale 🦄|unicorn 🌸|cherry blossom 🌹|rose 🌻|sunflower 🌷|tulip 🌱|seedling 🌿|herb 🍀|clover 🌳|tree 🌈|rainbow ☀️|sun 🌤️|sun cloud ☁️|cloud 🌧️|rain ❄️|snow 🌙|moon 🌍|earth',
+    'Food': '🍎|apple 🍊|orange 🍋|lemon 🍌|banana 🍉|watermelon 🍇|grapes 🍓|strawberry 🫐|blueberry 🍒|cherry 🍑|peach 🥭|mango 🍍|pineapple 🥑|avocado 🥦|broccoli 🌽|corn 🥕|carrot 🍞|bread 🥐|croissant 🧀|cheese 🍳|egg cooking 🥓|bacon 🍔|burger 🍟|fries 🍕|pizza 🌭|hot dog 🥪|sandwich 🌮|taco 🍜|noodles 🍚|rice 🍣|sushi 🥟|dumpling 🍦|ice cream 🍩|donut 🍪|cookie 🎂|birthday cake 🍰|cake 🍫|chocolate ☕|coffee 🍵|tea 🧋|bubble tea 🍺|beer 🥂|cheers',
+    'Activities': '🎉|party popper 🎊|confetti 🎈|balloon 🎁|gift 🎀|ribbon 🏆|trophy 🥇|gold medal ⚽|football soccer 🏀|basketball 🏈|american football ⚾|baseball 🎾|tennis 🏸|badminton 🏓|table tennis 🏊|swimming 🚴|cycling 🏃|running 🧘|yoga 🎮|game controller 🎲|dice 🎯|target 🎨|art palette 🎬|movie 🎤|microphone 🎧|headphones 🎸|guitar 🎹|piano 📷|camera 📚|books 💡|idea light bulb 💻|laptop 📱|phone ⌨️|keyboard ✈️|airplane 🚗|car 🚕|taxi 🚆|train 🚀|rocket 🏠|home 🏖️|beach 🏕️|camping 🗺️|map'
+};
+const emojiItems = Object.entries(emojiGroups).flatMap(([category, entries]) =>
+    entries.split(/ (?=[^ ]+\|)/u).map(entry => {
+        const [symbol, name] = entry.split('|');
+        return { symbol, name, category };
+    }));
+const emojiToggle = document.querySelector('#emoji-toggle');
+const emojiPicker = document.querySelector('#emoji-picker');
+const emojiSearch = document.querySelector('#emoji-search');
+const emojiGrid = document.querySelector('#emoji-grid');
+const emojiCategories = document.querySelector('#emoji-categories');
+let emojiCategory = 'Smileys';
+function renderEmoji() {
+    const query = emojiSearch.value.trim().toLowerCase();
+    [...emojiCategories.children].forEach(button => button.setAttribute('aria-pressed', String(!query && button.textContent === emojiCategory)));
+    const items = emojiItems.filter(item => query
+        ? (item.name + ' ' + item.category + ' ' + item.symbol).toLowerCase().includes(query)
+        : item.category === emojiCategory);
+    emojiGrid.replaceChildren(...items.map(item => {
+        const button = document.createElement('button');
+        button.type = 'button'; button.textContent = item.symbol;
+        button.title = item.name; button.setAttribute('aria-label', item.name);
+        button.onclick = () => {
+            text.setRangeText(item.symbol, text.selectionStart, text.selectionEnd, 'end');
+            text.dispatchEvent(new Event('input', { bubbles: true }));
+            text.focus();
+        };
+        return button;
+    }));
+    document.querySelector('#emoji-empty').hidden = items.length > 0;
+}
+function closeEmoji() {
+    emojiPicker.hidden = true;
+    emojiToggle.setAttribute('aria-expanded', 'false');
+    emojiToggle.focus();
+}
+Object.keys(emojiGroups).forEach(category => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.textContent = category;
+    button.onclick = () => { emojiCategory = category; emojiSearch.value = ''; renderEmoji(); };
+    emojiCategories.append(button);
+});
+emojiToggle.onclick = () => {
+    if (!emojiPicker.hidden) { closeEmoji(); return; }
+    emojiPicker.hidden = false;
+    emojiToggle.setAttribute('aria-expanded', 'true');
+    renderEmoji(); emojiSearch.focus();
+};
+emojiSearch.oninput = renderEmoji;
+document.querySelector('#emoji-close').onclick = closeEmoji;
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !emojiPicker.hidden) { event.preventDefault(); closeEmoji(); }
+});
 
 function update(message, ok) {
     connected = ok;
