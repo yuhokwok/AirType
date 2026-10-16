@@ -1,6 +1,6 @@
 # AirType landing page
 
-A buildless Traditional Chinese product page using the same typography, colours, spacing, navigation, download buttons, section layouts and dialog treatment as invivo's CInput site.
+A buildless Traditional Chinese product page using the same typography, spacing, navigation, download buttons, section layouts and dialog treatment as invivo's CInput site, with a purple AirType accent palette.
 
 ## Preview
 
