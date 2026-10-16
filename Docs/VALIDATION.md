@@ -57,3 +57,14 @@ Evidence: `Validation/pairing-code-connected.jpg` and `Validation/pairing-portal
 - Remaining device checks: provision the App Group for both targets, custom-name sharing with the installed extension, actual Wi-Fi mDNS across devices/router configurations, and the Settings shortcut's final destination on the supported iOS versions. The simulator uses the Mac's mDNS environment.
 
 Implementation references: Apple's [Bonjour Concepts](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/NetServices/Articles/about.html), [DNS Service Discovery C](https://developer.apple.com/documentation/dnssd/dns-service-discovery-c), and [app-settings URL](https://developer.apple.com/documentation/uikit/uiapplication/opensettingsurlstring).
+
+## Local-network diagnostics and retry — 16 October 2026
+
+Reported symptom: local-network connection still fails. The exact browser error and physical-device permission state have not yet been supplied, so the device-specific cause remains unconfirmed.
+
+- Replaced the silent permission browser with a foreground check that advertises a unique temporary `_airtype._tcp` service and waits to discover that exact service. Browser `.ready` alone is not reported as success. The check releases its advertisement/browser on completion, navigation away, failure, or timeout.
+- Added visible checking, blocked/pending, success, and failure states; app Settings access; automatic rechecking when returning from Settings; explicit guidance separating Local Network permission from keyboard Full Access and explaining that Web Access must stay visible.
+- Corrected hostname registration caching: transient DNS-SD errors previously prevented retrying the same name/IP for the rest of the session. Address refresh now retries after five seconds. A permanent conflict at the suffix limit still keeps the IP fallback.
+- Keyboard network waits and failures now distinguish DNS policy denial from other errors, rather than labeling every wait as denied permission.
+- All 12 tests passed, including actual discovery of the check service, live DNS-SD registration, error classification, and a simulated permission-denial callback followed by successful registration retry. The conflict test now explicitly delivers the conflict callback and verifies real suffix registration: two loopback records on the same Mac mDNS daemon no longer reliably produce a conflict, so that setup is not treated as proof of cross-device collision behavior.
+- Simulator build, install, and launch passed without warnings. Physical-device permission prompts, Settings recovery, router reachability, and browser-to-keyboard reconnection remain to be checked on the user's device. Apple's TN3179 states that Simulator does not enforce Local Network privacy.

@@ -53,12 +53,12 @@ final class AirTypeServer {
                 case .ready:
                     self.updateAddress()
                     self.status = self.address == nil ? "Connect to Wi-Fi" : "Waiting for computer"
-                case .waiting: self.status = "Allow Local Network in Settings"
+                case .waiting(let error): self.status = LocalNetworkFailure.message(for: error)
                 case .failed(let error):
                     self.stop()
                     if case .posix(.EADDRINUSE) = error, !useDynamicPort {
                         self.start(useDynamicPort: true)
-                    } else { self.status = "Connection unavailable. Try again." }
+                    } else { self.status = LocalNetworkFailure.message(for: error) }
                 default: break
                 }
                 self.onStateChange?()

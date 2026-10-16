@@ -1,4 +1,5 @@
 import XCTest
+import dnssd
 @testable import AirType
 
 final class NetworkPreferencesTests: XCTestCase {
@@ -25,22 +26,46 @@ final class NetworkPreferencesTests: XCTestCase {
     func testHostConflictRenamesAndStopClearsTheAddress() async {
         let name = "airtype-test-" + UUID().uuidString.prefix(8).lowercased()
         let first = BonjourHostname()
-        let second = BonjourHostname()
-        defer { first.stop(); second.stop() }
+        defer { first.stop() }
         let firstReady = expectation(description: "First hostname registered")
         first.onChange = { if first.hostname != nil { firstReady.fulfill() } }
         first.publish(name: name, ipv4: "127.0.0.1")
         await fulfillment(of: [firstReady], timeout: 10)
         XCTAssertEqual(first.hostname, name + ".local")
-        first.onChange = nil
         let secondReady = expectation(description: "Conflicting hostname renamed")
-        second.onChange = { if second.hostname != nil { secondReady.fulfill() } }
-        second.publish(name: name, ipv4: "127.0.0.2")
+        first.onChange = { if first.hostname == name + "-2.local" { secondReady.fulfill() } }
+        // Two records from one mDNS daemon can coexist. Deliver the external-conflict
+        // event explicitly, then exercise real DNS-SD registration of the suffix.
+        first.registrationDidComplete(Int32(kDNSServiceErr_NameConflict))
         await fulfillment(of: [secondReady], timeout: 10)
-        XCTAssertEqual(second.hostname, name + "-2.local")
-        first.stop(); second.stop()
+        XCTAssertEqual(first.hostname, name + "-2.local")
+        first.stop()
         XCTAssertNil(first.hostname)
-        XCTAssertNil(second.hostname)
-        first.onChange = nil; second.onChange = nil
+        first.onChange = nil
+    }
+
+    @MainActor
+    func testDeniedRegistrationRetriesTheSameNameAfterPermissionCanChange() async {
+        let name = "airtype-retry-" + UUID().uuidString.prefix(8).lowercased()
+        var time = Date()
+        let publisher = BonjourHostname(now: { time })
+        defer { publisher.stop() }
+        let ready = expectation(description: "Initial record")
+        publisher.onChange = { if publisher.hostname != nil { ready.fulfill() } }
+        publisher.publish(name: name, ipv4: "127.0.0.1")
+        await fulfillment(of: [ready], timeout: 10)
+        publisher.onChange = nil
+        publisher.registrationDidComplete(Int32(kDNSServiceErr_PolicyDenied))
+        // Allow deferred DNS-SD teardown to finish before refreshing the address.
+        await Task.yield()
+        XCTAssertNil(publisher.hostname)
+        publisher.publish(name: name, ipv4: "127.0.0.1")
+        XCTAssertNil(publisher.hostname)
+        time.addTimeInterval(6)
+        let retry = expectation(description: "Same hostname retried")
+        publisher.onChange = { if publisher.hostname == name + ".local" { retry.fulfill() } }
+        publisher.publish(name: name, ipv4: "127.0.0.1")
+        await fulfillment(of: [retry], timeout: 10)
+        XCTAssertEqual(publisher.hostname, name + ".local")
     }
 }

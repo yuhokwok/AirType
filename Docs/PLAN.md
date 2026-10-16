@@ -11,6 +11,7 @@
 - [x] Build and run app plus embedded extension on iPhone Simulator.
 - [x] Test parser/command validation and actual extension browser-to-field behaviour.
 - [ ] Physical-device acceptance: signing, Wi-Fi permissions, second-computer connection, host apps, iPad and landscape touch layouts.
+- [x] Add visible foreground Bonjour check, permission recovery guidance, specific network errors, and hostname retries after permission changes.
 
 ## Design contract
 

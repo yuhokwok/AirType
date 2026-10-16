@@ -32,7 +32,7 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 
 ## Setup
 
-1. Install and open AirType. Tap **Enable local network connection** and permit local network access if prompted.
+1. Install and open AirType. Tap **Enable local network connection** and permit local network access if prompted. Wait for **Bonjour check passed on this device**. This checks local Bonjour discovery; the computer connection is established separately through the keyboard.
 2. Tap **Open Keyboard Settings** on the app page. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
@@ -54,6 +54,16 @@ Both targets include the shared App Group entitlement. Use your own unique group
 With the original build, opening only the IP and port loaded the public page but omitted the token required to connect. As a workaround for that build, tap the keyboard address bar and use the complete URL, including everything after `#`.
 
 The updated build shows a Pairing code on the keyboard and a Connect form when you open the IP address. Rebuild/reinstall the app and refresh the browser page to use it. An outdated or invalid token also returns to this form. Keep Web Access visible while connecting and typing.
+
+## If the browser cannot open the page
+
+- Open the **AirType app** first and run **Enable local network connection**. If access is blocked, enable AirType under Settings → Privacy & Security → Local Network and return to the app to recheck. Local Network permission and the keyboard's **Allow Full Access** setting are separate.
+- Switch to the installed AirType keyboard in a text field and keep **Web Access** visible. The setup screen does not host the typing server.
+- Tap the keyboard address strip and try its **IP fallback**, including `http://` and the displayed port. Use the address shown now, because the IP or port may have changed. If IP works but `.local` does not, the problem is hostname discovery.
+- Put the computer and iPhone on the same Wi-Fi network. Guest networks, client isolation, or a VPN can prevent devices from reaching one another.
+- Toggle to QWERTY and back to Web Access after changing settings. If it still fails, report the keyboard status, address tried, and browser error.
+
+The app checks its own temporary `_airtype._tcp` advertisement and removes it afterward. This does not prove that another device can reach it. Bonjour hostname registration retries after transient failures; IP access remains available when a custom hostname cannot be registered. Actual iOS Local Network permission behavior must be tested on physical hardware, as described in Apple's [local network privacy guidance](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy).
 
 ## Implementation
 

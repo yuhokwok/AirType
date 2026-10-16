@@ -22,12 +22,16 @@
 		75CDBBF27888B9F8C89F4A20 /* HTTPProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333ED2B4A2E53858E3B0F00 /* HTTPProtocolTests.swift */; };
 		79592BD0E076DB26EEEE6A41 /* AirTypeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */; };
 		8055D732778D31FFDF431272 /* NetworkPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */; };
+		93F10B4C041B0D6CD0034B39 /* LocalNetworkFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */; };
 		9599FED2B0D0A456D16197FE /* AirTypeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */; };
+		A53CF486C99F6C859F73800E /* LocalNetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */; };
 		A8E544EEEC7CBB7D73D09FE6 /* AirKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57858285BBD79ADC669B3149 /* AirKeyboardView.swift */; };
 		ACC5790F9ADC070355DE568E /* Portal.html in Resources */ = {isa = PBXBuildFile; fileRef = 60623C8DE539C00A0B92BE64 /* Portal.html */; };
+		B5374B42AF55989BCA79BB6F /* LocalNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */; };
 		B7A78DE784C71268125401AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		B882C415EE629FC809AFDD25 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E2DA166626D2FDDD56D7A /* KeyboardViewController.swift */; };
 		D0EA1E1802002FBB79E4C4DA /* Portal.html in Resources */ = {isa = PBXBuildFile; fileRef = 60623C8DE539C00A0B92BE64 /* Portal.html */; };
+		DCAAB9D323F3280FE27C37C9 /* LocalNetworkFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */; };
 		ECAC1A1EF578B643D3FEF26B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */; };
 		EE0A01EEEAA1F5C1D372F2C2 /* AirKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57858285BBD79ADC669B3149 /* AirKeyboardView.swift */; };
 		FE2BDB38C485621D6AFD9962 /* BonjourHostname.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */; };
@@ -81,8 +85,11 @@
 		81E9B962CADD47E221D8C711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		84C5DBC119457047CBBF6DA9 /* AirType.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirType.entitlements; sourceTree = "<group>"; };
 		8EF6D4BDB334B854BC05B366 /* PairingCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingCode.swift; sourceTree = "<group>"; };
+		8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkTests.swift; sourceTree = "<group>"; };
 		A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPreferencesTests.swift; sourceTree = "<group>"; };
+		AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkCheck.swift; sourceTree = "<group>"; };
 		B607E9A35875E3C7F029368E /* AirType.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AirType.entitlements; sourceTree = "<group>"; };
+		BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkFailure.swift; sourceTree = "<group>"; };
 		C55E2DA166626D2FDDD56D7A /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		C5D74F9A09DAAB251293A8CD /* AirTypeKeyboard.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = AirTypeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C61ED4DFED8D2F288BDBEA99 /* AirType.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AirType.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +126,7 @@
 				016CE0BD38FF153C97CC6AD3 /* AirTypeApp.swift */,
 				70DA2951208A8F61BF1E685F /* Info.plist */,
 				68AAA2E9333DDBD1E5B67135 /* KeyboardTestController.swift */,
+				AA983541F33A95FCF0AA3ACC /* LocalNetworkCheck.swift */,
 			);
 			path = AirTypeApp;
 			sourceTree = "<group>";
@@ -139,6 +147,7 @@
 				D3E850855A3A6CAAFF07BC2F /* Assets.xcassets */,
 				7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */,
 				783253C86C4CB577BE46601D /* HTTPProtocol.swift */,
+				BE1C38898A3EB3512031D384 /* LocalNetworkFailure.swift */,
 				4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */,
 				8EF6D4BDB334B854BC05B366 /* PairingCode.swift */,
 				9D91D72FCD12F0DDB8299F9E /* Resources */,
@@ -150,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				6333ED2B4A2E53858E3B0F00 /* HTTPProtocolTests.swift */,
+				8F9055391A954E90D7C454BE /* LocalNetworkTests.swift */,
 				A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */,
 				4FF78E80E76F0D8AF7C83295 /* PairingCodeTests.swift */,
 			);
@@ -294,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75CDBBF27888B9F8C89F4A20 /* HTTPProtocolTests.swift in Sources */,
+				B5374B42AF55989BCA79BB6F /* LocalNetworkTests.swift in Sources */,
 				8055D732778D31FFDF431272 /* NetworkPreferencesTests.swift in Sources */,
 				15FDDD845FFD2E2B26E6D107 /* PairingCodeTests.swift in Sources */,
 			);
@@ -309,6 +320,8 @@
 				FE2BDB38C485621D6AFD9962 /* BonjourHostname.swift in Sources */,
 				504ABBB53D34AF00851A44F3 /* HTTPProtocol.swift in Sources */,
 				46A79B0EF834D5CFB18A2D93 /* KeyboardTestController.swift in Sources */,
+				A53CF486C99F6C859F73800E /* LocalNetworkCheck.swift in Sources */,
+				93F10B4C041B0D6CD0034B39 /* LocalNetworkFailure.swift in Sources */,
 				03418135D62AB179AC559C90 /* NetworkPreferences.swift in Sources */,
 				05403FE112DB26AFF6B14F19 /* PairingCode.swift in Sources */,
 			);
@@ -323,6 +336,7 @@
 				5C075C44CC794A63FC5B9127 /* BonjourHostname.swift in Sources */,
 				526E8FB074544838EB48CF17 /* HTTPProtocol.swift in Sources */,
 				B882C415EE629FC809AFDD25 /* KeyboardViewController.swift in Sources */,
+				DCAAB9D323F3280FE27C37C9 /* LocalNetworkFailure.swift in Sources */,
 				6A74EBB24020F11A5B5E0C4A /* NetworkPreferences.swift in Sources */,
 				4F2388EAD85C76419D476F5D /* PairingCode.swift in Sources */,
 			);

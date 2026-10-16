@@ -16,7 +16,8 @@ struct AirTypeApp: App {
 
 struct SetupView: View {
     @Environment(\.openURL) private var openURL
-    @State private var networkBrowser: NWBrowser?
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var networkCheck = LocalNetworkCheck()
     @State private var bonjourName = NetworkPreferences.hostname
     @State private var nameSaved = false
     @State private var settingsUnavailable = false
@@ -62,7 +63,19 @@ struct SetupView: View {
                         Text(nameSaved ? "Saved. Reopen the AirType keyboard to apply." : "Default: airtype.local:8307. Name conflicts automatically use -2, -3, and so on. Use the final address shown on the keyboard; its IP address remains available as a fallback.")
                             .font(.footnote).foregroundStyle(.secondary)
                     }
-                    Button("Enable local network connection") { enableNetwork() }.buttonStyle(.bordered).tint(cyan)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Button(networkCheck.state == .checking ? "Checking local network…" : "Enable local network connection") {
+                            networkCheck.start()
+                        }.buttonStyle(.bordered).tint(cyan)
+                            .disabled(networkCheck.state == .checking)
+                        Text(networkMessage).font(.footnote).foregroundStyle(.secondary)
+                        if networkCheck.state == .blocked {
+                            Button("Open AirType Settings") { openAppSettings() }
+                                .buttonStyle(.bordered).tint(cyan)
+                        }
+                        Text("Local Network permission and keyboard Full Access are separate. Keep the AirType keyboard’s Web Access screen visible while connecting from your computer.")
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
                     NavigationLink { KeyboardTestScreen(useSystemKeyboard:true).ignoresSafeArea(.keyboard).navigationTitle("Try AirType") } label: {
                         Text("Try the installed keyboard").frame(maxWidth:.infinity).padding(6)
                     }.buttonStyle(.borderedProminent).tint(cyan)
@@ -74,6 +87,10 @@ struct SetupView: View {
                     Text("invivo").font(.footnote).foregroundStyle(.secondary)
                 }.padding(28).frame(maxWidth:600).frame(maxWidth:.infinity)
             }.background(Color(.systemBackground))
+                .onChange(of: scenePhase) {
+                    if scenePhase == .active && networkCheck.hasRequested { networkCheck.start() }
+                }
+                .onDisappear { networkCheck.stop() }
                 .alert("Open Settings manually", isPresented: $settingsUnavailable) {
                     Button("OK", role: .cancel) {}
                 } message: {
@@ -87,10 +104,18 @@ struct SetupView: View {
             VStack(alignment:.leading,spacing:5) { Text(title).font(.headline); Text(detail).font(.subheadline).foregroundStyle(.secondary) }
         }
     }
-    private func enableNetwork() {
-        networkBrowser?.cancel()
-        let browser = NWBrowser(for:.bonjour(type:"_airtype._tcp",domain:nil),using:.tcp)
-        browser.start(queue:.main); networkBrowser = browser
+    private var networkMessage: String {
+        switch networkCheck.state {
+        case .idle: return "Tap to request Local Network access in this app before using the keyboard."
+        case .checking: return "Choose Allow if iOS asks for Local Network access. Checking Bonjour…"
+        case .available: return "Bonjour check passed on this device. Now switch to the AirType keyboard, keep Web Access visible, and open its full http:// address on your computer."
+        case .blocked: return "Local Network access is blocked or awaiting approval. Choose Allow on the prompt, or enable AirType in Settings → Privacy & Security → Local Network, then return here."
+        case .failed(let message): return message
+        }
+    }
+    private func openAppSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        openURL(url) { accepted in settingsUnavailable = !accepted }
     }
 }
 
