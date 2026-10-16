@@ -7,7 +7,12 @@
 .composer-tools{padding:0 16px 10px;display:flex;align-items:center;gap:8px}.composer-tools button{border:1px solid #d7eeee;border-radius:6px;font-size:14px}.composer-tools button[aria-expanded="true"]{background:#e6fafa}.composer-tools span{font-size:12px;color:#999}
 #emoji-picker{margin:0 16px 16px;padding:12px;border:1px solid #d7eeee;border-radius:8px;background:#fbffff}#emoji-picker[hidden]{display:none}.emoji-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.emoji-heading h2{margin:0;font-size:15px;font-weight:500;color:#555}#emoji-search{width:100%;margin:8px 0;padding:10px;border:1px solid #cce3e4;border-radius:5px;font:inherit;color:#444;background:#fff}#emoji-categories{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}#emoji-categories button{font-size:12px;padding:0 8px;border-radius:5px;min-height:36px}#emoji-categories button[aria-pressed="true"]{background:#dff6f6;color:#147b80}#emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:3px;max-height:220px;overflow-y:auto}#emoji-grid button{font-size:25px;padding:3px;color:#333;border-radius:5px;min-height:44px}#emoji-grid button:hover{background:#e5f5f5}#emoji-empty{font-size:13px;margin:12px 0;color:#777}input:focus-visible{outline:2px solid #22bec5;outline-offset:2px}
 @media(max-width:420px){footer{align-items:flex-start;flex-wrap:wrap}#status{width:100%}.composer-tools span{max-width:180px}}
-</style></head><body><main class="portal"><header>AirType</header><section id="pairing" hidden><p>Enter the six-digit pairing code shown on your AirType keyboard.</p><form id="pair-form"><input id="code" aria-label="Pairing code" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required><button id="connect" type="submit">Connect</button></form><div id="pair-error" role="alert"></div></section><form id="form"><textarea id="text" aria-label="Text to send to your iPhone or iPad" placeholder="Type here…" autofocus></textarea><button id="send" data-command type="submit" disabled>Send</button></form><div class="composer-tools"><button id="emoji-toggle" type="button" aria-expanded="false" aria-controls="emoji-picker">☺ Emoji</button><span>Insert into your draft, then Send.</span></div><section id="emoji-picker" aria-labelledby="emoji-title" hidden><div class="emoji-heading"><h2 id="emoji-title">Emoji</h2><button id="emoji-close" type="button" aria-label="Close emoji picker">×</button></div><input id="emoji-search" type="search" placeholder="Search emoji…" aria-label="Search emoji" autocomplete="off"><div id="emoji-categories" role="group" aria-label="Emoji categories"></div><div id="emoji-grid" role="group" aria-label="Emoji choices"></div><p id="emoji-empty" role="status" hidden>No emoji found. Try another search.</p></section><footer><span id="status" role="status"><i class="dot"></i>Switch to AirType on your iOS device.</span><div><button id="delete" data-command aria-label="Delete one character on your device" disabled>Delete</button><button id="return" data-command aria-label="Insert a new line on your device" disabled>↵</button></div></footer><div class="help">Enter to send · Shift + Enter for a new line. Keep AirType open on your device.</div></main>
+
+[hidden]{display:none!important}.portal{border-radius:12px}header{padding:20px}.step-label{display:block;font-size:11px;font-weight:500;margin-top:6px;letter-spacing:.04em;color:#777}#pairing{padding:28px 24px;background:#fff;border:0}#pairing h1{font-size:22px;font-weight:400;color:#444;margin:0 0 10px}#pair-form{margin-top:20px;gap:10px}#code{flex:1;min-width:130px;width:160px;max-width:250px}#connect,#reconnect{background:#22bec5;color:white;border-radius:7px;padding:0 18px;font-size:15px}#form{align-items:flex-end}#text{min-width:0}.icon-button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:10px;border-radius:7px}.icon-button:hover:enabled{background:#e6fafa}.icon-button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#send{background:#22bec5;color:white}#send:hover:enabled{background:#189da3}.typing-actions{display:flex;justify-content:flex-end;gap:4px;padding:0 16px 10px}.composer-tools{justify-content:space-between}.composer-tools .draft-hint{flex:1}#reconnect{min-height:38px;flex-shrink:0}footer{padding:12px 16px}#status{line-height:1.5}#pair-description{font-size:14px}.help{line-height:1.5}
+</style></head><body><main class="portal" aria-label="AirType connection"><header>AirType<span id="step" class="step-label">1 · Connect your keyboard</span></header>
+<section id="pairing" aria-labelledby="pair-title"><h1 id="pair-title">Connect to AirType</h1><p id="pair-description">Enter the six-digit code shown on your AirType keyboard. Keep Web Access open on your device.</p><form id="pair-form"><input id="code" aria-label="Pairing code" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required><button id="connect" type="submit">Connect</button></form><div id="pair-error" role="alert"></div></section>
+<section id="typing" aria-label="Type to your device" hidden><form id="form"><textarea id="text" aria-label="Text to send to your iPhone or iPad" placeholder="Type here…"></textarea><button id="send" class="icon-button" data-command type="submit" aria-label="Send text" title="Send text (Enter)" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></form><div class="composer-tools"><button id="emoji-toggle" type="button" aria-expanded="false" aria-controls="emoji-picker">☺ Emoji</button><span class="draft-hint">Insert into your draft, then send.</span></div><section id="emoji-picker" aria-labelledby="emoji-title" hidden><div class="emoji-heading"><h2 id="emoji-title">Emoji</h2><button id="emoji-close" type="button" aria-label="Close emoji picker">×</button></div><input id="emoji-search" type="search" placeholder="Search emoji…" aria-label="Search emoji" autocomplete="off"><div id="emoji-categories" role="group" aria-label="Emoji categories"></div><div id="emoji-grid" role="group" aria-label="Emoji choices"></div><p id="emoji-empty" role="status" hidden>No emoji found. Try another search.</p></section><div class="typing-actions"><button id="delete" class="icon-button" data-command type="button" aria-label="Delete one character on your device" title="Delete one character" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9l-8-8Z"/><path d="m12 9 6 6m0-6-6 6"/></svg></button><button id="return" class="icon-button" data-command type="button" aria-label="Insert a new line on your device" title="Insert a new line" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4v9a3 3 0 0 1-3 3H4m5-5-5 5 5 5"/></svg></button></div><div class="help">Enter to send · Shift + Enter for a new line. Keep AirType open on your device.</div></section>
+<footer><span id="status" role="status"><i class="dot"></i>Pair with your keyboard to begin.</span><button id="reconnect" type="button" hidden>Reconnect</button></footer></main>
 <script>
 let token = location.hash.slice(1);
 const text = document.querySelector('#text');
@@ -17,7 +22,14 @@ const pairError = document.querySelector('#pair-error');
 const code = document.querySelector('#code');
 const connect = document.querySelector('#connect');
 const buttons = [...document.querySelectorAll('[data-command]')];
+const typing = document.querySelector('#typing');
+const pairForm = document.querySelector('#pair-form');
+const reconnect = document.querySelector('#reconnect');
+const step = document.querySelector('#step');
 let connected = false, busy = false, polling = false, pairingBusy = false, needsPairing = !token;
+let paused = false, pollTimer, deadlineTimer, retryDeadline = null, connectionVersion = 0;
+const activeRequests = new Set();
+const reconnectWindow = 10000;
 
 // Curated, bundled choices: no CDN, external fonts, or network lookup required.
 const emojiGroups = {
@@ -89,14 +101,58 @@ function update(message, ok) {
     status.replaceChildren(dot, document.createTextNode(message));
     buttons.forEach(button => button.disabled = !ok || busy);
 }
+function clearRetries() {
+    clearInterval(pollTimer); clearTimeout(deadlineTimer);
+    pollTimer = undefined; deadlineTimer = undefined; retryDeadline = null;
+}
 function showPairing(message = '') {
-    needsPairing = true;
-    pairing.hidden = false;
+    clearRetries();
+    needsPairing = true; paused = false;
+    pairing.hidden = false; pairForm.hidden = false; typing.hidden = true;
+    reconnect.hidden = true;
+    step.textContent = '1 · Connect your keyboard';
     pairError.textContent = message;
     update('Pair with the code shown on your keyboard.', false);
+    code.focus();
+}
+function pauseReconnecting() {
+    clearRetries(); paused = true;
+    // Stop in-flight requests too, so a slow response cannot silently resume polling.
+    activeRequests.forEach(controller => controller.abort());
+    update('Keyboard unavailable. Your draft is kept.', false);
+    reconnect.hidden = false;
+}
+function disconnected(since, message) {
+    if (paused || needsPairing) return;
+    update(message, false);
+    if (retryDeadline === null) {
+        retryDeadline = since + reconnectWindow;
+        deadlineTimer = setTimeout(pauseReconnecting, Math.max(0, retryDeadline - Date.now()));
+    }
+    if (Date.now() >= retryDeadline) pauseReconnecting();
+}
+function connectionReady(message) {
+    clearTimeout(deadlineTimer); deadlineTimer = undefined; retryDeadline = null;
+    pairing.hidden = true; typing.hidden = false; reconnect.hidden = true;
+    step.textContent = '2 · Type to your device';
+    update(message, true);
+}
+function beginConnecting() {
+    clearRetries(); paused = false; reconnect.hidden = true;
+    if (typing.hidden) {
+        pairing.hidden = false; pairForm.hidden = true;
+        pairError.textContent = '';
+    }
+    update('Connecting… Keep Web Access open on your device.', false);
+    // Bound the entire connection attempt, including a request that never returns.
+    retryDeadline = Date.now() + reconnectWindow;
+    deadlineTimer = setTimeout(pauseReconnecting, reconnectWindow);
+    pollTimer = setInterval(poll, 1500);
+    poll();
 }
 async function request(path, options = {}) {
     const controller = new AbortController();
+    activeRequests.add(controller);
     const timer = setTimeout(() => controller.abort(), 3000);
     try {
         const response = await fetch(path, {
@@ -109,37 +165,42 @@ async function request(path, options = {}) {
             throw error;
         }
         return await response.json();
-    } finally { clearTimeout(timer); }
+    } finally { clearTimeout(timer); activeRequests.delete(controller); }
 }
 async function poll() {
-    if (polling || busy || pairingBusy || needsPairing) return;
+    if (polling || busy || pairingBusy || needsPairing || paused) return;
+    if (retryDeadline !== null && Date.now() >= retryDeadline) { pauseReconnecting(); return; }
     polling = true;
-    const attemptedToken = token;
+    const version = connectionVersion, started = Date.now();
     try {
         await request('/status');
-        if (attemptedToken === token) update('Connected. Ready to type.', true);
+        if (version !== connectionVersion || paused) return;
+        const firstConnection = typing.hidden;
+        connectionReady('Connected. Ready to type.');
+        if (firstConnection) text.focus();
     } catch (error) {
-        if (attemptedToken !== token) return;
-        if (error.status === 403) showPairing('This connection needs pairing. Enter the current keyboard code.');
-        else update('Reconnecting… Keep AirType open on your device.', false);
+        if (version !== connectionVersion || paused) return;
+        if (error.status === 403) showPairing('Enter the current code shown on your keyboard. Your draft is kept.');
+        else disconnected(started, 'Reconnecting… Keep Web Access open on your device.');
     } finally { polling = false; }
 }
 document.querySelector('#pair-form').onsubmit = async event => {
     event.preventDefault();
     if (pairingBusy) return;
     pairingBusy = true; connect.disabled = true; pairError.textContent = '';
+    const version = connectionVersion;
     try {
         const result = await request('/pair', { method: 'POST', body: JSON.stringify({ code: code.value.trim() }) });
+        if (version !== connectionVersion) return;
         token = result.token;
         history.replaceState(null, '', location.pathname + '#' + token);
-        needsPairing = false; pairing.hidden = true; code.value = '';
-        update('Connecting…', false);
-        text.focus();
+        needsPairing = false; code.value = '';
     } catch (error) {
-        pairError.textContent = error.status ? error.message : 'Cannot reach the keyboard. Keep Web Access open and try again.';
+        if (version !== connectionVersion) return;
+        pairError.textContent = error.status ? error.message : 'Cannot reach the keyboard. Keep Web Access open and try Connect again.';
     } finally {
         pairingBusy = false; connect.disabled = false;
-        if (!needsPairing) poll();
+        if (version === connectionVersion && !needsPairing) beginConnecting();
     }
 };
 async function send(action) {
@@ -147,19 +208,23 @@ async function send(action) {
     const value = text.value;
     if (action === 'insert' && !value) return;
     busy = true; buttons.forEach(button => button.disabled = true);
+    const version = connectionVersion, started = Date.now();
     try {
         await request('/command', { method: 'POST', body: JSON.stringify({ id: uuid(), action, text: action === 'insert' ? value : null }) });
+        if (version !== connectionVersion || paused) return;
         if (action === 'insert' && text.value === value) text.value = '';
-        update('Sent to your device.', true);
+        connectionReady('Sent to your device.');
     } catch (error) {
+        if (version !== connectionVersion || paused) return;
         if (error.status === 403) showPairing('Pair again with the code on your keyboard. Your draft is kept.');
-        else update('Send not confirmed. Your draft is kept; check your device before resending.', false);
+        else disconnected(started, 'Send not confirmed. Draft kept; check your device before resending.');
     } finally {
         busy = false;
         buttons.forEach(button => button.disabled = !connected);
-        if (!needsPairing) text.focus();
+        if (!needsPairing && !typing.hidden) text.focus();
     }
 }
+reconnect.onclick = beginConnecting;
 function uuid() {
     if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
     // getRandomValues is available on ordinary HTTP LAN pages; randomUUID often is not.
@@ -175,10 +240,11 @@ text.onkeydown = event => {
 document.querySelector('#delete').onclick = () => send('delete');
 document.querySelector('#return').onclick = () => send('newline');
 addEventListener('hashchange', () => {
+    connectionVersion += 1;
+    clearRetries(); activeRequests.forEach(controller => controller.abort());
     token = location.hash.slice(1); needsPairing = !token;
     if (needsPairing) showPairing();
-    else { pairing.hidden = true; update('Connecting…', false); poll(); }
+    else beginConnecting();
 });
-if (needsPairing) { showPairing(); code.focus(); } else poll();
-setInterval(poll, 1500);
+if (needsPairing) showPairing(); else beginConnecting();
 </script></body></html>

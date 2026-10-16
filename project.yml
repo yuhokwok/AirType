@@ -46,7 +46,9 @@ targets:
   AirTypeTests:
     type: bundle.unit-test
     platform: iOS
-    sources: Tests
+    sources:
+      - path: Tests
+        excludes: ['*.cjs']
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

@@ -8,7 +8,7 @@ Native iOS/iPadOS containing app and keyboard extension recreated from invivo's 
 - Switch between Web Access and a local QWERTY keyboard with light and dark appearances.
 - Send Unicode text, delete a character, or insert a newline remotely.
 - Browse six emoji categories or search the offline browser emoji picker; insert choices at the cursor or replace selected draft text before sending.
-- Reconnect automatically while retaining unsent drafts.
+- Reconnect automatically for up to 10 seconds, then pause until you click Reconnect; retain unsent drafts throughout.
 - Pair using the six-digit code shown on the keyboard, or its complete connection URL/QR code; no desktop installation or cloud account is required.
 
 ## Screenshots
@@ -37,8 +37,8 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 2. Tap **Open Keyboard Settings** on the app page. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
-5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser, enter the six-digit **Pairing code** shown beside Web Access, and click **Connect**. You can also tap the address bar to open the complete tokenized URL or QR code.
-6. Type and press Enter or Send. Shift+Enter adds a line break to the draft; the ↵ button sends a newline to the device. Delete removes one character from the device.
+5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also tap the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
+6. Type and press Enter or the **paper-plane** Send button. Shift+Enter adds a line break to the draft; the **return-arrow** button sends a newline to the device. The **backspace** button removes one character from the device. Icon buttons include accessible labels and tooltips.
 
 Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
 
@@ -81,7 +81,7 @@ The app checks its own temporary `_airtype._tcp` advertisement and removes it af
 
 The portal exchanges the keyboard-visible six-digit pairing code for a random device-local token, limits incorrect pairing attempts to five per minute, and authenticates commands with that token. It rejects foreign browser origins and deduplicates recently received command IDs. It does not read or send the surrounding text in the host app. HTTP is local and unencrypted: use a trusted network and keep the complete connection address private. Browser drafts remain in the open page, without local storage. An uncertain send retains the draft instead of automatically retrying a possibly delivered command.
 
-The server runs only while Web Access is visible. Returning to Web Access lets the portal reconnect without refreshing. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
+The server runs only while Web Access is visible. After a failed connection attempt, the portal retries for up to 10 seconds, then stops requests and displays **Reconnect**. Reopen Web Access and click Reconnect to start another attempt; the draft is retained. If the server returns within the retry window, the portal reconnects automatically. A Wi-Fi address change requires opening the newly displayed address. Other apps can prohibit custom keyboards; iOS substitutes its system keyboard for secure and some phone-number fields. QWERTY is an English letter/symbol layout; arbitrary language text can arrive from the computer. Autocorrection, prediction, and glide typing are not implemented.
 
 ## Build and validation
 
@@ -91,6 +91,14 @@ The checked-in Xcode project is ready to open. `project.yml` can regenerate it u
 xcodegen generate
 xcodebuild -project AirType.xcodeproj -scheme AirType -destination 'platform=iOS Simulator,name=iPhone 17' test
 ```
+
+Run browser connection-state regression tests with Node.js 18 or later (no packages required):
+
+```sh
+node --test Tests/PortalConnectionTests.cjs
+```
+
+These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, and draft retention.
 
 Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Default launch opens setup.
 
