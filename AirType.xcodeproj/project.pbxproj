@@ -18,6 +18,7 @@
 		5621B0AA1AE062818146B115 /* AirTypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CE0BD38FF153C97CC6AD3 /* AirTypeApp.swift */; };
 		5C075C44CC794A63FC5B9127 /* BonjourHostname.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE6D4DAAA5954930AAD0CB2 /* BonjourHostname.swift */; };
 		6A74EBB24020F11A5B5E0C4A /* NetworkPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */; };
+		6CB12146EE21A953184C9EE9 /* AirType.icon in Resources */ = {isa = PBXBuildFile; fileRef = 00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */; };
 		75CDBBF27888B9F8C89F4A20 /* HTTPProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333ED2B4A2E53858E3B0F00 /* HTTPProtocolTests.swift */; };
 		79592BD0E076DB26EEEE6A41 /* AirTypeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B813CD961EE77F18E8C3116 /* AirTypeServer.swift */; };
 		8055D732778D31FFDF431272 /* NetworkPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A860A1040E365D0BEE370FBF /* NetworkPreferencesTests.swift */; };
@@ -64,6 +65,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AirType.icon; sourceTree = "<group>"; };
 		016CE0BD38FF153C97CC6AD3 /* AirTypeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirTypeApp.swift; sourceTree = "<group>"; };
 		298EA3157EAF3E9150B91513 /* AirTypeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AirTypeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FDE58544DD69E6AC5CDFC97 /* NetworkPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkPreferences.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		145C9D3F826BD0F3DF684752 = {
 			isa = PBXGroup;
 			children = (
+				00A6E8FDC1CC9DB66FEFE47F /* AirType.icon */,
 				62A3FF740D439B894EAC6975 /* AirTypeApp */,
 				E2493446F686812E9613E897 /* AirTypeKeyboard */,
 				B00468395625D4C8B29F9CE9 /* Shared */,
@@ -277,6 +280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CB12146EE21A953184C9EE9 /* AirType.icon in Resources */,
 				ECAC1A1EF578B643D3FEF26B /* Assets.xcassets in Resources */,
 				ACC5790F9ADC070355DE568E /* Portal.html in Resources */,
 			);
@@ -343,7 +347,7 @@
 		05E35E98C54FB19964F18AE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
 				CODE_SIGN_ENTITLEMENTS = AirTypeApp/AirType.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AirTypeApp/Info.plist;
@@ -360,7 +364,7 @@
 		10F851DCEE02090F9910040B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AirType;
 				CODE_SIGN_ENTITLEMENTS = AirTypeApp/AirType.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AirTypeApp/Info.plist;
