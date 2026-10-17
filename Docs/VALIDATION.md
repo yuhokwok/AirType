@@ -108,3 +108,15 @@ App/extension build and all 47 tests pass. The local mode-transition test now ch
 ## Restore conditional local globe — 17 October 2026
 
 Removed the local keyboard's forced globe visibility. It now receives the same needsInputModeSwitchKey value as the Web panel. The existing mode-transition regression covers hiding and showing the local globe and its position between 123/ABC and Wi-Fi when shown. This follows UIKit's current keyboard environment rather than an iPhone model list.
+
+## Three-step setup and contact links — 17 October 2026
+
+The home screen now shows only Set up the keyboard, Allow Local Network and Try AirType, followed by Advanced settings and contact links. The compact header places all three actions and the footer within the tested normal-size iPhone viewport. Network status is a short message; completion is explicitly a local check, not a claim that a computer is connected or Full Access is enabled.
+
+Advanced settings retains connection-name persistence/normalization, raw network diagnostics and recheck, app Settings access, connection help, manual keyboard setup, shared preview and privacy explanation. Try AirType uses the installed system keyboard and now has a text placeholder and connection hint without Light/Dark or Clear test controls. The shared preview retains those controls in Advanced settings.
+
+Footer destinations are https://www.threads.com/@invivointeractive, http://www.invivointeractive.com/airtype and mailto:info@invivovinteractive.com. The email spelling matches the user's request exactly. Link destinations were checked in source; the web research tool could not retrieve the two external pages, so external page availability and email delivery were not verified.
+
+App/extension build and all 47 XCTest cases pass. CUA on Device Hub verified the home network-check action reached completion, Advanced settings navigation and the installed-keyboard Try destination. Increasing simulator Text Size from 3 to 7 confirmed wrapping and scrolling; footer links changed to a vertical stack. Text Size was restored to 3. This does not establish real-device Local Network prompts, full Settings enablement, cross-device connectivity or VoiceOver acceptance.
+
+Evidence: [home](Validation/setup-three-steps.jpg), [network check complete](Validation/setup-network-complete.jpg), [Advanced settings](Validation/setup-advanced.jpg), [Try AirType](Validation/setup-try-airtype.jpg), [large-text footer](Validation/setup-large-text-footer.jpg).

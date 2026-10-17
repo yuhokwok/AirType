@@ -2,7 +2,7 @@
 
 Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
 
-The current app opens **Keyboard setup** directly. Remote input currently offers **Web AirType only**; Connect, Direct Wi-Fi, Bluetooth and the keyboard transport selector are temporarily hidden. Existing native-mode preferences fall back to Web. The native implementation remains in source behind `AirTypeFeatures.nearbyTypingEnabled` for future development.
+The current app opens a compact three-step setup: **Set up the keyboard → Allow Local Network → Try AirType**. Connection naming, diagnostics, troubleshooting and the shared keyboard preview live under **Advanced settings**. The footer links to Threads @invivointeractive, the AirType website and the owner-provided email info@invivovinteractive.com. Remote input currently offers **Web AirType only**; Connect, Direct Wi-Fi, Bluetooth and the keyboard transport selector are temporarily hidden. Existing native-mode preferences fall back to Web. The native implementation remains in source behind `AirTypeFeatures.nearbyTypingEnabled` for future development.
 
 ## Native nearby typing — temporarily hidden developer implementation
 
@@ -51,8 +51,8 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 
 ## Setup
 
-1. Install and open AirType. Tap **Enable local network connection** and permit local network access if prompted. Wait for **Bonjour check passed on this device**. This checks local Bonjour discovery; the computer connection is established separately through the keyboard.
-2. Tap **Open Keyboard Settings** on the app page. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
+1. Install and open AirType. Use step 2, **Allow Local Network**, and permit access if prompted. Wait for **Network check complete**. This checks local Bonjour discovery; the computer connection is established separately through the keyboard.
+2. In step 1, tap **Open Keyboard Settings**. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
 5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also tap the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
@@ -72,7 +72,7 @@ The bottom row is 123/ABC, optional globe, Wi-Fi, space, period, return. The ori
 
 The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
 
-On the app page, edit **Bonjour address** and tap **Save Bonjour Name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
+Open **Advanced settings**, edit **Connection name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
 
 Both targets include the shared App Group entitlement. Use your own unique group identifier consistently in the entitlements and `NetworkPreferences.swift` if you change the bundle identifiers. Custom settings require a properly provisioned App Group on physical devices.
 
@@ -84,7 +84,7 @@ The updated build shows a Pairing code on the keyboard and a Connect form when y
 
 ## If the browser cannot open the page
 
-- Open the **AirType app** first and run **Enable local network connection**. If access is blocked, enable AirType under Settings → Privacy & Security → Local Network and return to the app to recheck. Local Network permission and the keyboard's **Allow Full Access** setting are separate.
+- Open the **AirType app** first and use step 2, **Allow Local Network**. If access is blocked, enable AirType under Settings → Privacy & Security → Local Network and return to the app to recheck. Local Network permission and the keyboard's **Allow Full Access** setting are separate.
 - Switch to the installed AirType keyboard in a text field and keep **Web Access** visible. The setup screen does not host the typing server.
 - Tap the keyboard address strip and try its **IP fallback**, including `http://` and the displayed port. Use the address shown now, because the IP or port may have changed. If IP works but `.local` does not, the problem is hostname discovery.
 - Put the computer and iPhone on the same Wi-Fi network. Guest networks, client isolation, or a VPN can prevent devices from reaching one another.
@@ -135,7 +135,7 @@ node --test Tests/PortalConnectionTests.cjs
 
 These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, and draft retention.
 
-Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens Keyboard setup directly. Native preview mode requests also fall back to Web while the nearby feature is disabled.
+Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens the three-step setup screen. Native preview mode requests also fall back to Web while the nearby feature is disabled.
 
 See [validation results](Docs/VALIDATION.md) for completed checks and physical-device gates, and the [implementation checklist](Docs/PLAN.md) for the design contract.
 

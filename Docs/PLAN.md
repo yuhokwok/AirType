@@ -52,3 +52,13 @@ The setup app and connection-token/QR detail screen are new supporting UI. The r
 ## Restore system globe policy — 17 October 2026
 
 Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKey. Do not hard-code device models. Hide the in-keyboard globe when the system does not require it; retain its 123/ABC–globe–Wi-Fi position when shown. Space takes the freed width.
+
+## Simplified containing app — 17 October 2026
+
+- [x] Compact branded header and three short cards: Set up the keyboard, Allow Local Network, Try AirType.
+- [x] Keep network access before optional connection naming; show short honest idle/checking/completed/blocked/failed messages.
+- [x] Move connection name, detailed diagnostics, troubleshooting, manual keyboard path, shared preview and privacy explanation into Advanced settings.
+- [x] Keep a single installed-keyboard Try entry on the home screen; simplify its text field, remove preview appearance controls and add a placeholder/connection hint.
+- [x] Footer links: Threads @invivointeractive, http://www.invivointeractive.com/airtype and mailto:info@invivovinteractive.com (exact supplied spelling).
+- [x] Adaptive horizontal/vertical footer links for large Dynamic Type.
+- [x] App/extension build and all 47 tests pass; simulator checks cover home, network success, Advanced navigation, Try navigation and larger text.

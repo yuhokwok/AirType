@@ -18,104 +18,235 @@ struct SetupView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var networkCheck = LocalNetworkCheck()
-    @State private var bonjourName = NetworkPreferences.hostname
-    @State private var nameSaved = false
     @State private var settingsUnavailable = false
-    private let cyan = Color(red:0.08,green:0.75,blue:0.79)
+    private let accent = Color(red: 0.08, green: 0.67, blue: 0.72)
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing:24) {
-                    Image("AirTypeLogo").resizable().frame(width:104,height:104).clipShape(.rect(cornerRadius:24))
-                    VStack(spacing:8) {
-                        Text("AirType").font(.system(size:36,weight:.light))
-                        Text("Type from the computer\nyou’re working on.").font(.title3).foregroundStyle(cyan).multilineTextAlignment(.center)
-                    }
-                    VStack(alignment:.leading,spacing:20) {
-                        step("1", "Add the keyboard", "Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.")
-                        step("2", "Allow Full Access", "Tap AirType in Keyboards and enable Allow Full Access for the Wi-Fi connection. Local typing works without it.")
-                        step("3", "Connect your computer", "Switch to AirType with the globe key. Open its address on a computer using the same Wi-Fi, then enter the six-digit code shown on the keyboard.")
-                    }
-                    Button {
-                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                        openURL(url) { accepted in settingsUnavailable = !accepted }
-                    } label: {
-                        Label("Open Keyboard Settings", systemImage: "keyboard")
-                            .frame(maxWidth: .infinity).padding(6)
-                    }.buttonStyle(.borderedProminent).tint(cyan)
-                    Text("In AirType settings, choose Keyboards, enable AirType, then Allow Full Access. If Keyboards is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Bonjour address").font(.headline)
-                        HStack {
-                            TextField("airtype", text: $bonjourName)
-                                .textInputAutocapitalization(.never).autocorrectionDisabled()
-                                .textFieldStyle(.roundedBorder)
-                                .accessibilityLabel("Bonjour name")
-                                .onChange(of: bonjourName) { nameSaved = false }
-                            Text(".local").foregroundStyle(.secondary)
+                VStack(spacing: 16) {
+                    HStack(spacing: 14) {
+                        Image("AirTypeLogo").resizable().scaledToFit()
+                            .frame(width: 56, height: 56).clipShape(.rect(cornerRadius: 14))
+                            .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("AirType").font(.title2.weight(.semibold))
+                            Text("Type on your computer. Send to your iPhone.")
+                                .font(.subheadline).foregroundStyle(.secondary)
                         }
-                        Button("Save Bonjour Name") {
-                            NetworkPreferences.saveHostname(bonjourName)
-                            bonjourName = NetworkPreferences.hostname
-                            nameSaved = true
-                        }.buttonStyle(.bordered).tint(cyan)
-                        Text(nameSaved ? "Saved. Reopen the AirType keyboard to apply." : "Default: airtype.local:8307. Name conflicts automatically use -2, -3, and so on. Use the final address shown on the keyboard; its IP address remains available as a fallback.")
-                            .font(.footnote).foregroundStyle(.secondary)
+                        Spacer(minLength: 0)
+                    }.padding(.bottom, 4)
+
+                    SetupStepCard(number: "1", title: "Set up the keyboard") {
+                        Text("Enable AirType and Allow Full Access in Settings.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        Button(action: openAppSettings) {
+                            Label("Open Keyboard Settings", systemImage: "keyboard")
+                                .frame(maxWidth: .infinity, minHeight: 32)
+                        }.buttonStyle(.borderedProminent)
                     }
-                    VStack(alignment: .leading, spacing: 10) {
-                        Button(networkCheck.state == .checking ? "Checking local network…" : "Enable local network connection") {
-                            networkCheck.start()
-                        }.buttonStyle(.bordered).tint(cyan)
-                            .disabled(networkCheck.state == .checking)
-                        Text(networkMessage).font(.footnote).foregroundStyle(.secondary)
+                    SetupStepCard(number: "2", title: "Allow Local Network") {
+                        Text(networkCheck.state.setupMessage)
+                            .font(.subheadline).foregroundStyle(.secondary)
+                            .accessibilityIdentifier("NetworkSetupMessage")
                         if networkCheck.state == .blocked {
-                            Button("Open AirType Settings") { openAppSettings() }
-                                .buttonStyle(.bordered).tint(cyan)
+                            Button(action: openAppSettings) {
+                                Label("Open Settings", systemImage: "gearshape")
+                                    .frame(maxWidth: .infinity, minHeight: 32)
+                            }.buttonStyle(.bordered)
+                        } else {
+                            Button { networkCheck.start() } label: {
+                                Label(networkCheck.state.setupAction, systemImage: networkCheck.state == .available ? "checkmark.circle" : "wifi")
+                                    .frame(maxWidth: .infinity, minHeight: 32)
+                            }.buttonStyle(.bordered).disabled(networkCheck.state == .checking)
                         }
-                        Text("Local Network permission and keyboard Full Access are separate. Keep the AirType keyboard’s Web Access screen visible while connecting from your computer.")
-                            .font(.footnote).foregroundStyle(.secondary)
-                    }.frame(maxWidth: .infinity, alignment: .leading)
-                    NavigationLink { KeyboardTestScreen(useSystemKeyboard:true).ignoresSafeArea(.keyboard).navigationTitle("Try AirType") } label: {
-                        Text("Try the installed keyboard").frame(maxWidth:.infinity).padding(6)
-                    }.buttonStyle(.borderedProminent).tint(cyan)
-                    NavigationLink("Preview keyboard & Web Access") { KeyboardTestScreen(useSystemKeyboard:false).ignoresSafeArea(.keyboard).navigationTitle("Keyboard preview") }
-                    Text("Text travels over your local network. AirType has no cloud service and does not store your typing. Keep the keyboard visible while sending. Use a trusted Wi-Fi network.").font(.footnote).foregroundStyle(.secondary)
-                    HStack(spacing:0) {
-                        ForEach(0..<6) { index in Rectangle().fill([Color(red:0.6,green:1,blue:0.89),Color(red:0.59,green:0.96,blue:1),Color(red:0.53,green:0.76,blue:1),Color(red:0.48,green:0.35,blue:1),Color(red:0.71,green:0.35,blue:0.98),Color(red:0.85,green:0.35,blue:0.99)][index]) }
-                    }.frame(height:12)
-                    Text("invivo").font(.footnote).foregroundStyle(.secondary)
-                }.padding(28).frame(maxWidth:600).frame(maxWidth:.infinity)
-            }.background(Color(.systemBackground))
-                .onChange(of: scenePhase) {
-                    if scenePhase == .active && networkCheck.hasRequested { networkCheck.start() }
+                    }
+                    SetupStepCard(number: "3", title: "Try AirType") {
+                        Text("Open a text field and use the globe key to select AirType.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        NavigationLink {
+                            KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)
+                                .navigationTitle("Try AirType").navigationBarTitleDisplayMode(.inline)
+                        } label: {
+                            Label("Try AirType", systemImage: "text.cursor")
+                                .frame(maxWidth: .infinity, minHeight: 32)
+                        }.buttonStyle(.bordered)
+                    }
+                    NavigationLink {
+                        AdvancedSetupView(networkCheck: networkCheck)
+                    } label: {
+                        Label("Advanced settings", systemImage: "slider.horizontal.3")
+                            .font(.subheadline).frame(minHeight: 44)
+                    }
+                    AirTypeContactLinks()
                 }
-                .onDisappear { networkCheck.stop() }
-                .alert("Open Settings manually", isPresented: $settingsUnavailable) {
-                    Button("OK", role: .cancel) {}
-                } message: {
-                    Text("Open Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.")
-                }
-        }
-    }
-    private func step(_ number:String,_ title:String,_ detail:String) -> some View {
-        HStack(alignment:.top,spacing:14) {
-            Text(number).font(.headline).foregroundStyle(cyan).frame(width:28,height:28).background(cyan.opacity(0.1),in:.circle)
-            VStack(alignment:.leading,spacing:5) { Text(title).font(.headline); Text(detail).font(.subheadline).foregroundStyle(.secondary) }
-        }
-    }
-    private var networkMessage: String {
-        switch networkCheck.state {
-        case .idle: return "Tap to request Local Network access in this app before using the keyboard."
-        case .checking: return "Choose Allow if iOS asks for Local Network access. Checking Bonjour…"
-        case .available: return "Bonjour check passed on this device. Now switch to the AirType keyboard, keep Web Access visible, and open its full http:// address on your computer."
-        case .blocked: return "Local Network access is blocked or awaiting approval. Choose Allow on the prompt, or enable AirType in Settings → Privacy & Security → Local Network, then return here."
-        case .failed(let message): return message
+                .padding(20).frame(maxWidth: 560).frame(maxWidth: .infinity)
+            }
+            .background(Color(.systemGroupedBackground))
+            .tint(accent)
+            .onChange(of: scenePhase) {
+                if scenePhase == .active && networkCheck.hasRequested { networkCheck.start() }
+            }
+            .onDisappear { networkCheck.stop() }
+            .alert("Open Settings manually", isPresented: $settingsUnavailable) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType. Then enable Allow Full Access.")
+            }
         }
     }
     private func openAppSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        openURL(url) { accepted in settingsUnavailable = !accepted }
+        openURL(url) { settingsUnavailable = !$0 }
+    }
+}
+
+private struct SetupStepCard<Content: View>: View {
+    let number: String
+    let title: String
+    @ViewBuilder var content: Content
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                Text(number).font(.subheadline.weight(.semibold))
+                    .frame(width: 26, height: 26)
+                    .background(Color.accentColor.opacity(0.12), in: .circle)
+                    .foregroundStyle(.tint)
+                Text(title).font(.headline)
+            }.accessibilityElement(children: .combine)
+            content
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(16)
+        .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 18))
+    }
+}
+
+private struct AirTypeContactLinks: View {
+    var body: some View {
+        VStack(spacing: 4) {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 20) { links }
+                VStack(spacing: 0) { links }
+            }.font(.subheadline).buttonStyle(.plain)
+            Text("invivo").font(.caption).foregroundStyle(.secondary)
+        }
+    }
+    @ViewBuilder private var links: some View {
+        Link(destination: URL(string: "https://www.threads.com/@invivointeractive")!) {
+            Label("Threads", systemImage: "at").frame(minHeight: 44)
+        }.accessibilityLabel("Threads: @invivointeractive")
+        Link(destination: URL(string: "http://www.invivointeractive.com/airtype")!) {
+            Label("Website", systemImage: "globe").frame(minHeight: 44)
+        }.accessibilityLabel("AirType website")
+        Link(destination: URL(string: "mailto:info@invivovinteractive.com")!) {
+            Label("Email", systemImage: "envelope").frame(minHeight: 44)
+        }.accessibilityLabel("Email info@invivovinteractive.com")
+    }
+}
+
+private struct AdvancedSetupView: View {
+    @ObservedObject var networkCheck: LocalNetworkCheck
+    @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var bonjourName = NetworkPreferences.hostname
+    @State private var nameSaved = false
+    @State private var settingsUnavailable = false
+
+    var body: some View {
+        Form {
+            Section {
+                HStack {
+                    TextField("airtype", text: $bonjourName)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        .accessibilityLabel("Connection name")
+                        .onChange(of: bonjourName) { nameSaved = false }
+                    Text(".local").foregroundStyle(.secondary)
+                }
+                Button("Save connection name") {
+                    NetworkPreferences.saveHostname(bonjourName)
+                    bonjourName = NetworkPreferences.hostname; nameSaved = true
+                }
+                if nameSaved { Label("Saved. Reopen the keyboard to apply.", systemImage: "checkmark.circle").font(.footnote) }
+            } header: {
+                Text("Connection name")
+            } footer: {
+                Text("Default: airtype.local:8307. If the name is already taken, AirType adds -2, -3, and so on. Use the address shown on the keyboard; its IP address is also available there.")
+            }
+            Section {
+                Text(networkCheck.state.diagnosticMessage).font(.subheadline).textSelection(.enabled)
+                Button(networkCheck.state == .checking ? "Checking…" : "Run network check") { networkCheck.start() }
+                    .disabled(networkCheck.state == .checking)
+                Button("Open AirType Settings", action: openAppSettings)
+            } header: {
+                Text("Network diagnostics")
+            } footer: {
+                Text("This checks Bonjour on this device. A successful check does not confirm that your computer is connected.")
+            }
+            Section("Connection help") {
+                Text("Keep your computer and iPhone on the same Wi-Fi, and keep the AirType keyboard visible. Open the address displayed on the keyboard in your computer browser and enter its six-digit pairing code.")
+                Text("If the name does not open, tap the keyboard’s address bar and try its IP fallback. Guest Wi-Fi, client isolation or a VPN may prevent the connection.")
+            }
+            Section("Keyboard setup help") {
+                Text("Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType. Open AirType’s keyboard entry and enable Allow Full Access for networking.")
+                Text("Local Network permission and keyboard Full Access are separate. The app cannot confirm your Full Access setting; check it in Settings if connection fails.")
+            }
+            Section {
+                NavigationLink("Preview keyboard & Web Access") {
+                    KeyboardTestScreen(useSystemKeyboard: false).ignoresSafeArea(.keyboard)
+                        .navigationTitle("Keyboard preview").navigationBarTitleDisplayMode(.inline)
+                }
+            } header: {
+                Text("Keyboard preview")
+            } footer: {
+                Text("Preview works inside this app. It does not confirm that the system keyboard is enabled. Use Try AirType on the home screen to test the installed keyboard.")
+            }
+            Section("Privacy") {
+                Text("Full Access lets the keyboard connect to your computer. AirType uses your local network, has no cloud service and does not store your typing. Use a trusted Wi-Fi network.")
+            }
+        }
+        .navigationTitle("Advanced settings").navigationBarTitleDisplayMode(.inline)
+        .onChange(of: scenePhase) {
+            if scenePhase == .active && networkCheck.hasRequested { networkCheck.start() }
+        }
+        .onDisappear { networkCheck.stop() }
+        .alert("Open Settings manually", isPresented: $settingsUnavailable) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Open Settings → Privacy & Security → Local Network to allow AirType.")
+        }
+    }
+    private func openAppSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        openURL(url) { settingsUnavailable = !$0 }
+    }
+}
+
+private extension LocalNetworkCheck.State {
+    var setupMessage: String {
+        switch self {
+        case .idle: "Let your computer reach AirType over the same Wi-Fi."
+        case .checking: "Choose Allow if iOS asks for Local Network access."
+        case .available: "Network check complete. Now try AirType below."
+        case .blocked: "Allow AirType under Settings → Privacy & Security → Local Network."
+        case .failed: "Check Wi-Fi and try again. More help is in Advanced settings."
+        }
+    }
+    var setupAction: String {
+        switch self {
+        case .checking: "Checking…"
+        case .available: "Check again"
+        case .failed: "Try again"
+        default: "Allow Local Network"
+        }
+    }
+    var diagnosticMessage: String {
+        switch self {
+        case .idle: "No network check has run yet."
+        case .checking: "Checking local Bonjour discovery. Choose Allow if iOS requests access."
+        case .available: "Bonjour check passed on this device. Connect from your computer using the address on the visible AirType keyboard."
+        case .blocked: "Local Network access is blocked or awaiting approval. Allow the prompt, or enable AirType in Settings → Privacy & Security → Local Network."
+        case .failed(let message): message
+        }
     }
 }
 

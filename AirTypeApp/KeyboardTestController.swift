@@ -3,6 +3,7 @@ import UIKit
 final class KeyboardTestController: UIViewController, UITextViewDelegate {
     private let useSystemKeyboard: Bool
     private let field = UITextView()
+    private let placeholder = UILabel()
     private let keyboard = AirKeyboardView()
     private let server = AirTypeServer()
     private let nearby = NearbyReceiver(displayName: "AirType preview")
@@ -19,7 +20,25 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
         let clear = UIButton(type:.system); clear.setTitle("Clear text",for:.normal); clear.addAction(UIAction { [weak self] _ in self?.field.text = "" },for:.touchUpInside)
         let appearance = UISegmentedControl(items:["Light","Dark"]); appearance.selectedSegmentIndex = 0
         appearance.addAction(UIAction { [weak self] _ in guard let self else { return }; self.keyboard.dark = appearance.selectedSegmentIndex == 1; self.field.keyboardAppearance = appearance.selectedSegmentIndex == 1 ? .dark : .light; self.field.reloadInputViews() },for:.valueChanged)
-        let stack = UIStackView(arrangedSubviews:[title,hint,field,appearance,clear]); stack.axis = .vertical; stack.spacing = 16; stack.translatesAutoresizingMaskIntoConstraints = false
+        let arranged: [UIView]
+        if useSystemKeyboard {
+            placeholder.text = "Your text will appear here"
+            placeholder.font = .preferredFont(forTextStyle: .body)
+            placeholder.adjustsFontForContentSizeCategory = true; placeholder.textColor = .tertiaryLabel
+            placeholder.numberOfLines = 0; placeholder.isUserInteractionEnabled = false
+            placeholder.translatesAutoresizingMaskIntoConstraints = false; field.addSubview(placeholder)
+            NSLayoutConstraint.activate([placeholder.topAnchor.constraint(equalTo: field.topAnchor, constant: 16), placeholder.leadingAnchor.constraint(equalTo: field.leadingAnchor, constant: 16), placeholder.trailingAnchor.constraint(equalTo: field.trailingAnchor, constant: -16)])
+            hint.font = .preferredFont(forTextStyle: .body); hint.adjustsFontForContentSizeCategory = true
+            field.font = .preferredFont(forTextStyle: .title2); field.adjustsFontForContentSizeCategory = true
+            let connectionHint = UILabel()
+            connectionHint.text = "Keep AirType visible. On your computer, open the address shown on the keyboard and enter its six-digit code."
+            connectionHint.font = .preferredFont(forTextStyle: .subheadline); connectionHint.adjustsFontForContentSizeCategory = true
+            connectionHint.textColor = .secondaryLabel; connectionHint.numberOfLines = 0
+            arranged = [hint, field, connectionHint]
+        } else {
+            arranged = [title, hint, field, appearance, clear]
+        }
+        let stack = UIStackView(arrangedSubviews: arranged); stack.axis = .vertical; stack.spacing = 16; stack.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stack)
         NSLayoutConstraint.activate([stack.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor,constant:24),stack.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor,constant:24),stack.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor,constant:-24),field.heightAnchor.constraint(equalToConstant:180)])
         if !useSystemKeyboard {
@@ -69,7 +88,10 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
         keyboard.autocapitalizationType = field.autocapitalizationType
         field.becomeFirstResponder(); keyboard.synchronizeCapitalization()
     }
-    func textViewDidChange(_ textView: UITextView) { keyboard.synchronizeCapitalization() }
+    func textViewDidChange(_ textView: UITextView) {
+        placeholder.isHidden = !textView.text.isEmpty
+        keyboard.synchronizeCapitalization()
+    }
     override func viewWillDisappear(_ animated:Bool) { super.viewWillDisappear(animated); stopPreviewTransport(); keyboard.stopRepeating(); field.resignFirstResponder() }
     func textViewDidBeginEditing(_ textView:UITextView) { updatePreviewTransport() }
     func textViewDidEndEditing(_ textView:UITextView) { stopPreviewTransport(); keyboard.stopRepeating() }
