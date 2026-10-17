@@ -100,9 +100,9 @@ final class LocalKeyboardView: UIView {
             }
             rows.append(keys.map(makeKey))
         }
-        var bottom: [LocalKeyboardKey] = [.layout(interaction.page == .letters ? .numbers : .letters), .wifi]
+        var bottom: [LocalKeyboardKey] = [.layout(interaction.page == .letters ? .numbers : .letters)]
         if showsGlobe { bottom.append(.globe) }
-        bottom += [.space, .character("."), .enter]
+        bottom += [.wifi, .space, .character("."), .enter]
         rows.append(bottom.map(makeKey))
         refresh(); setNeedsLayout()
     }

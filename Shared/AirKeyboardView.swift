@@ -98,11 +98,11 @@ final class AirKeyboardView: UIView {
         }
         let panel = UIStackView(); panel.axis = .horizontal; panel.distribution = .fillEqually
         panel.accessibilityIdentifier = "AirTypeConnectionPanel"
-        let logo = button("", symbol: nil) { [weak self] in self?.webMode = false }
-        logo.backgroundColor = .clear
+        let logo = button("", symbol: nil, key: CircularAirTypeLogoButton(type: .custom)) { [weak self] in self?.webMode = false }
+        logo.backgroundColor = .white
         logo.setImage(UIImage(named: "AirTypeLogo"), for: .normal)
         logo.imageView?.contentMode = .scaleAspectFit
-        logo.layer.cornerRadius = 42; logo.clipsToBounds = true
+        logo.clipsToBounds = true
         logo.accessibilityLabel = "Switch to traditional keyboard"
         let title = label(receiveMode == .web ? "Web Access" : receiveMode.rawValue, size: compactPanel ? 12 : 14)
         let status = label(connectionStatus, size: compactPanel ? 9 : 11); statusLabel = status
@@ -210,7 +210,7 @@ final class AirKeyboardView: UIView {
         keys.contextBeforeInput = { [weak self] in self?.contextBeforeInput?() }
         keys.autocapitalizationType = autocapitalizationType
         keys.spellCheckingEnabled = spellCheckingEnabled
-        keys.dark = dark; keys.returnTitle = returnTitle; keys.showsGlobe = showsGlobe
+        keys.dark = dark; keys.returnTitle = returnTitle; keys.showsGlobe = true
         localKeyboard = keys
         content.addArrangedSubview(keys)
         keys.synchronizeCapitalization()
@@ -222,8 +222,11 @@ final class AirKeyboardView: UIView {
     private func styleCircularControl(_ key: UIButton) {
         key.widthAnchor.constraint(equalToConstant: 44).isActive = true
         key.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        let symbolSize = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular)
+        key.setPreferredSymbolConfiguration(symbolSize, forImageIn: .normal)
         if #available(iOS 26, *) {
             var config = UIButton.Configuration.glass()
+            config.preferredSymbolConfigurationForImage = symbolSize
             config.cornerStyle = .capsule
             config.image = key.image(for: .normal)
             config.baseForegroundColor = ink
@@ -303,5 +306,12 @@ private final class KeyboardDeleteButton: UIButton {
     override func accessibilityActivate() -> Bool {
         onAccessibleDelete?()
         return true
+    }
+}
+
+private final class CircularAirTypeLogoButton: UIButton {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = min(bounds.width, bounds.height) / 2
     }
 }

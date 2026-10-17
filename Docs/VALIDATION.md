@@ -98,3 +98,9 @@ Screenshots: [running shared keyboard preview](Validation/qwerty-wifi-spelling.j
 AirTypeHomeView now displays SetupView directly, with no Connect tab or tab bar. AirTypeFeatures.nearbyTypingEnabled is false: keyboard transport selection is hidden, receive-mode assignments resolve to Web, and previously saved native preferences are ignored while disabled. Native source is retained.
 
 The iOS app/extension build and all 47 tests pass. The existing connection layout regression now verifies equal halves, no segmented transport control, and Web mode after a native-mode request. Simulator screenshots show [setup-only app](Validation/setup-only.jpg) and [Web-only keyboard preview](Validation/web-only-keyboard.jpg). Physical networking acceptance remains separate.
+
+## Panel icons and local globe — 17 October 2026
+
+The Web AirType keyboard/delete controls now use 17-point SF Symbols inside their existing 44-point circular controls. The logo's corner radius follows half its current bounds, with a white background, so resizing cannot turn the badge into a rounded square. The local keyboard always shows a native globe between 123/ABC and Wi-Fi, including Face ID devices. The remote panel retains the system-requested globe policy.
+
+App/extension build and all 47 tests pass. The local mode-transition test now checks the globe is present and lies between the numeric and Wi-Fi controls. Shared-view previews were inspected for the circular logo, smaller controls and revised bottom row. Physical-device system-menu interaction remains a separate acceptance check.
