@@ -12,3 +12,5 @@ dialog{border:0;border-radius:18px;padding:30px;width:min(620px,calc(100% - 32px
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 /* Keep the demo's send control outside the phone overlap at every width. */
 #demo-form{flex-direction:column;align-items:flex-start;gap:10px}#demo-text{width:68%;min-height:84px}#demo-send{margin-top:0}.demo-status{min-height:40px}.demo-status>span:last-child{max-width:65%;line-height:1.7}.phone-content p{white-space:pre-wrap}
+
+.footer-links{flex-wrap:wrap}.footer-links>a{display:inline-flex;align-items:center;min-height:44px}

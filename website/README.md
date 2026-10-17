@@ -30,3 +30,12 @@ The separate `.openai/hosting.json` identifies the private Sites preview. Sites 
 - Official company links use `@invivointeractive`.
 
 The App Store listing describes the original release. Setup text accommodates version differences; no unverified minimum OS version, new-release date, ratings, testimonials or service claims are added.
+
+
+## Privacy policy
+
+The footer and site privacy dialog link to the complete policy in [Traditional Chinese](dist/privacy/index.html) and [English](dist/privacy/en/index.html). Uploading the package places these at `/airtype/privacy/` and `/airtype/privacy/en/`. Both pages offer language switching without JavaScript. Their layout shares the landing page palette and font.
+
+Content follows the owner's supplied https://www.invivointeractive.com/airtype/privacy/ (retrieved 18 October 2026). The English body preserves all nine sections; Chinese is a translation. The source date (27 September 2014), original privacy contact `info@invivo.me`, and references to the Data Security Statement, support pages and change log are preserved. The supplied source has no actual links for those references, so no destinations are invented. The date displayed is the source policy's update date, not a claim that the policy was revised in 2026.
+
+The existing website-demo privacy dialog describes the local demonstration separately from the full product policy. This task does not revise the 2014 policy's cloud/statistics, sharing, notifications or encryption terms to reflect the current app. In particular, the current same-Wi-Fi Web Access implementation uses unencrypted local HTTP; the source policy's service-encryption wording should be reviewed before publishing an updated current-version policy.

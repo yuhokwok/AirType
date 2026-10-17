@@ -17,3 +17,8 @@ This is a hosting-service failure, not a page build failure. No live preview URL
 The saved version above predates the purple theme update. To publish the current page, reuse the existing Site ID, synchronize the latest source, and save a new version before deployment. Do not create a duplicate Site. The Site remains private.
 
 Validation: local assets and font load; no browser console errors observed; interactive demo transfers typed Unicode into the illustrated phone; native guide, FAQ and privacy dialogs open and close; FAQ details expand; App Store links all target AirType ID 922932291 (HK listing returns HTTP 200); narrow layouts show no horizontal document overflow; JavaScript syntax and the static upload ZIP were checked. The interactive demo does not communicate with the real keyboard.
+
+
+## Bilingual privacy pages — 18 October 2026
+
+The current upload package includes `privacy/index.html` (Traditional Chinese), `privacy/en/index.html` (English), shared privacy styling and homepage/footer/dialog links. Policy content follows the owner-supplied legacy page and retains its 27 September 2014 update date. This is a translated/reformatted copy, not a revised policy for version 1.1; see the content notes in README.md. The company server has not been updated by this task.
