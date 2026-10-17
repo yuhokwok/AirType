@@ -133,3 +133,12 @@ CUA verified a real Traditional Chinese portal pairing and Chinese emoji search 
 An independent iPhone 17/iOS 27 simulator was used because another session switched the shared simulator to another app. The independent preview used the dynamic fallback port because 8307 was occupied. UI inspection covered English, Traditional Chinese and Simplified Chinese setup screens. Physical iPhone/iPad language changes, extension resource selection, permissions and third-party text fields remain device acceptance gates.
 
 Evidence: [English setup](Validation/localization-setup-en.jpg), [Traditional Chinese setup](Validation/localization-setup-zh-Hant.jpg), [Simplified Chinese setup](Validation/localization-setup-zh-Hans.jpg), [Chinese browser](Validation/localization-web-zh-Hant.png), [empty Enter result](Validation/web-empty-enter.jpg), [two empty Backspaces result](Validation/web-empty-backspace.jpg).
+
+
+## Version 1.1 and animated typing guide — 18 October 2026
+
+Both the built app and embedded keyboard extension report CFBundleShortVersionString 1.1. The project and project.yml agree. The home tagline is “Type, from your computer.” / “用電腦，為手機打字。” / “用电脑，为手机打字。”. The Advanced settings destination is removed; connection name and privacy are homepage disclosures. The removed diagnostics/help/preview sections are no longer reachable in the shipping UI; developer preview launch arguments remain available.
+
+The localized in-app guide illustrates the keyboard, browser address, six-digit pairing and text delivery over four steps. Values are explicitly examples. It supports automatic playback, pause/resume, manual previous/next and replay; Reduce Motion uses manual static steps, and inactive scenes cancel the playback task. App/extension build and all 50 XCTest cases pass. Native simulator CUA checks cover homepage disclosures, tutorial navigation and playback controls. This is an illustrated native animation, not a video of physical-device pairing.
+
+Evidence: [version 1.1 home](Validation/setup-v1.1.jpg), [typing guide](Validation/typing-guide-v1.1.jpg).

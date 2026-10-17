@@ -1,8 +1,8 @@
 # AirType
 
-Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
+Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Version **1.1** requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
 
-The current app opens a compact three-step setup: **Set up the keyboard → Allow Local Network → Try AirType**. Connection naming, diagnostics, troubleshooting and the shared keyboard preview live under **Advanced settings**. The footer links to Threads @invivointeractive, the AirType website and the owner-provided email info@invivovinteractive.com. Remote input currently offers **Web AirType only**; Connect, Direct Wi-Fi, Bluetooth and the keyboard transport selector are temporarily hidden. Existing native-mode preferences fall back to Web. The native implementation remains in source behind `AirTypeFeatures.nearbyTypingEnabled` for future development.
+The current app opens a compact three-step setup: **Set up the keyboard → Allow Local Network → Try AirType**. An animated **Typing guide** demonstrates opening the keyboard, browsing to its address, pairing and sending text. **Connection name** and **Privacy** are expandable directly on the home screen. The Advanced settings page, network diagnostics, connection/setup help sections and preview entry have been removed. The footer links to Threads @invivointeractive, the AirType website and the owner-provided email info@invivovinteractive.com. Remote input currently offers **Web AirType only**; Connect, Direct Wi-Fi, Bluetooth and the keyboard transport selector are temporarily hidden. Existing native-mode preferences fall back to Web. The native implementation remains in source behind `AirTypeFeatures.nearbyTypingEnabled` for future development.
 
 ## Native nearby typing — temporarily hidden developer implementation
 
@@ -48,7 +48,7 @@ These screenshots show the installed keyboard extension in the iOS Simulator.
 
 ## Design reference
 
-AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/airtype-type-from-your-computer/id922932291), using its public description and screenshots as the design reference. Reference assets are included in [Docs/References](Docs/References). The native setup screen and pairing/QR detail screen support the new implementation.
+AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/airtype-type-from-your-computer/id922932291), using its public description and screenshots as the design reference. Reference assets are included in [Docs/References](Docs/References). The native setup screen and pairing/QR detail screen support the new implementation. The in-app animated guide uses illustrative example values, supports pause/replay and manual steps, and follows Reduce Motion; use the actual address/code shown by your keyboard to connect.
 
 ## Setup
 
@@ -73,13 +73,13 @@ The bottom row is 123/ABC, optional globe, Wi-Fi, space, period, return. The ori
 
 The iOS app, keyboard controls/status, permission descriptions and browser portal support English, Traditional Chinese and Simplified Chinese. They follow the effective language selected by iOS for AirType (the device preference by default). The server injects its own language into the browser page, so the computer browser’s language does not override the phone/tablet. After changing language, reopen AirType/Web Access and refresh the page.
 
-This changes interface text; the local QWERTY layout and spelling suggestions remain English. Chinese text can be composed on the computer and sent normally. The hidden native Mac developer interface is outside this localization pass. See [localization maintenance](Docs/LOCALIZATION.md).
+This changes interface text; the local QWERTY layout and spelling suggestions remain English. Chinese text can be composed on the computer and sent normally. The hidden native Mac developer interface is outside this localization pass. The home tagline is “Type, from your computer.” / “用電腦，為手機打字。” See [localization maintenance](Docs/LOCALIZATION.md).
 
 ## Bonjour and custom names
 
 The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
 
-Open **Advanced settings**, edit **Connection name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
+On the home screen, expand **Connection name**, edit it and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
 
 Both targets include the shared App Group entitlement. Use your own unique group identifier consistently in the entitlements and `NetworkPreferences.swift` if you change the bundle identifiers. Custom settings require a properly provisioned App Group on physical devices.
 

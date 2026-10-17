@@ -72,3 +72,13 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Keep existing reconnect cutoff, uncertain-send draft retention and no automatic command replay.
 - [x] Pass 50 XCTest cases and 10 portal regressions; inspect all three native setup languages and actual Chinese browser-to-preview input.
 - [ ] Fresh physical-device acceptance for installed-extension editing, app-language changes, Local Network permission and third-party editors.
+
+
+## Version 1.1 and simpler setup — 18 October 2026
+
+- [x] Set app/extension marketing version to 1.1 in the project and generator source.
+- [x] Restore “Type, from your computer.” with suitable Traditional/Simplified Chinese taglines.
+- [x] Remove Advanced settings, network diagnostics, connection help, keyboard setup help and the UI preview entry.
+- [x] Put expandable connection naming and privacy directly on the homepage.
+- [x] Add a localized four-step animated typing guide, with pause/play, replay, previous/next and Reduce Motion support. Stop animation offscreen/inactive.
+- [x] Build app/extension, pass all 50 XCTest cases and inspect the revised native flow.
