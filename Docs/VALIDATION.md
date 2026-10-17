@@ -120,3 +120,16 @@ Footer destinations are https://www.threads.com/@invivointeractive, http://www.i
 App/extension build and all 47 XCTest cases pass. CUA on Device Hub verified the home network-check action reached completion, Advanced settings navigation and the installed-keyboard Try destination. Increasing simulator Text Size from 3 to 7 confirmed wrapping and scrolling; footer links changed to a vertical stack. Text Size was restored to 3. This does not establish real-device Local Network prompts, full Settings enablement, cross-device connectivity or VoiceOver acceptance.
 
 Evidence: [home](Validation/setup-three-steps.jpg), [network check complete](Validation/setup-network-complete.jpg), [Advanced settings](Validation/setup-advanced.jpg), [Try AirType](Validation/setup-try-airtype.jpg), [large-text footer](Validation/setup-large-text-footer.jpg).
+
+
+## UI localization and empty-draft keys — 18 October 2026
+
+The shipping iOS UI and permission descriptions now support English, Traditional Chinese and Simplified Chinese. The server chooses the portal language from the effective app/extension language and injects its bundled translation dictionary into the HTML; browser language does not participate. Pairing, typing controls, status/errors, accessibility labels and emoji categories/names are translated. The QWERTY layout and local spelling service remain English.
+
+All **50 XCTest cases** and **10 Node portal regressions** pass. New native tests verify locale negotiation, localized native/InfoPlist resources and server HTML injection. Portal tests cover empty Enter/Backspace, nonempty and whitespace-only drafts, Shift+Enter, composing/keyCode 229/modifier guards, disconnected/no-replay behavior and Chinese emoji search. Existing reconnect and pairing regressions remain green. The app and embedded extension build successfully.
+
+CUA verified a real Traditional Chinese portal pairing and Chinese emoji search against the production server in the shared keyboard preview. Sending `回車刪除A`, pressing Enter on the empty draft, then Backspace twice produced `回車刪除`: Return inserted a newline; Delete removed that newline and then the final A. The browser console had no warnings or errors. This proves browser → server → production shared keyboard preview → UITextView delivery; it is not a fresh installed-extension or physical-device test.
+
+An independent iPhone 17/iOS 27 simulator was used because another session switched the shared simulator to another app. The independent preview used the dynamic fallback port because 8307 was occupied. UI inspection covered English, Traditional Chinese and Simplified Chinese setup screens. Physical iPhone/iPad language changes, extension resource selection, permissions and third-party text fields remain device acceptance gates.
+
+Evidence: [English setup](Validation/localization-setup-en.jpg), [Traditional Chinese setup](Validation/localization-setup-zh-Hant.jpg), [Simplified Chinese setup](Validation/localization-setup-zh-Hans.jpg), [Chinese browser](Validation/localization-web-zh-Hant.png), [empty Enter result](Validation/web-empty-enter.jpg), [two empty Backspaces result](Validation/web-empty-backspace.jpg).

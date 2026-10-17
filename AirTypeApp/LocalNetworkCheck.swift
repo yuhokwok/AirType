@@ -53,7 +53,7 @@ final class LocalNetworkCheck: ObservableObject {
             let timeout = DispatchWorkItem { [weak self] in
                 guard let self else { return }
                 if self.state == .checking {
-                    self.state = .failed("No Bonjour response. Check Wi-Fi, allow the permission prompt, then try again.")
+                    self.state = .failed(L10n.text("No Bonjour response. Check Wi-Fi, allow the permission prompt, then try again."))
                 }
                 self.stop()
             }

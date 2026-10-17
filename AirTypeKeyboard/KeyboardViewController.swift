@@ -27,7 +27,7 @@ final class KeyboardViewController: UIInputViewController {
         nearby.onStateChange = { [weak self] in self?.syncState() }
         nearby.onCommand = { [weak self] packet in
             guard let self, self.hasFullAccess, self.keyboard.webMode, self.view.window != nil else {
-                return "Open the AirType keyboard in a text field first."
+                return L10n.text("Open the AirType keyboard in a text field first.")
             }
             return NativeKeyboardInput(
                 insert: { self.textDocumentProxy.insertText($0) },
@@ -73,12 +73,12 @@ final class KeyboardViewController: UIInputViewController {
         if keyboard.dark != dark { keyboard.dark = dark }
         let title: String
         switch textDocumentProxy.returnKeyType {
-        case .search: title = "Search"
-        case .go: title = "Go"
-        case .send: title = "Send"
-        case .done: title = "Done"
-        case .next: title = "Next"
-        default: title = "return"
+        case .search: title = L10n.text("Search")
+        case .go: title = L10n.text("Go")
+        case .send: title = L10n.text("Send")
+        case .done: title = L10n.text("Done")
+        case .next: title = L10n.text("Next")
+        default: title = L10n.text("return")
         }
         if keyboard.returnTitle != title { keyboard.returnTitle = title }
     }
@@ -105,13 +105,13 @@ final class KeyboardViewController: UIInputViewController {
             keyboard.ipAddress = server.ipAddress
             keyboard.address = server.address
             keyboard.connected = server.connected
-            keyboard.connectionStatus = hasFullAccess ? server.status : "Enable Full Access to connect"
+            keyboard.connectionStatus = hasFullAccess ? server.status : L10n.text("Enable Full Access to connect")
         } else {
             keyboard.pairingCode = hasFullAccess && keyboard.webMode ? nearby.pairingKey : nil
             keyboard.ipAddress = nil; keyboard.address = nil
             keyboard.connected = nearby.connections > 0
-            keyboard.connectionStatus = hasFullAccess ? (nearby.connections > 0 ? "Computer connected" :
-                (keyboard.receiveMode == .wifi ? nearby.wifiStatus : nearby.bluetoothStatus)) : "Enable Full Access to connect"
+            keyboard.connectionStatus = hasFullAccess ? (nearby.connections > 0 ? L10n.text("Computer connected") :
+                (keyboard.receiveMode == .wifi ? nearby.wifiStatus : nearby.bluetoothStatus)) : L10n.text("Enable Full Access to connect")
         }
     }
 }

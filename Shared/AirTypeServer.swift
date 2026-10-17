@@ -10,7 +10,7 @@ final class AirTypeServer {
     private(set) var ipAddress: String?
     private let hostnamePublisher = BonjourHostname()
     private var advertisedName = NetworkPreferences.hostname
-    private(set) var status = "Disconnected"
+    private(set) var status = L10n.text("Disconnected")
     private var listener: NWListener?
     private var connections: [ObjectIdentifier: NWConnection] = [:]
     private var deadlines: [ObjectIdentifier: DispatchWorkItem] = [:]
@@ -43,7 +43,7 @@ final class AirTypeServer {
             do { server = try NWListener(using: parameters, on: useDynamicPort ? .any : 8307) }
             catch { server = try NWListener(using: parameters, on: .any) }
             listener = server
-            status = "Starting…"
+            status = L10n.text("Starting…")
             var service = NWListener.Service(name: advertisedName, type: "_airtype._tcp")
             service.noAutoRename = false
             server.service = service
@@ -52,7 +52,7 @@ final class AirTypeServer {
                 switch state {
                 case .ready:
                     self.updateAddress()
-                    self.status = self.address == nil ? "Connect to Wi-Fi" : "Waiting for computer"
+                    self.status = self.address == nil ? L10n.text("Connect to Wi-Fi") : L10n.text("Waiting for computer")
                 case .waiting(let error): self.status = LocalNetworkFailure.message(for: error)
                 case .failed(let error):
                     self.stop()
@@ -68,10 +68,10 @@ final class AirTypeServer {
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
                 guard let self, self.listener?.state == .ready else { return }
                 self.updateAddress()
-                self.status = self.connected ? "Connected" : (self.address == nil ? "Connect to Wi-Fi" : "Waiting for computer")
+                self.status = self.connected ? L10n.text("Connected") : (self.address == nil ? L10n.text("Connect to Wi-Fi") : L10n.text("Waiting for computer"))
                 self.onStateChange?()
             }
-        } catch { status = "Unable to start Web Access"; onStateChange?() }
+        } catch { status = L10n.text("Unable to start Web Access"); onStateChange?() }
     }
     func stop() {
         timer?.invalidate(); timer = nil
@@ -80,7 +80,7 @@ final class AirTypeServer {
         for connection in connections.values { connection.cancel() }
         for deadline in deadlines.values { deadline.cancel() }
         connections.removeAll(); deadlines.removeAll()
-        address = nil; ipAddress = nil; lastContact = nil; status = "Disconnected"
+        address = nil; ipAddress = nil; lastContact = nil; status = L10n.text("Disconnected")
         onStateChange?()
     }
     private func updateAddress() {
@@ -134,50 +134,50 @@ final class AirTypeServer {
                 if let request = try HTTPRequest.parse(buffer) { self.handle(request, on: connection) }
                 else if complete || error != nil { connection.cancel(); self.finish(ObjectIdentifier(connection)) }
                 else { self.receive(connection, data: buffer) }
-            } catch { self.respond(connection, code: "400 Bad Request", body: "Invalid request") }
+            } catch { self.respond(connection, code: "400 Bad Request", body: L10n.text("Invalid request")) }
         }
     }
     private func handle(_ request: HTTPRequest, on connection: NWConnection) {
         if request.method == "GET", request.path == "/" {
             let url = Bundle.main.url(forResource: "Portal", withExtension: "html")
-            let html = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? "Portal unavailable"
-            respond(connection, body: html, contentType: "text/html; charset=utf-8"); return
+            let html = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? L10n.text("Portal unavailable")
+            respond(connection, body: L10n.portalHTML(html), contentType: "text/html; charset=utf-8"); return
         }
         if let origin = request.headers["origin"], origin != "http://" + (request.headers["host"] ?? "") {
-            respond(connection, code: "403 Forbidden", body: "Invalid origin"); return
+            respond(connection, code: "403 Forbidden", body: L10n.text("Invalid origin")); return
         }
         if request.method == "POST", request.path == "/pair" {
             guard let payload = try? JSONDecoder().decode([String: String].self, from: request.body),
                   let code = payload["code"] else {
-                respond(connection, code: "400 Bad Request", body: "Enter the code shown on your keyboard."); return
+                respond(connection, code: "400 Bad Request", body: L10n.text("Enter the code shown on your keyboard.")); return
             }
             switch pairing.verify(code) {
             case .accepted:
                 let data = try! JSONEncoder().encode(["token": token])
                 respond(connection, body: String(decoding: data, as: UTF8.self), contentType: "application/json")
             case .incorrect:
-                respond(connection, code: "403 Forbidden", body: "Incorrect pairing code. Check the code on your keyboard.")
+                respond(connection, code: "403 Forbidden", body: L10n.text("Incorrect pairing code. Check the code on your keyboard."))
             case .rateLimited:
-                respond(connection, code: "429 Too Many Requests", body: "Too many pairing attempts. Wait one minute and try again.")
+                respond(connection, code: "429 Too Many Requests", body: L10n.text("Too many pairing attempts. Wait one minute and try again."))
             }
             return
         }
         guard request.headers["authorization"] == "Bearer \(token)" else {
-            respond(connection, code: "403 Forbidden", body: "Pair with the code shown on your AirType keyboard."); return
+            respond(connection, code: "403 Forbidden", body: L10n.text("Pair with the code shown on your AirType keyboard.")); return
         }
         if request.method == "GET", request.path == "/status" {
-            lastContact = Date(); status = "Connected"; onStateChange?()
+            lastContact = Date(); status = L10n.text("Connected"); onStateChange?()
             respond(connection, body: "{\"connected\":true}", contentType: "application/json"); return
         }
         guard request.method == "POST", request.path == "/command",
               let command = try? JSONDecoder().decode(RemoteCommand.self, from: request.body), command.isValid,
-              let onCommand else { respond(connection, code: "400 Bad Request", body: "Invalid command"); return }
+              let onCommand else { respond(connection, code: "400 Bad Request", body: L10n.text("Invalid command")); return }
         if !seen.contains(command.id) {
             seen.insert(command.id); order.append(command.id)
             if order.count > 512 { seen.remove(order.removeFirst()) }
             onCommand(command)
         }
-        lastContact = Date(); status = "Connected"; onStateChange?()
+        lastContact = Date(); status = L10n.text("Connected"); onStateChange?()
         respond(connection, body: "{\"ok\":true}", contentType: "application/json")
     }
     private func respond(_ connection: NWConnection, code: String = "200 OK", body: String, contentType: String = "text/plain; charset=utf-8") {

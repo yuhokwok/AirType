@@ -24,6 +24,7 @@ Leaving the keyboard or switching to local QWERTY stops receiving. The containin
 
 - Type from a computer browser into an iPhone or iPad over the same Wi-Fi.
 - Switch between Web Access and a local QWERTY keyboard with light and dark appearances.
+- English, Traditional Chinese and Simplified Chinese UI; the browser follows the serving iPhone/iPad language.
 - Send Unicode text, delete a character, or insert a newline remotely.
 - Browse six emoji categories or search the offline browser emoji picker; insert choices at the cursor or replace selected draft text before sending.
 - Reconnect automatically for up to 10 seconds, then pause until you click Reconnect; retain unsent drafts throughout.
@@ -56,9 +57,9 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
 5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also tap the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
-6. Type and press Enter or the **paper-plane** Send button. Shift+Enter adds a line break to the draft; the **return-arrow** button sends a newline to the device. The **backspace** button removes one character from the device. Icon buttons include accessible labels and tooltips.
+6. Type and press Enter or the **paper-plane** Send button. With an empty draft, Enter sends Return to the device and Backspace sends Delete. With text present, Backspace edits the draft. Shift+Enter adds a line break to the draft; the **return-arrow** button always sends a newline to the device. The **backspace** button removes one character from the device. Icon buttons include accessible labels and tooltips. IME composition and Ctrl/Command/Alt combinations do not trigger these shortcuts; spaces count as draft text.
 
-Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
+Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names or the current Chinese UI names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
 
 Tap the bottom-left keyboard button to switch to QWERTY; tap the Wi-Fi symbol beside 123/ABC to return to the connection panel. The panel splits status and pairing into equal halves, with the connection selector temporarily hidden. Its keyboard and delete controls use smaller 17-point symbols inside 44-point circles using native Liquid Glass on iOS 26+, with solid circular backgrounds on earlier versions.
 
@@ -67,6 +68,12 @@ Both the local keyboard and Web AirType panel show a globe only when iOS request
 Local keys use CInput's 10-point phone / 14-point wide-iPad corner radius. Hold Shift and slide to a letter to insert a capital, or hold it while typing with another finger. Hold 123/ABC or #+= and slide to a character to temporarily type from that page and return to the source page; a tap keeps the selected page. Multi-touch rollover commits older pending letter/space contacts in press order when the next input finger lands, then consumes their later release. Each finger keeps its own ownership through layout changes. Character presses show an enlarged key preview; sliding corrects the selected key, and cancellation inserts nothing.
 
 The bottom row is 123/ABC, optional globe, Wi-Fi, space, period, return. The original AirType brand remains on the connection panel. Hold space for 0.4 seconds and drag horizontally to move the cursor; release does not insert a space in cursor mode. A 34-point row above the local keys offers on-device English spelling/completion choices using UITextChecker. Tapping a choice replaces only the current matching word and appends a space; automatic replacement and next-word prediction are not enabled. The row respects the text field's spelling setting.
+
+## Interface language
+
+The iOS app, keyboard controls/status, permission descriptions and browser portal support English, Traditional Chinese and Simplified Chinese. They follow the effective language selected by iOS for AirType (the device preference by default). The server injects its own language into the browser page, so the computer browser’s language does not override the phone/tablet. After changing language, reopen AirType/Web Access and refresh the page.
+
+This changes interface text; the local QWERTY layout and spelling suggestions remain English. Chinese text can be composed on the computer and sent normally. The hidden native Mac developer interface is outside this localization pass. See [localization maintenance](Docs/LOCALIZATION.md).
 
 ## Bonjour and custom names
 
@@ -133,7 +140,7 @@ Run browser connection-state regression tests with Node.js 18 or later (no packa
 node --test Tests/PortalConnectionTests.cjs
 ```
 
-These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, and draft retention.
+These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, draft retention, empty-draft Return/Delete, IME/modifier handling and Chinese UI/emoji search.
 
 Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens the three-step setup screen. Native preview mode requests also fall back to Web while the nearby feature is disabled.
 

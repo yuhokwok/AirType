@@ -27,7 +27,7 @@ final class AirKeyboardView: UIView {
     var onWebModeChange: ((Bool) -> Void)?
     var webMode = true { didSet { render(); onWebModeChange?(webMode) } }
     var dark = false { didSet { render() } }
-    var returnTitle = "return" { didSet { if !webMode { render() } } }
+    var returnTitle = L10n.text("return") { didSet { if !webMode { render() } } }
     var address: String? { didSet {
         if pairing && address != oldValue { render() } else { updateStatus() }
     } }
@@ -35,7 +35,7 @@ final class AirKeyboardView: UIView {
         if pairing && ipAddress != oldValue { render() }
     } }
     var pairingCode: String? { didSet { updateStatus() } }
-    var connectionStatus = "Disconnected" { didSet { updateStatus() } }
+    var connectionStatus = L10n.text("Disconnected") { didSet { updateStatus() } }
     var connected = false { didSet { updateStatus() } }
     private let content = UIStackView()
     private var statusLabel: UILabel?
@@ -79,7 +79,7 @@ final class AirKeyboardView: UIView {
         if AirTypeFeatures.nearbyTypingEnabled {
             let selector = UISegmentedControl(items: RemoteInputMode.allCases.map(\.rawValue))
             selector.selectedSegmentIndex = RemoteInputMode.allCases.firstIndex(of: receiveMode) ?? 0
-            selector.accessibilityLabel = "Computer connection mode"
+            selector.accessibilityLabel = L10n.text("Computer connection mode")
             selector.addAction(UIAction { [weak self, weak selector] _ in
                 guard let self, let selector else { return }
                 self.receiveMode = RemoteInputMode.allCases[selector.selectedSegmentIndex]
@@ -103,8 +103,8 @@ final class AirKeyboardView: UIView {
         logo.setImage(UIImage(named: "AirTypeLogo"), for: .normal)
         logo.imageView?.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
-        logo.accessibilityLabel = "Switch to traditional keyboard"
-        let title = label(receiveMode == .web ? "Web Access" : receiveMode.rawValue, size: compactPanel ? 12 : 14)
+        logo.accessibilityLabel = L10n.text("Switch to traditional keyboard")
+        let title = label(receiveMode == .web ? L10n.text("Web Access") : receiveMode.rawValue, size: compactPanel ? 12 : 14)
         let status = label(connectionStatus, size: compactPanel ? 9 : 11); statusLabel = status
         status.adjustsFontSizeToFitWidth = true; status.minimumScaleFactor = 0.75
         let badge = UIStackView(arrangedSubviews: [logo, title, status])
@@ -127,9 +127,9 @@ final class AirKeyboardView: UIView {
         code.adjustsFontSizeToFitWidth = true
         code.textColor = ink
         codeLabel = code
-        let codeHint = label(receiveMode == .web ? "Enter this code on the web page" : "Enter this key in AirType Desktop", size: 10)
+        let codeHint = label(receiveMode == .web ? L10n.text("Enter this code on the web page") : L10n.text("Enter this key in AirType Desktop"), size: 10)
         codeHint.numberOfLines = 0
-        let connection = UIStackView(arrangedSubviews: [label(receiveMode == .web ? "Pairing code" : "Pairing key", size: 12), code, codeHint])
+        let connection = UIStackView(arrangedSubviews: [label(receiveMode == .web ? L10n.text("Pairing code") : L10n.text("Pairing key"), size: 12), code, codeHint])
         connection.axis = .vertical; connection.spacing = 6; connection.alignment = .center
         connection.alignment = .fill
         let codeHalf = UIView(); codeHalf.accessibilityIdentifier = "AirTypePairingHalf"
@@ -145,13 +145,13 @@ final class AirKeyboardView: UIView {
         bar.isLayoutMarginsRelativeArrangement = true
         bar.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         let back = button("", symbol: "keyboard") { [weak self] in self?.pairing = false; self?.webMode = false }
-        back.accessibilityLabel = "Back to keyboard"
+        back.accessibilityLabel = L10n.text("Back to keyboard")
         styleCircularControl(back)
         bar.addArrangedSubview(back)
         if showsGlobe { let globe = globeButton(); styleCircularControl(globe); bar.addArrangedSubview(globe) }
         let addressButton = button("", symbol: nil) { [weak self] in self?.pairing = true; self?.render() }
         addressButton.backgroundColor = .clear
-        addressButton.accessibilityLabel = "Show computer connection address and QR code"
+        addressButton.accessibilityLabel = L10n.text("Show computer connection address and QR code")
         let addressRow = UIStackView(); addressRow.axis = .horizontal; addressRow.spacing = 5; addressRow.alignment = .center
         addressRow.isUserInteractionEnabled = false; addressRow.translatesAutoresizingMaskIntoConstraints = false
         let indicator = UIView(); indicator.layer.cornerRadius = 3; dot = indicator
@@ -169,15 +169,15 @@ final class AirKeyboardView: UIView {
         let row = UIStackView(); row.axis = .horizontal; row.spacing = 12; row.alignment = .center
         row.isLayoutMarginsRelativeArrangement = true; row.layoutMargins = UIEdgeInsets(top: 12,left: 16,bottom: 8,right: 16)
         let details = UIStackView(); details.axis = .vertical; details.spacing = 8
-        details.addArrangedSubview(label(receiveMode == .web ? "Open on your computer" : "Open AirType Desktop on Mac",size: 17))
+        details.addArrangedSubview(label(receiveMode == .web ? L10n.text("Open on your computer") : L10n.text("Open AirType Desktop on Mac"),size: 17))
         let code = label("", size: 18); code.numberOfLines = 2; code.font = .monospacedSystemFont(ofSize: 16, weight: .medium); codeLabel = code; details.addArrangedSubview(code)
         let url = label(receiveMode == .web ? (address ?? connectionStatus) : "Choose \(receiveMode.rawValue), select this keyboard, and enter its pairing key.",size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
         if receiveMode == .web, let ipAddress, ipAddress != address {
-            let fallback = label("IP fallback: " + String(ipAddress.split(separator: "#")[0]), size: 10)
+            let fallback = label(L10n.format("IP fallback: %@", String(ipAddress.split(separator: "#")[0])), size: 10)
             fallback.numberOfLines = 0
             details.addArrangedSubview(fallback)
         }
-        let hint = label(receiveMode == .web ? "Same Wi-Fi · Keep this keyboard open" : "Keep this keyboard visible while receiving",size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
+        let hint = label(receiveMode == .web ? L10n.text("Same Wi-Fi · Keep this keyboard open") : L10n.text("Keep this keyboard visible while receiving"),size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
         row.addArrangedSubview(details)
         if receiveMode == .web, let address {
             let filter = CIFilter.qrCodeGenerator(); filter.message = Data(address.utf8)
@@ -186,12 +186,12 @@ final class AirKeyboardView: UIView {
                 let qr = UIImageView(image: UIImage(cgImage:image)); qr.contentMode = .scaleAspectFit; qr.backgroundColor = .white; qr.layer.magnificationFilter = .nearest
                 qr.widthAnchor.constraint(equalToConstant: 112).isActive = true
                 qr.heightAnchor.constraint(equalToConstant: 112).isActive = true
-                qr.accessibilityLabel = "QR code for AirType connection address"
+                qr.accessibilityLabel = L10n.text("QR code for AirType connection address")
                 row.addArrangedSubview(qr)
             }
         }
         content.addArrangedSubview(row)
-        let close = button("Back to connection",symbol: nil) { [weak self] in self?.pairing = false; self?.render() }
+        let close = button(L10n.text("Back to connection"),symbol: nil) { [weak self] in self?.pairing = false; self?.render() }
         close.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(close)
         updateStatus()
@@ -217,7 +217,7 @@ final class AirKeyboardView: UIView {
     }
     private func globeButton() -> UIButton {
         let key = button("",symbol:"globe") { [weak self] in self?.nextKeyboard?() }
-        key.accessibilityLabel = "Next keyboard"; configureGlobe?(key); return key
+        key.accessibilityLabel = L10n.text("Next keyboard"); configureGlobe?(key); return key
     }
     private func styleCircularControl(_ key: UIButton) {
         key.widthAnchor.constraint(equalToConstant: 44).isActive = true
@@ -241,7 +241,7 @@ final class AirKeyboardView: UIView {
         let key = KeyboardDeleteButton(type: .custom)
         _ = button("", symbol: "delete.left", key: key) {}
         key.onAccessibleDelete = { [weak self] in self?.deleteText?(); self?.synchronizeCapitalization() }
-        key.accessibilityLabel = "Delete"
+        key.accessibilityLabel = L10n.text("Delete")
         key.addTarget(self, action: #selector(beginDelete(_:event:)), for: .touchDown)
         key.addTarget(self, action: #selector(dragDelete(_:event:)), for: [.touchDragInside, .touchDragOutside])
         key.addTarget(self, action: #selector(endDelete), for: [.touchUpInside, .touchUpOutside, .touchCancel])
@@ -272,7 +272,7 @@ final class AirKeyboardView: UIView {
         localKeyboard?.synchronizeCapitalization()
     }
     private func label(_ text: String,size:CGFloat) -> UILabel {
-        let label = UILabel(); label.text = text; label.font = .systemFont(ofSize:size,weight:.light); label.textColor = dark ? .lightGray : .gray; label.textAlignment = .center; return label
+        let label = UILabel(); label.text = L10n.text(text); label.font = .systemFont(ofSize:size,weight:.light); label.textColor = dark ? .lightGray : .gray; label.textAlignment = .center; return label
     }
     private func button(_ title:String,symbol:String?,key: UIButton = UIButton(type: .custom),action:@escaping ()->Void) -> UIButton {
         key.setTitle(title,for:.normal); key.setTitleColor(ink,for:.normal); key.tintColor = ink
@@ -291,9 +291,9 @@ final class AirKeyboardView: UIView {
             let middle = pairingCode.index(pairingCode.startIndex, offsetBy: 10)
             codeLabel?.text = String(pairingCode[..<middle]) + "\n" + String(pairingCode[middle...])
         } else { codeLabel?.text = pairingCode ?? "— — —" }
-        codeLabel?.accessibilityLabel = receiveMode == .web ? "Pairing code" : "Pairing key"
+        codeLabel?.accessibilityLabel = receiveMode == .web ? L10n.text("Pairing code") : L10n.text("Pairing key")
         codeLabel?.accessibilityValue = pairingCode
-        statusLabel?.text = connectionStatus
+        statusLabel?.text = L10n.text(connectionStatus)
         addressLabel?.text = receiveMode == .web ? (address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }

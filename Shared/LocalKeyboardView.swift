@@ -13,7 +13,7 @@ final class LocalKeyboardView: UIView {
     var spellCheckingEnabled = true
     var dark = false { didSet { refresh() } }
     var showsGlobe = false { didSet { if showsGlobe != oldValue { rebuildKeys() } } }
-    var returnTitle = "return" { didSet { refresh() } }
+    var returnTitle = L10n.text("return") { didSet { refresh() } }
     private(set) var interaction = LocalKeyboardInteraction<ObjectIdentifier>()
     private var rows: [[LocalKeyButton]] = []
     private var renderedPage: LocalKeyboardPage?
@@ -129,16 +129,16 @@ final class LocalKeyboardView: UIView {
                 button.backgroundColor = keyColor; button.titleLabel?.font = .systemFont(ofSize: 22)
             case .shift:
                 symbol = interaction.shift == .locked ? "capslock.fill" : (interaction.uppercase ? "shift.fill" : "shift")
-                accessibility = interaction.shift == .locked ? "Caps lock on" : "Shift"
+                accessibility = interaction.shift == .locked ? L10n.text("Caps lock on") : L10n.text("Shift")
             case .layout(let page):
                 title = page == .letters ? "ABC" : (page == .symbols ? "#+=" : "123")
-                accessibility = "Switch to \(title!)"
-            case .space: title = "space"; button.backgroundColor = keyColor
-            case .delete: symbol = "delete.left"; accessibility = "Delete"
+                accessibility = L10n.format("Switch to %@", title!)
+            case .space: title = L10n.text("space"); button.backgroundColor = keyColor
+            case .delete: symbol = "delete.left"; accessibility = L10n.text("Delete")
             case .enter:
                 title = returnTitle; button.backgroundColor = .systemBlue; button.setTitleColor(.white, for: .normal)
-            case .wifi: symbol = "wifi"; accessibility = "Switch to AirType"; button.tintColor = .systemTeal; button.accessibilityIdentifier = "AirTypeModeButton"
-            case .globe: symbol = "globe"; accessibility = "Next keyboard"
+            case .wifi: symbol = "wifi"; accessibility = L10n.text("Switch to AirType"); button.tintColor = .systemTeal; button.accessibilityIdentifier = "AirTypeModeButton"
+            case .globe: symbol = "globe"; accessibility = L10n.text("Next keyboard")
             }
             button.setTitle(title, for: .normal)
             if let symbol { button.setImage(UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(pointSize: 21)), for: .normal) }
@@ -294,13 +294,13 @@ final class LocalKeyboardView: UIView {
             for word in [checkedWord] + guesses + completions where !values.contains(word) { values.append(word); if values.count == 3 { break } }
         }
         if values.isEmpty {
-            let label = UILabel(); label.text = spellCheckingEnabled ? "Spell check" : ""; label.textAlignment = .center
+            let label = UILabel(); label.text = spellCheckingEnabled ? L10n.text("Spell check") : ""; label.textAlignment = .center
             label.font = .systemFont(ofSize: 13); label.textColor = .secondaryLabel; suggestions.addArrangedSubview(label)
         } else {
             for word in values {
                 let button = UIButton(type: .system); button.setTitle(word, for: .normal); button.tintColor = ink
                 button.titleLabel?.font = .systemFont(ofSize: 16); button.titleLabel?.adjustsFontSizeToFitWidth = true
-                button.accessibilityLabel = "Spelling suggestion: \(word)"
+                button.accessibilityLabel = L10n.format("Spelling suggestion: %@", word)
                 let source = checkedWord
                 button.addAction(UIAction { [weak self] _ in
                     guard let self, !self.interaction.hasContacts, self.hasSelection?() != true, self.contextBeforeInput?() == context else { return }

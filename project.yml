@@ -1,6 +1,8 @@
 name: AirType
 options:
   bundleIdPrefix: com.invivo.ios
+  developmentLanguage: en
+  knownRegions: [en, zh-Hant, zh-Hans]
   deploymentTarget:
     iOS: '17.0'
 settings:

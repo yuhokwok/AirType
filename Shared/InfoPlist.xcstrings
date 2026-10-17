@@ -1,0 +1,50 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSLocalNetworkUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirType receives text from your computer over local or nearby Wi-Fi while you use the keyboard."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用鍵盤時，AirType 會透過區域或附近的 Wi-Fi 接收電腦傳送的文字。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用键盘时，AirType 会透过区域或附近的 Wi-Fi 接收电脑发送的文字。"
+          }
+        }
+      }
+    },
+    "NSBluetoothAlwaysUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirType receives typing from your computer over Bluetooth while the keyboard is visible."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鍵盤開啟時，AirType 會透過藍牙接收電腦傳送的輸入內容。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "键盘开启时，AirType 会透过蓝牙接收电脑发送的输入内容。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

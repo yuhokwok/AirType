@@ -1,3 +1,4 @@
+import Foundation
 import Network
 import dnssd
 
@@ -8,7 +9,7 @@ enum LocalNetworkFailure {
     }
 
     static func message(for error: NWError) -> String {
-        if isPermissionDenied(error) { return "Open AirType app → enable Local Network" }
-        return "Network unavailable (\(error)). Retry Web Access."
+        if isPermissionDenied(error) { return NSLocalizedString("Open AirType app → enable Local Network", comment: "") }
+        return String(format: NSLocalizedString("Network unavailable (%@). Retry Web Access.", comment: ""), String(describing: error))
     }
 }

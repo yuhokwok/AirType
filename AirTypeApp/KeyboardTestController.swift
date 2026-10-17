@@ -12,17 +12,17 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
     required init?(coder:NSCoder) { fatalError("init(coder:) has not been implemented") }
     override func viewDidLoad() {
         super.viewDidLoad(); view.backgroundColor = .systemBackground
-        let title = UILabel(); title.text = useSystemKeyboard ? "Try your AirType keyboard" : "AirType keyboard preview"; title.font = .systemFont(ofSize:25,weight:.light)
-        let hint = UILabel(); hint.text = useSystemKeyboard ? "Tap below, then use the globe key to select AirType." : "Type here or send text from your computer.\nUse the keyboard button to return to local typing."; hint.numberOfLines = 0; hint.textColor = .secondaryLabel; hint.font = .systemFont(ofSize:14)
+        let title = UILabel(); title.text = useSystemKeyboard ? L10n.text("Try your AirType keyboard") : L10n.text("AirType keyboard preview"); title.font = .systemFont(ofSize:25,weight:.light)
+        let hint = UILabel(); hint.text = useSystemKeyboard ? L10n.text("Tap below, then use the globe key to select AirType.") : L10n.text("Type here or send text from your computer.\nUse the keyboard button to return to local typing."); hint.numberOfLines = 0; hint.textColor = .secondaryLabel; hint.font = .systemFont(ofSize:14)
         field.font = .systemFont(ofSize:24); field.backgroundColor = .secondarySystemBackground; field.layer.cornerRadius = 12
         field.textContainerInset = UIEdgeInsets(top:16,left:12,bottom:16,right:12)
-        field.accessibilityLabel = "AirType test text"; field.delegate = self
-        let clear = UIButton(type:.system); clear.setTitle("Clear text",for:.normal); clear.addAction(UIAction { [weak self] _ in self?.field.text = "" },for:.touchUpInside)
-        let appearance = UISegmentedControl(items:["Light","Dark"]); appearance.selectedSegmentIndex = 0
+        field.accessibilityLabel = L10n.text("AirType test text"); field.delegate = self
+        let clear = UIButton(type:.system); clear.setTitle(L10n.text("Clear text"),for:.normal); clear.addAction(UIAction { [weak self] _ in self?.field.text = "" },for:.touchUpInside)
+        let appearance = UISegmentedControl(items:[L10n.text("Light"),L10n.text("Dark")]); appearance.selectedSegmentIndex = 0
         appearance.addAction(UIAction { [weak self] _ in guard let self else { return }; self.keyboard.dark = appearance.selectedSegmentIndex == 1; self.field.keyboardAppearance = appearance.selectedSegmentIndex == 1 ? .dark : .light; self.field.reloadInputViews() },for:.valueChanged)
         let arranged: [UIView]
         if useSystemKeyboard {
-            placeholder.text = "Your text will appear here"
+            placeholder.text = L10n.text("Your text will appear here")
             placeholder.font = .preferredFont(forTextStyle: .body)
             placeholder.adjustsFontForContentSizeCategory = true; placeholder.textColor = .tertiaryLabel
             placeholder.numberOfLines = 0; placeholder.isUserInteractionEnabled = false
@@ -31,7 +31,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             hint.font = .preferredFont(forTextStyle: .body); hint.adjustsFontForContentSizeCategory = true
             field.font = .preferredFont(forTextStyle: .title2); field.adjustsFontForContentSizeCategory = true
             let connectionHint = UILabel()
-            connectionHint.text = "Keep AirType visible. On your computer, open the address shown on the keyboard and enter its six-digit code."
+            connectionHint.text = L10n.text("Keep AirType visible. On your computer, open the address shown on the keyboard and enter its six-digit code.")
             connectionHint.font = .preferredFont(forTextStyle: .subheadline); connectionHint.adjustsFontForContentSizeCategory = true
             connectionHint.textColor = .secondaryLabel; connectionHint.numberOfLines = 0
             arranged = [hint, field, connectionHint]
@@ -69,7 +69,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             keyboard.onReceiveModeChange = { [weak self] in self?.updatePreviewTransport() }
             nearby.onStateChange = { [weak self] in self?.syncPreviewState() }
             nearby.onCommand = { [weak self] packet in
-                guard let self, self.field.isFirstResponder, self.keyboard.webMode else { return "Open the keyboard preview first." }
+                guard let self, self.field.isFirstResponder, self.keyboard.webMode else { return L10n.text("Open the keyboard preview first.") }
                 return NativeKeyboardInput(insert: { self.field.insertText($0) }, delete: { self.field.deleteBackward() }, move: { offset in
                     guard let range = self.field.selectedTextRange, let position = self.field.position(from: range.start, offset: offset) else { return }
                     self.field.selectedTextRange = self.field.textRange(from: position, to: position)
@@ -117,7 +117,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
             keyboard.connectionStatus = server.status; keyboard.connected = server.connected
         } else {
             keyboard.pairingCode = nearby.pairingKey; keyboard.ipAddress = nil; keyboard.address = nil
-            keyboard.connectionStatus = nearby.connections > 0 ? "Computer connected" : (keyboard.receiveMode == .wifi ? nearby.wifiStatus : nearby.bluetoothStatus)
+            keyboard.connectionStatus = nearby.connections > 0 ? L10n.text("Computer connected") : (keyboard.receiveMode == .wifi ? nearby.wifiStatus : nearby.bluetoothStatus)
             keyboard.connected = nearby.connections > 0
         }
     }

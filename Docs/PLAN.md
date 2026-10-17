@@ -62,3 +62,13 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Footer links: Threads @invivointeractive, http://www.invivointeractive.com/airtype and mailto:info@invivovinteractive.com (exact supplied spelling).
 - [x] Adaptive horizontal/vertical footer links for large Dynamic Type.
 - [x] App/extension build and all 47 tests pass; simulator checks cover home, network success, Advanced navigation, Try navigation and larger text.
+
+
+## UI localization and browser key forwarding — 18 October 2026
+
+- [x] Localize shipping iOS setup, Advanced settings, test/preview, keyboard controls/status and permission descriptions into English, Traditional Chinese and Simplified Chinese.
+- [x] Select portal language on the serving iPhone/iPad, independent of browser language; translate pairing, typing, errors, accessibility labels and emoji search names.
+- [x] Forward empty-draft Enter as Return and Backspace as Delete, preserving normal draft edits, Shift+Enter, IME composition and modified shortcuts.
+- [x] Keep existing reconnect cutoff, uncertain-send draft retention and no automatic command replay.
+- [x] Pass 50 XCTest cases and 10 portal regressions; inspect all three native setup languages and actual Chinese browser-to-preview input.
+- [ ] Fresh physical-device acceptance for installed-extension editing, app-language changes, Local Network permission and third-party editors.
