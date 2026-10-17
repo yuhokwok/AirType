@@ -210,7 +210,7 @@ final class AirKeyboardView: UIView {
         keys.contextBeforeInput = { [weak self] in self?.contextBeforeInput?() }
         keys.autocapitalizationType = autocapitalizationType
         keys.spellCheckingEnabled = spellCheckingEnabled
-        keys.dark = dark; keys.returnTitle = returnTitle; keys.showsGlobe = true
+        keys.dark = dark; keys.returnTitle = returnTitle; keys.showsGlobe = showsGlobe
         localKeyboard = keys
         content.addArrangedSubview(keys)
         keys.synchronizeCapitalization()

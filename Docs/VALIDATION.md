@@ -104,3 +104,7 @@ The iOS app/extension build and all 47 tests pass. The existing connection layou
 The Web AirType keyboard/delete controls now use 17-point SF Symbols inside their existing 44-point circular controls. The logo's corner radius follows half its current bounds, with a white background, so resizing cannot turn the badge into a rounded square. The local keyboard always shows a native globe between 123/ABC and Wi-Fi, including Face ID devices. The remote panel retains the system-requested globe policy.
 
 App/extension build and all 47 tests pass. The local mode-transition test now checks the globe is present and lies between the numeric and Wi-Fi controls. Shared-view previews were inspected for the circular logo, smaller controls and revised bottom row. Physical-device system-menu interaction remains a separate acceptance check.
+
+## Restore conditional local globe — 17 October 2026
+
+Removed the local keyboard's forced globe visibility. It now receives the same needsInputModeSwitchKey value as the Web panel. The existing mode-transition regression covers hiding and showing the local globe and its position between 123/ABC and Wi-Fi when shown. This follows UIKit's current keyboard environment rather than an iPhone model list.

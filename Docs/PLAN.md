@@ -17,7 +17,7 @@
 
 Connection mode (updated 17 October 2026): grey keyboard background, the transport selector temporarily hidden, and equal-width status/icon and pairing-code halves. Bottom-left returns to the local keyboard; bottom-right deletes. Both are 44-point circular buttons using native Liquid Glass on iOS 26+ and solid circle fallbacks on iOS 17–25. The address/details control stays between them. The original AirType branding remains visible.
 
-Local mode: QWERTY / ASDF / shift-ZXCV-delete rows, followed by 123/ABC, globe, Wi-Fi, wide space, period and blue return. The local keyboard always includes its own globe between 123/ABC and Wi-Fi; the remote panel follows needsInputModeSwitchKey. Capitalization follows the current text field, Shift supports one-shot capitals and caps lock, and delete uses CInput's one-second delay, 100 ms cadence and left-drag acceleration down to 35 ms. Dark keys retain solid charcoal styling.
+Local mode: QWERTY / ASDF / shift-ZXCV-delete rows, followed by 123/ABC, optional globe, Wi-Fi, wide space, period and blue return. Both local and remote modes follow needsInputModeSwitchKey; the local globe sits between 123/ABC and Wi-Fi when required. Capitalization follows the current text field, Shift supports one-shot capitals and caps lock, and delete uses CInput's one-second delay, 100 ms cadence and left-drag acceleration down to 35 ms. Dark keys retain solid charcoal styling.
 
 The setup app and connection-token/QR detail screen are new supporting UI. The reference screenshots do not show the original containing app. iOS 17 is the new minimum; the historical listing's iOS 8 compatibility is not replicated.
 
@@ -48,3 +48,7 @@ The setup app and connection-token/QR detail screen are new supporting UI. The r
 - [x] Mask the Web Access logo with a radius calculated from its current bounds, retaining a white circular background.
 - [x] Always show a local globe between 123/ABC and Wi-Fi; preserve native system input-mode menu handling.
 - [x] Build, inspect simulator previews and pass all 47 tests, including the updated globe placement check.
+
+## Restore system globe policy — 17 October 2026
+
+Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKey. Do not hard-code device models. Hide the in-keyboard globe when the system does not require it; retain its 123/ABC–globe–Wi-Fi position when shown. Space takes the freed width.

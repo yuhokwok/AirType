@@ -64,6 +64,8 @@ final class KeyboardInteractionTests: XCTestCase {
         let back = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == "Back to keyboard" })
         back.sendActions(for: .touchUpInside)
         XCTAssertFalse(keyboard.webMode)
+        XCTAssertFalse(descendants(keyboard).contains { $0.accessibilityLabel == "Next keyboard" })
+        keyboard.showsGlobe = true
         keyboard.layoutIfNeeded()
         let globe = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityLabel == "Next keyboard" })
         let numeric = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.title(for: .normal) == "123" })
