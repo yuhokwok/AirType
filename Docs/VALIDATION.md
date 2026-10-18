@@ -173,3 +173,10 @@ App/extension build and all 50 XCTest cases pass. Pro Max simulator inspection v
 The direct Local Network button progressed from Checking to Network check complete in the simulator. Connection name opens the persisted Bonjour form. English/Traditional Chinese home screens were inspected. On iPhone SE/iOS 18.2, a native simulator swipe verified the lower Try, tutorial, settings, privacy and contact entries are reachable. This is simulator navigation/local discovery proof, not physical-device permission acceptance.
 
 Evidence: [English](Validation/vertical-home-en.jpg), [Chinese](Validation/vertical-home-zh.jpg), [SE upper page](Validation/vertical-home-se.jpg), [SE footer after scrolling](Validation/vertical-home-se-footer.jpg).
+
+
+## Centered reference Wi-Fi header — 18 October 2026
+
+The header now centers a three-arc Wi-Fi mark over “Type, over the air” on white, with no side-by-side app-name row. The previous shallow freehand curves were replaced by circular cubic arc segments with round endpoints and the reference’s outer/inner stroke proportions. The vector shape fills a 300×176 reference coordinate space with a continuous blue-cyan to turquoise gradient. Vertical cards and their actions are unchanged.
+
+App/extension build and rendered checks pass on iPhone SE (iOS 18.2) and the dedicated Pro Max simulator (iOS 27). This is a visual-only change; the previously passing 50-case suite was not rerun for arc geometry/spacing. Evidence: [SE header](Validation/centered-wave-header-se.jpg), [Pro Max header](Validation/centered-wave-header-pro-max.jpg).

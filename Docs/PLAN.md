@@ -112,3 +112,11 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Restore direct setup/permission/test buttons, plus separate information buttons for the detailed instructions.
 - [x] Put tutorial, Bonjour connection-name settings, privacy and contact links below the cards; preserve adaptive scrolling and text wrapping.
 - [x] Build app/extension, pass 50 tests and verify main actions and navigation in the simulator.
+
+
+## Centered reference Wi-Fi header — 18 October 2026
+
+- [x] Center the Wi-Fi mark above the tagline on a white header, following the owner’s latest image.
+- [x] Draw circular arcs with rounded endpoints, reference proportions, differing outer/inner stroke weights and a blue-cyan to turquoise gradient.
+- [x] Keep “Type, over the air”, its Chinese translations and the vertical setup cards.
+- [x] Build app/extension and inspect iPhone SE and Pro Max simulator rendering.

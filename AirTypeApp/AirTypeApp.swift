@@ -27,16 +27,19 @@ struct SetupView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                HStack(spacing: 16) {
-                    AirTypeWirelessMark().stroke(LinearGradient(colors: [Color(red: 0.02, green: 0.68, blue: 0.84), Color(red: 0, green: 0.88, blue: 0.78)], startPoint: .top, endPoint: .bottom), style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                        .frame(width: 48, height: 30).accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("AirType").font(.title2.weight(.semibold))
-                        Text(L10n.text("Type, over the air")).font(.subheadline).foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    Spacer(minLength: 0)
-                }.padding(.vertical, 8)
+                VStack(spacing: 22) {
+                    AirTypeWirelessMark()
+                        .fill(LinearGradient(colors: [Color(red: 0.035, green: 0.68, blue: 0.83), Color(red: 0, green: 0.92, blue: 0.79)], startPoint: .top, endPoint: .bottom))
+                        .frame(width: 112, height: 66).accessibilityHidden(true)
+                    Text(L10n.text("Type, over the air"))
+                        .font(.title3.weight(.regular)).foregroundStyle(.gray)
+                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 20)
+                }.frame(maxWidth: .infinity).padding(.vertical, 24)
+                    .background(.white).padding(.horizontal, -20).padding(.top, -20)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("AirType. " + L10n.text("Type, over the air"))
+
 
                 homeCard(.addKeyboard, title: "Set up the keyboard", message: L10n.text("Enable AirType and Allow Full Access in Settings."), actionTitle: "Open Keyboard Settings", symbol: "keyboard", action: openSettings)
                 homeCard(.connection, title: "Allow Local Network", message: networkCheck.state.setupMessage,
@@ -254,16 +257,31 @@ private struct AirTypeStepSymbol: View {
     }
 }
 
+/// Reference artwork: three rounded circular arcs, with heavier inner strokes.
+/// The 300 × 176 coordinate space matches the proportions of the owner's header.
 private struct AirTypeWirelessMark: Shape {
     func path(in rect: CGRect) -> Path {
-        var path = Path()
-        for (left, top, bottom) in [(0.08, -0.12, 0.54), (0.21, 0.28, 0.73), (0.35, 0.66, 0.94)] {
-            path.move(to: CGPoint(x: rect.width * left, y: rect.height * bottom))
-            path.addCurve(to: CGPoint(x: rect.width * (1-left), y: rect.height * bottom),
-                          control1: CGPoint(x: rect.width * (left + (1 - 2 * left) * 0.24), y: rect.height * top),
-                          control2: CGPoint(x: rect.width * (1 - left - (1 - 2 * left) * 0.24), y: rect.height * top))
+        let scale = min(rect.width / 300, rect.height / 176)
+        let offset = CGPoint(x: rect.midX - 150 * scale, y: rect.midY - 88 * scale)
+        var silhouette = Path()
+        for (centerY, radius, thickness) in [(171.0, 160.0, 22.0), (181.0, 110.0, 28.0), (192.0, 62.0, 28.0)] {
+            let center = CGPoint(x: offset.x + 150 * scale, y: offset.y + centerY * scale)
+            let r = radius * scale
+            var arc = Path()
+            let start = 210.0 * Double.pi / 180
+            arc.move(to: CGPoint(x: center.x + r * cos(start), y: center.y + r * sin(start)))
+            // Two 60-degree cubic segments keep the arc circular at every rendered size.
+            for degrees in [210.0, 270.0] {
+                let a = degrees * Double.pi / 180
+                let b = (degrees + 60) * Double.pi / 180
+                let k = 4.0 / 3.0 * tan((b - a) / 4)
+                arc.addCurve(to: CGPoint(x: center.x + r * cos(b), y: center.y + r * sin(b)),
+                             control1: CGPoint(x: center.x + r * (cos(a) - k * sin(a)), y: center.y + r * (sin(a) + k * cos(a))),
+                             control2: CGPoint(x: center.x + r * (cos(b) + k * sin(b)), y: center.y + r * (sin(b) - k * cos(b))))
+            }
+            silhouette.addPath(arc.strokedPath(StrokeStyle(lineWidth: thickness * scale, lineCap: .round, lineJoin: .round)))
         }
-        return path
+        return silhouette
     }
 }
 
