@@ -110,7 +110,7 @@ struct SetupView: View {
                 .disabled(step == .connection && networkCheck.state == .checking)
             if step == .connection {
                 Button { showConnectionName = true } label: {
-                    Label(L10n.text("Set connection name"), systemImage: "slider.horizontal.3")
+                    Label(L10n.text("Setup for connection name"), systemImage: "slider.horizontal.3")
                         .font(.subheadline).multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, minHeight: 44)
@@ -232,7 +232,7 @@ private enum AirTypeGuide: String, Identifiable {
         case .connection: "Setup for\nAirType."
         case .typing: "Type."
         case .privacy: "Privacy Policy."
-        case .settings: "Set connection name"
+        case .settings: "Setup for\nconnection name."
         }
     }
     var tint: Color {
