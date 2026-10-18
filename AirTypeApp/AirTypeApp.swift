@@ -454,6 +454,8 @@ private struct AirTypeGuideScreen: View {
     }
     private var privacyPolicy: some View {
         VStack(alignment: .leading, spacing: 20) {
+            Text(L10n.format("AirType version %@", Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.1"))
+                .font(.subheadline).foregroundStyle(.secondary)
             Text(L10n.text("Original policy last updated: September 27, 2014")).font(.footnote).foregroundStyle(.secondary)
             ForEach(AirTypePrivacyContent.sections, id: \.self) { section in
                 VStack(alignment: .leading, spacing: 14) {

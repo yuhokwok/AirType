@@ -5383,6 +5383,29 @@
           }
         }
       }
+    },
+    "AirType version %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirType version %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirType 版本 %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirType 版本 %@"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
