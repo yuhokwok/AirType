@@ -194,3 +194,8 @@ The app/extension build passes. Rendered Pro Max inspection verifies both placem
 The Step 2 secondary action and Bonjour screen now say Set connection name, with Traditional/Simplified Chinese translations. Settings uses the Step 2 blue title, mosaic and controls. The reference paper screens use a white scroll canvas and light appearance, removing the black background exposed by overscroll. The typing tutorial shares the reference mosaic heading, with Step 3 purple for the heading, controls, progress and animated highlights. Its close button remains outside scrolling content.
 
 Build/install/launch passes on the dedicated iPhone 17 Pro Max simulator (iOS 27). Device Hub rendering and semantic navigation confirm the blue settings screen and purple tutorial heading, and settings closes back to the home. All 50 XCTest cases pass on the final source. The last progress/border tint adjustment was build/test verified. Physical-device overscroll has not been separately checked.
+
+
+## Secondary actions use sheets — 18 October 2026
+
+Set connection name now has a dedicated sheet route instead of the full-screen guide route. Both it and Watch the typing guide use the large native sheet detent with a visible grabber and their existing close buttons. App/extension build passes. Simulator semantic navigation confirms both presentations expose Sheet Grabber, settings closes to home, and the tutorial opens with its playback controls. The 50-case suite was not rerun for this presentation-only change.

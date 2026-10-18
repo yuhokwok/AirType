@@ -20,6 +20,7 @@ struct SetupView: View {
     @StateObject private var networkCheck = LocalNetworkCheck()
     @State private var destination: AirTypeGuide?
     @State private var showTutorial = false
+    @State private var showConnectionName = false
     @State private var showTry = false
     @State private var settingsUnavailable = false
     private let accent = Color(red: 0.04, green: 0.68, blue: 0.73)
@@ -59,8 +60,15 @@ struct SetupView: View {
         .background(Color(.systemGroupedBackground))
         .preferredColorScheme(.light)
         .fullScreenCover(item: $destination) { guide in AirTypeGuideScreen(guide: guide) }
+        .sheet(isPresented: $showConnectionName) {
+            AirTypeGuideScreen(guide: .settings)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
         .sheet(isPresented: $showTutorial) {
             AirTypeTutorialPopup()
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
         .fullScreenCover(isPresented: $showTry) {
             AirTypeHomeDestination {
@@ -104,7 +112,7 @@ struct SetupView: View {
             }.buttonStyle(.plain).accessibilityIdentifier("HomeStep\(step.number)")
                 .disabled(step == .connection && networkCheck.state == .checking)
             if step == .connection {
-                Button { destination = .settings } label: {
+                Button { showConnectionName = true } label: {
                     Label(L10n.text("Set connection name"), systemImage: "slider.horizontal.3")
                         .font(.subheadline).multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
