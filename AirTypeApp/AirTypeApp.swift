@@ -59,7 +59,11 @@ struct SetupView: View {
         }
         .background(Color(.systemGroupedBackground))
         .preferredColorScheme(.light)
-        .fullScreenCover(item: $destination) { guide in AirTypeGuideScreen(guide: guide) }
+        .sheet(item: $destination) { guide in
+            AirTypeGuideScreen(guide: guide)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
         .sheet(isPresented: $showConnectionName) {
             AirTypeGuideScreen(guide: .settings)
                 .presentationDetents([.large])
