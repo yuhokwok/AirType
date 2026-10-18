@@ -5176,6 +5176,29 @@
           }
         }
       }
+    },
+    "Type, over the air": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type, over the air"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隔空，輕鬆打字。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隔空，轻松打字。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

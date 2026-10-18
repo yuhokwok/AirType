@@ -102,3 +102,13 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Keep Close in a fixed header, clip scrolling content to its viewport and allow interactive keyboard dismissal in Bonjour settings.
 - [x] Inspect iPhone SE (3rd generation, iOS 18.2), standard iPhone 17 and dedicated iPhone 17 Pro Max simulator; inspect SE landscape and accessibility text size on Pro Max.
 - [x] Restore test typography/orientation and pass all 50 XCTest cases.
+
+
+## Vertical cards with original AirType palette — 18 October 2026
+
+- [x] Arrange setup, Local Network and Try in vertical rounded cards following the owner-selected newer layout.
+- [x] Retain cyan/blue/purple tints, mosaic number badges and matching reference-style information pages.
+- [x] Use the Wi-Fi mark in the header and exact English tagline “Type, over the air”, with Chinese translations.
+- [x] Restore direct setup/permission/test buttons, plus separate information buttons for the detailed instructions.
+- [x] Put tutorial, Bonjour connection-name settings, privacy and contact links below the cards; preserve adaptive scrolling and text wrapping.
+- [x] Build app/extension, pass 50 tests and verify main actions and navigation in the simulator.

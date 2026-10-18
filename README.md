@@ -2,7 +2,7 @@
 
 Native iOS/iPadOS containing app and keyboard extension recreated from invivo's published AirType design and behaviour. Open `AirType.xcodeproj`, select the **AirType** scheme, and run on an iPhone or iPad. Version **1.1** requires iOS 17 or later. Select your Apple development team for both targets when running on a physical device. The app bundle identifier is `com.invivo.ios.AirType`, and its keyboard extension is `com.invivo.ios.AirType.Keyboard`. `project.yml` preserves these identifiers and the development team selected in Xcode.
 
-The current app opens a reference-matched three-column home: **Add New Keyboard → Setup for AirType → Type**. It uses the supplied AirType screenshots' cyan/blue/purple number tiles, white paper surface, Wi-Fi mark and separate closeable instruction pages. A top-right **Settings** button edits the **Bonjour name**; **Privacy Policy** opens the bundled nine-section policy. The Type page links to the animated typing guide and installed-keyboard test field. Contact links remain in Settings. The layout adapts to small/large iPhones and landscape, with full-width vertical steps at accessibility text sizes and a fixed Close header on instruction screens. UI follows the device's English, Traditional Chinese or Simplified Chinese preference. Remote input currently offers **Web AirType only**; Connect, Direct Wi-Fi, Bluetooth and the keyboard transport selector are temporarily hidden. Native implementation remains behind `AirTypeFeatures.nearbyTypingEnabled`.
+The current app opens a vertical three-step home: **Set up the keyboard → Allow Local Network → Try AirType**. The owner’s cyan/blue/purple palette and mosaic number badges are retained in rounded cards. The header uses the Wi-Fi mark and “Type, over the air”. Each main button performs its setup/test action; each information button opens the matching reference-style instruction page. Below the cards are the animated typing guide, **Connection name** (Bonjour settings), **Privacy** and contact links. The home scrolls and wraps naturally across iPhone sizes, landscape and larger text. UI follows the device's English, Traditional Chinese or Simplified Chinese preference. Remote input currently offers **Web AirType only**, with native transports retained behind `AirTypeFeatures.nearbyTypingEnabled`.
 
 ## Native nearby typing — temporarily hidden developer implementation
 
@@ -52,8 +52,8 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 
 ## Setup
 
-1. Install and open AirType. Open **Setup for AirType**, tap **Allow Local Network**, and permit access if prompted. Wait for **Network check complete**. This checks local Bonjour discovery; the computer connection is established separately through the keyboard.
-2. Open **Add New Keyboard** and tap **Open Keyboard Settings**. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
+1. Install and open AirType. Tap **Allow Local Network** on the home screen and permit access if prompted. Wait for **Network check complete**. This checks local Bonjour discovery; the computer connection is established separately through the keyboard.
+2. Tap **Open Keyboard Settings** on the home screen. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
 5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also tap the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
@@ -73,13 +73,13 @@ The bottom row is 123/ABC, optional globe, Wi-Fi, space, period, return. The ori
 
 The iOS app, keyboard controls/status, permission descriptions and browser portal support English, Traditional Chinese and Simplified Chinese. They follow the effective language selected by iOS for AirType (the device preference by default). The server injects its own language into the browser page, so the computer browser’s language does not override the phone/tablet. After changing language, reopen AirType/Web Access and refresh the page.
 
-This changes interface text; the local QWERTY layout and spelling suggestions remain English. Chinese text can be composed on the computer and sent normally. The hidden native Mac developer interface is outside this localization pass. The home tagline follows the supplied reference: “Type, with your computer.” / “用電腦，為手機打字。” See [localization maintenance](Docs/LOCALIZATION.md).
+This changes interface text; the local QWERTY layout and spelling suggestions remain English. Chinese text can be composed on the computer and sent normally. The hidden native Mac developer interface is outside this localization pass. The home tagline follows the supplied reference: “Type, over the air” / “隔空，輕鬆打字。” See [localization maintenance](Docs/LOCALIZATION.md).
 
 ## Bonjour and custom names
 
 The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
 
-Tap the home screen’s top-right **Settings** gear, edit **Bonjour name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
+Tap **Connection name** on the home screen, edit **Bonjour name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
 
 Both targets include the shared App Group entitlement. Use your own unique group identifier consistently in the entitlements and `NetworkPreferences.swift` if you change the bundle identifiers. Custom settings require a properly provisioned App Group on physical devices.
 
@@ -142,7 +142,7 @@ node --test Tests/PortalConnectionTests.cjs
 
 These exercise the bundled portal script with a controlled clock and transport, including the 10-second cutoff, a server that never responds, manual reconnect, early recovery, pairing failures, draft retention, empty-draft Return/Delete, IME/modifier handling and Chinese UI/emoji search.
 
-Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens the three-column home screen. Native preview mode requests also fall back to Web while the nearby feature is disabled.
+Use launch arguments `--keyboard-demo` for the shared-view preview or `--system-test` for a text field using installed system keyboards. Use `--native-keyboard-wifi` or `--native-keyboard-bluetooth` for native receiving previews. Default launch opens the vertical setup-card home screen. Native preview mode requests also fall back to Web while the nearby feature is disabled.
 
 See [validation results](Docs/VALIDATION.md) for completed checks and physical-device gates, and the [implementation checklist](Docs/PLAN.md) for the design contract.
 

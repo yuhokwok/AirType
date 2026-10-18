@@ -15,93 +15,127 @@ struct AirTypeApp: App {
 }
 
 struct SetupView: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var networkCheck = LocalNetworkCheck()
     @State private var destination: AirTypeGuide?
+    @State private var showTutorial = false
+    @State private var showTry = false
+    @State private var settingsUnavailable = false
+    private let accent = Color(red: 0.04, green: 0.68, blue: 0.73)
+
     var body: some View {
-        GeometryReader { geometry in
-            let width = min(geometry.size.width, 900)
-            let compact = geometry.size.width > geometry.size.height
-            let accessible = dynamicTypeSize.isAccessibilitySize
-            let header = compact && !accessible ? 110.0 : min(240, max(165, geometry.size.height * 0.28))
-            let band = compact ? 62.0 : min(150, width / 3)
-            let bodyHeight = max(compact ? 145 : 235, geometry.size.height - header - band - 16)
-            AirTypePaper {
-                VStack(spacing: 0) {
-                    ZStack(alignment: .topTrailing) {
-                        VStack(spacing: compact ? 6 : 18) {
-                            Spacer(minLength: 8)
-                            AirTypeWirelessMark().stroke(LinearGradient(colors: [Color(red: 0.02, green: 0.68, blue: 0.84), Color(red: 0, green: 0.88, blue: 0.78)], startPoint: .top, endPoint: .bottom), style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                                .frame(width: compact ? 60 : 104, height: compact ? 32 : 60).accessibilityHidden(true)
-                            Text(L10n.text("Type, with your computer."))
-                                .font(.title3.weight(.regular)).foregroundStyle(.gray)
-                                .multilineTextAlignment(.center).padding(.horizontal, 20)
-                            HStack {
-                                Spacer()
-                                Button(L10n.text("Privacy Policy")) { destination = .privacy }
-                                    .font(.subheadline).foregroundStyle(.gray).frame(minHeight: 44)
-                            }.padding(.horizontal, 12)
-                        }
-                        Button { destination = .settings } label: {
-                            Image(systemName: "gearshape").font(.title3).frame(width: 44, height: 44)
-                        }.foregroundStyle(.gray).padding(8)
-                            .accessibilityLabel(L10n.text("Settings"))
-                    }.frame(minHeight: header)
-                    if accessible {
-                        VStack(spacing: 0) {
-                            ForEach(AirTypeGuide.steps) { step in
-                                Button { destination = step } label: {
-                                    HStack(spacing: 18) {
-                                        Text(verbatim: String(step.number)).font(.title.weight(.light))
-                                            .frame(minWidth: 44, minHeight: 44)
-                                        Text(L10n.text(step.title).replacingOccurrences(of: "\n", with: " "))
-                                            .font(.title3).fixedSize(horizontal: false, vertical: true)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                        Image(systemName: "arrow.right").font(.title3)
-                                    }.padding(20).foregroundStyle(step.tint)
-                                        .background(step.tint.opacity(0.07))
-                                }.buttonStyle(.plain).accessibilityIdentifier("HomeStep\(step.number)")
-                            }
-                        }
-                    } else {
-                    HStack(spacing: 0) {
-                        ForEach(AirTypeGuide.steps) { step in
-                            Button { destination = step } label: {
-                                VStack(spacing: 0) {
-                                    ZStack {
-                                        AirTypeMosaic(colors: step.colors)
-                                        Text(verbatim: String(step.number)).font(.system(size: min(52, band * 0.46), weight: .light))
-                                            .foregroundStyle(step.tint)
-                                            .frame(width: band * 0.62, height: band * 0.62)
-                                            .background(.white, in: .circle)
-                                    }.frame(height: band)
-                                    VStack(spacing: 0) {
-                                        Spacer(minLength: compact ? 2 : 16)
-                                        AirTypeStepSymbol(step: step)
-                                            .scaleEffect(compact ? 0.55 : 1)
-                                            .frame(height: compact ? 40 : 72)
-                                        Spacer(minLength: compact ? 2 : 12)
-                                        Text(L10n.text(step.title)).font(.title3.weight(.regular))
-                                            .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                                            .frame(maxWidth: .infinity, minHeight: compact ? 48 : 72)
-                                        Spacer(minLength: compact ? 2 : 8)
-                                        Image(systemName: "arrow.right.square").font(.system(size: compact ? 24 : 29, weight: .regular))
-                                            .frame(minWidth: 44, minHeight: 44)
-                                        Spacer(minLength: compact ? 2 : 16)
-                                    }.padding(.horizontal, 8)
-                                        .frame(maxWidth: .infinity, minHeight: bodyHeight)
-                                        .background(LinearGradient(colors: [step.tint.opacity(0.07), .white], startPoint: .top, endPoint: .bottom))
-                                }.foregroundStyle(step.tint)
-                            }.buttonStyle(.plain).frame(maxWidth: .infinity)
-                                .accessibilityLabel("\(step.number). \(L10n.text(step.title))")
-                                .accessibilityIdentifier("HomeStep\(step.number)")
-                        }
+        ScrollView {
+            VStack(spacing: 16) {
+                HStack(spacing: 16) {
+                    AirTypeWirelessMark().stroke(LinearGradient(colors: [Color(red: 0.02, green: 0.68, blue: 0.84), Color(red: 0, green: 0.88, blue: 0.78)], startPoint: .top, endPoint: .bottom), style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .frame(width: 48, height: 30).accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("AirType").font(.title2.weight(.semibold))
+                        Text(L10n.text("Type, over the air")).font(.subheadline).foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    }
+                    Spacer(minLength: 0)
+                }.padding(.vertical, 8)
+
+                homeCard(.addKeyboard, title: "Set up the keyboard", message: L10n.text("Enable AirType and Allow Full Access in Settings."), actionTitle: "Open Keyboard Settings", symbol: "keyboard", action: openSettings)
+                homeCard(.connection, title: "Allow Local Network", message: networkCheck.state.setupMessage,
+                         actionTitle: networkCheck.state == .blocked ? "Open Settings" : networkCheck.state.setupAction,
+                         symbol: networkCheck.state == .available ? "checkmark.circle" : "wifi") {
+                    if networkCheck.state == .blocked { openSettings() }
+                    else { networkCheck.start() }
                 }
-            }.frame(width: width).frame(maxWidth: .infinity)
+                homeCard(.typing, title: "Try AirType", message: L10n.text("Open a text field and use the globe key to select AirType."), actionTitle: "Try AirType", symbol: "text.cursor") { showTry = true }
+
+                Button { showTutorial = true } label: {
+                    Label(L10n.text("Watch the typing guide"), systemImage: "play.circle")
+                        .frame(maxWidth: .infinity, minHeight: 44).padding(.vertical, 4)
+                        .background(accent.opacity(0.14), in: .capsule)
+                }.buttonStyle(.plain).foregroundStyle(accent)
+                VStack(spacing: 0) {
+                    homeLink("Connection name", destination: .settings)
+                    Divider().padding(.horizontal, 16)
+                    homeLink("Privacy", destination: .privacy)
+                }.background(.white, in: .rect(cornerRadius: 18))
+                AirTypeContactLinks().padding(.top, 4)
+            }.padding(20).frame(maxWidth: 560).frame(maxWidth: .infinity)
         }
-        .preferredColorScheme(.dark)
+        .background(Color(.systemGroupedBackground))
+        .preferredColorScheme(.light)
         .fullScreenCover(item: $destination) { guide in AirTypeGuideScreen(guide: guide) }
+        .sheet(isPresented: $showTutorial) {
+            AirTypeHomeDestination { TypingTutorialView() }
+        }
+        .fullScreenCover(isPresented: $showTry) {
+            AirTypeHomeDestination {
+                KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)
+                    .navigationTitle(L10n.text("Try AirType")).navigationBarTitleDisplayMode(.inline)
+            }
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active && networkCheck.hasRequested { networkCheck.start() }
+        }
+        .onDisappear { networkCheck.stop() }
+        .alert(L10n.text("Open Settings manually"), isPresented: $settingsUnavailable) {
+            Button(L10n.text("OK"), role: .cancel) {}
+        } message: {
+            Text(L10n.text("Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType. Then enable Allow Full Access."))
+        }
+    }
+    private func homeCard(_ step: AirTypeGuide, title: String, message: String, actionTitle: String, symbol: String, action: @escaping () -> Void) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                ZStack {
+                    AirTypeMosaic(colors: step.colors).clipShape(.rect(cornerRadius: 8))
+                    Text(verbatim: String(step.number)).font(.subheadline.weight(.semibold))
+                        .frame(width: 24, height: 24).background(.white, in: .circle)
+                }.frame(width: 34, height: 34).foregroundStyle(step.tint).accessibilityHidden(true)
+                Text(L10n.text(title)).font(.headline).fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                Button { destination = step } label: {
+                    Image(systemName: "info.circle").frame(width: 44, height: 44)
+                }.buttonStyle(.plain).foregroundStyle(step.tint)
+                    .accessibilityLabel(L10n.text(step.title))
+            }
+            Text(message).font(.subheadline).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Button(action: action) {
+                Label(L10n.text(actionTitle), systemImage: symbol)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, minHeight: 44).padding(.horizontal, 12).padding(.vertical, 4)
+                    .foregroundStyle(step == .addKeyboard ? .white : step.tint)
+                    .background(step == .addKeyboard ? step.tint : step.tint.opacity(0.13), in: .capsule)
+            }.buttonStyle(.plain).accessibilityIdentifier("HomeStep\(step.number)")
+                .disabled(step == .connection && networkCheck.state == .checking)
+        }.padding(16).background(.white, in: .rect(cornerRadius: 18))
+    }
+    private func homeLink(_ title: String, destination: AirTypeGuide) -> some View {
+        Button { self.destination = destination } label: {
+            HStack {
+                Text(L10n.text(title)).fixedSize(horizontal: false, vertical: true)
+                Spacer()
+                Image(systemName: "chevron.right").font(.footnote.weight(.semibold))
+            }.padding(16).frame(minHeight: 52).contentShape(.rect)
+        }.buttonStyle(.plain).foregroundStyle(accent)
+    }
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        openURL(url) { settingsUnavailable = !$0 }
+    }
+}
+
+private struct AirTypeHomeDestination<Content: View>: View {
+    @Environment(\.dismiss) private var dismiss
+    @ViewBuilder var content: Content
+    var body: some View {
+        NavigationStack {
+            content.toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { dismiss() } label: { Image(systemName: "xmark") }
+                        .accessibilityLabel(L10n.text("Close"))
+                }
+            }
+        }.preferredColorScheme(.light)
     }
 }
 

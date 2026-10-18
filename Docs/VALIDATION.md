@@ -162,3 +162,14 @@ The home now measures the safe-area viewport and scales its header, number band 
 Build/install/launch and rendered inspection passed on iPhone SE (3rd generation) with iOS 18.2, the standard iPhone 17 QA simulator and a dedicated iPhone 17 Pro Max with iOS 27. SE portrait/landscape show all three controls without shrinking their titles. On Pro Max, Device Hub Text Size 9 visibly selects the vertical accessibility layout; the three rows remain readable. Long policy scrolling keeps Close available. Text Size was restored to 3, and the SE was restored to portrait. The iOS 18 inspector changed its value without visibly changing app typography, so the actual accessibility visual evidence comes from iOS 27. All 50 XCTest cases pass on the final source. Physical-device Display Zoom, call/hotspot status indicators and every iPhone model have not been individually checked.
 
 Evidence: [SE portrait](Validation/adaptive-iphone-se.jpg), [SE landscape](Validation/adaptive-iphone-se-landscape.jpg), [standard iPhone](Validation/adaptive-iphone-standard.jpg), [Pro Max](Validation/adaptive-iphone-pro-max.jpg), [accessibility text](Validation/adaptive-accessibility-text.jpg), [policy safe area](Validation/adaptive-policy-safe-area.jpg).
+
+
+## Vertical home with retained palette — 18 October 2026
+
+The three steps are now vertical rounded cards using the original cyan/blue/purple palette and mosaic number badges. The Wi-Fi mark replaces the square app icon in the home header; the exact tagline is “Type, over the air”, with Traditional/Simplified Chinese equivalents. Step buttons directly open app Settings, request/check Local Network, or open the installed-keyboard test field. Separate information buttons retain the reference-style instruction pages. The tutorial, Bonjour name and privacy entries, and contact footer remain below the cards.
+
+App/extension build and all 50 XCTest cases pass. Pro Max simulator inspection verifies the hierarchy and the exact English header, and CUA verifies the Try field opens and closes. Main cards continue to wrap/scroll without fixed heights. This native UI change leaves the browser portal and other pending website work untouched.
+
+The direct Local Network button progressed from Checking to Network check complete in the simulator. Connection name opens the persisted Bonjour form. English/Traditional Chinese home screens were inspected. On iPhone SE/iOS 18.2, a native simulator swipe verified the lower Try, tutorial, settings, privacy and contact entries are reachable. This is simulator navigation/local discovery proof, not physical-device permission acceptance.
+
+Evidence: [English](Validation/vertical-home-en.jpg), [Chinese](Validation/vertical-home-zh.jpg), [SE upper page](Validation/vertical-home-se.jpg), [SE footer after scrolling](Validation/vertical-home-se-footer.jpg).
