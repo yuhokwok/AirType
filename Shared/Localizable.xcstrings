@@ -5314,6 +5314,29 @@
           }
         }
       }
+    },
+    "Tap to swap addresses": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to swap addresses"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點一下交換地址"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按交换地址"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

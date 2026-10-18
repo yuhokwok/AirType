@@ -44,6 +44,8 @@ final class KeyboardViewController: UIInputViewController {
             }
         }
         server.onStateChange = { [weak self] in self?.syncState() }
+        view.backgroundColor = .clear
+        view.isOpaque = false
         keyboard.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(keyboard)
         NSLayoutConstraint.activate([keyboard.leadingAnchor.constraint(equalTo:view.leadingAnchor),keyboard.trailingAnchor.constraint(equalTo:view.trailingAnchor),keyboard.topAnchor.constraint(equalTo:view.topAnchor),keyboard.bottomAnchor.constraint(equalTo:view.bottomAnchor)])

@@ -41,6 +41,7 @@ final class AirKeyboardView: UIView {
     private var statusLabel: UILabel?
     private var addressLabel: UILabel?
     private var secondaryAddressLabel: UILabel?
+    private var addressSwapHint: UIStackView?
     private weak var connectionAddressButton: UIButton?
     private var prefersIPAddress = false
     private var primaryAddress: String? { prefersIPAddress ? (ipAddress ?? address) : (address ?? ipAddress) }
@@ -52,7 +53,6 @@ final class AirKeyboardView: UIView {
     private var deleteDrag: CGFloat = 0
     private var compactPanel = false
     private var pairing = false
-    private var bg: UIColor { dark ? UIColor(white: 0.13, alpha: 1) : UIColor(red: 0.82, green: 0.83, blue: 0.85, alpha: 1) }
     private var ink: UIColor { dark ? .white : UIColor(white: 0.18, alpha: 1) }
     private let cyan = UIColor(red: 0.08, green: 0.75, blue: 0.79, alpha: 1)
     override init(frame: CGRect) {
@@ -68,8 +68,9 @@ final class AirKeyboardView: UIView {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         localKeyboard = nil
-        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
-        backgroundColor = bg
+        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapHint = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
+        backgroundColor = .clear
+        isOpaque = false
         if pairing && webMode { renderPairing(); return }
         if webMode { renderWeb() } else { renderKeys() }
         updateStatus()
@@ -175,7 +176,14 @@ final class AirKeyboardView: UIView {
         url.accessibilityIdentifier = "AirTypePrimaryAddress"
         let secondary = label("", size: 9); secondary.adjustsFontSizeToFitWidth = true
         secondary.accessibilityIdentifier = "AirTypeSecondaryAddress"; secondaryAddressLabel = secondary
-        let addresses = UIStackView(arrangedSubviews: [addressRow, secondary])
+        let swapSymbol = UIImageView(image: UIImage(systemName: "arrow.up.arrow.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 8, weight: .regular)))
+        swapSymbol.tintColor = dark ? .lightGray : .gray
+        let swapCaption = label(L10n.text("Tap to swap addresses"), size: 8)
+        swapCaption.font = .systemFont(ofSize: 8)
+        let hint = UIStackView(arrangedSubviews: [swapSymbol, swapCaption])
+        hint.axis = .horizontal; hint.alignment = .center; hint.spacing = 3
+        hint.accessibilityIdentifier = "AirTypeAddressSwapHint"; addressSwapHint = hint
+        let addresses = UIStackView(arrangedSubviews: [addressRow, secondary, hint])
         addresses.axis = .vertical; addresses.alignment = .center; addresses.spacing = 2
         addresses.isUserInteractionEnabled = false; addresses.translatesAutoresizingMaskIntoConstraints = false
         addressButton.addSubview(addresses)
@@ -324,6 +332,8 @@ final class AirKeyboardView: UIView {
         let secondary = receiveMode == .web && alternate != primaryAddress ? alternate.map { String($0.split(separator: "#")[0]) } : nil
         secondaryAddressLabel?.text = secondary
         secondaryAddressLabel?.isHidden = secondary == nil
+        addressSwapHint?.isHidden = secondary == nil
+        connectionAddressButton?.accessibilityHint = secondary == nil ? nil : L10n.text("Tap to swap addresses")
         connectionAddressButton?.accessibilityValue = [addressLabel?.text, secondary].compactMap { $0 }.joined(separator: ", ")
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }
