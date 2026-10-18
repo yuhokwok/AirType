@@ -553,10 +553,18 @@ private struct TypingTutorialView: View {
                     .font(.subheadline).foregroundStyle(.secondary)
                 HStack(spacing: 6) {
                     ForEach(0..<4, id: \.self) { number in
-                        Capsule().fill(number <= step ? AirTypeGuide.typing.tint : Color.secondary.opacity(0.15))
-                            .frame(height: 5)
+                        GeometryReader { geometry in
+                            let progress = number < step ? 1.0 : (number == step ? (reduceMotion ? 1.0 : min(Double(tick) / 40, 1)) : 0.0)
+                            Capsule().fill(Color.secondary.opacity(0.15))
+                                .overlay(alignment: .leading) {
+                                    Rectangle().fill(AirTypeGuide.typing.tint)
+                                        .frame(width: geometry.size.width * progress)
+                                        .animation(reduceMotion ? nil : .linear(duration: 0.15), value: tick)
+                                }
+                                .clipShape(.capsule)
+                        }.frame(height: 5)
                     }
-                }.accessibilityHidden(true)
+                }.id(step).transition(.identity).accessibilityHidden(true)
                 Text(L10n.text(titles[step])).font(.title2.bold())
                 demonstration
                 Text(L10n.text(instructions[step])).font(.body).frame(maxWidth: .infinity, alignment: .leading)
@@ -592,10 +600,12 @@ private struct TypingTutorialView: View {
             guard shouldPlay else { return }
             while !Task.isCancelled {
                 do { try await Task.sleep(for: .milliseconds(150)) } catch { return }
-                tick += 1
+                // Allow the final fill animation to reach the right edge before changing steps.
                 if tick >= 40 {
                     if step == 3 { playing = false; return }
                     withAnimation(.easeInOut(duration: 0.3)) { step += 1; tick = 0 }
+                } else {
+                    tick += 1
                 }
             }
         }

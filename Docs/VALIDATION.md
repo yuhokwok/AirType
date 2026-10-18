@@ -231,3 +231,8 @@ Try AirType uses the same shared popup frame as the typing tutorial: fixed light
 ## Information pages return to sheets — 18 October 2026
 
 The three step information buttons now present large native sheets with visible grabbers, replacing the anchored popovers. Reference mosaic headings, colors, scrolling and close controls remain. Build/install/launch passes; simulator navigation confirms Add New Keyboard exposes Sheet Grabber and its setup instructions. The full suite was not rerun for this presentation-only change.
+
+
+## Timed tutorial progress fill — 18 October 2026
+
+Each tutorial progress segment now has a gray track and left-aligned purple fill, interpolated linearly with the existing 150ms playback ticks over six seconds. Completed segments remain full; future segments stay gray. The timer gives the last fill interval time to complete before changing steps. Existing pause, scene-inactive and Reduce Motion playback rules remain. Build/install/launch passes. Two rendered simulator observations show partial fill on Step 1, then Step 2 with Step 1 full and Step 2 partially filled. This animation-only change did not rerun the full test suite.
