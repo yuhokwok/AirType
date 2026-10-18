@@ -60,7 +60,7 @@ struct SetupView: View {
         .preferredColorScheme(.light)
         .fullScreenCover(item: $destination) { guide in AirTypeGuideScreen(guide: guide) }
         .sheet(isPresented: $showTutorial) {
-            AirTypeHomeDestination { TypingTutorialView() }
+            AirTypeTutorialPopup()
         }
         .fullScreenCover(isPresented: $showTry) {
             AirTypeHomeDestination {
@@ -105,7 +105,7 @@ struct SetupView: View {
                 .disabled(step == .connection && networkCheck.state == .checking)
             if step == .connection {
                 Button { destination = .settings } label: {
-                    Label(L10n.text("Connection name"), systemImage: "slider.horizontal.3")
+                    Label(L10n.text("Set connection name"), systemImage: "slider.horizontal.3")
                         .font(.subheadline).multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, minHeight: 44)
@@ -152,6 +152,36 @@ private struct AirTypeHomeDestination<Content: View>: View {
     }
 }
 
+private struct AirTypeSectionHeading: View {
+    let title: String
+    let theme: AirTypeGuide
+    var body: some View {
+        HStack(spacing: 10) {
+            AirTypeMosaic(colors: theme.colors).frame(width: 48, height: 105)
+            Text(L10n.text(title)).font(.system(.largeTitle, design: .rounded).weight(.light))
+                .foregroundStyle(theme.tint).fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 12)
+        }
+    }
+}
+
+private struct AirTypeTutorialPopup: View {
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark").font(.system(size: 24, weight: .light))
+                        .frame(width: 44, height: 44)
+                }.foregroundStyle(Color(white: 0.6)).accessibilityLabel(L10n.text("Close"))
+            }.padding(8)
+            TypingTutorialView()
+        }.background(Color.white.ignoresSafeArea())
+            .preferredColorScheme(.light).tint(AirTypeGuide.typing.tint)
+    }
+}
+
 private struct AirTypePaper<Content: View>: View {
     var verticalInset: CGFloat? = nil
     @ViewBuilder var content: Content
@@ -164,7 +194,7 @@ private struct AirTypePaper<Content: View>: View {
                     .background(.white, in: .rect(cornerRadius: 5))
                     .padding(.vertical, inset).frame(maxWidth: .infinity)
             }.scrollDismissesKeyboard(.interactively).clipped()
-                .background(.black).preferredColorScheme(.dark)
+                .background(.white).preferredColorScheme(.light)
         }
     }
 }
@@ -180,21 +210,21 @@ private enum AirTypeGuide: String, Identifiable {
         case .connection: "Setup for\nAirType."
         case .typing: "Type."
         case .privacy: "Privacy Policy."
-        case .settings: "Settings"
+        case .settings: "Set connection name"
         }
     }
     var tint: Color {
         switch self {
         case .addKeyboard: Color(red: 0.02, green: 0.78, blue: 0.84)
-        case .connection: Color(red: 0.17, green: 0.50, blue: 0.84)
+        case .connection, .settings: Color(red: 0.17, green: 0.50, blue: 0.84)
         case .typing: Color(red: 0.62, green: 0.18, blue: 0.93)
-        case .privacy, .settings: Color(white: 0.48)
+        case .privacy: Color(white: 0.48)
         }
     }
     var colors: [Color] {
         switch self {
         case .addKeyboard: [Color(red: 0.60, green: 0.99, blue: 0.90), Color(red: 0.56, green: 0.95, blue: 0.98), Color(red: 0.55, green: 0.99, blue: 0.91), Color(red: 0.53, green: 0.95, blue: 0.98)]
-        case .connection: [Color(red: 0.53, green: 0.75, blue: 0.99), Color(red: 0.48, green: 0.35, blue: 1), Color(red: 0.46, green: 0.72, blue: 0.98), Color(red: 0.44, green: 0.30, blue: 1)]
+        case .connection, .settings: [Color(red: 0.53, green: 0.75, blue: 0.99), Color(red: 0.48, green: 0.35, blue: 1), Color(red: 0.46, green: 0.72, blue: 0.98), Color(red: 0.44, green: 0.30, blue: 1)]
         case .typing: [Color(red: 0.73, green: 0.36, blue: 0.98), Color(red: 0.85, green: 0.36, blue: 0.98), Color(red: 0.70, green: 0.27, blue: 0.97), Color(red: 0.84, green: 0.28, blue: 0.97)]
         default: [Color(white: 0.70), Color(white: 0.70), Color(white: 0.65), Color(white: 0.65)]
         }
@@ -320,12 +350,7 @@ private struct AirTypeGuideScreen: View {
                 }.padding(8).frame(maxWidth: 900).background(.white, ignoresSafeAreaEdges: [])
                 AirTypePaper(verticalInset: 0) {
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 10) {
-                        AirTypeMosaic(colors: guide.colors).frame(width: 48, height: 105)
-                        Text(L10n.text(guide.title)).font(.system(.largeTitle, design: .rounded).weight(.light))
-                            .foregroundStyle(guide.tint).fixedSize(horizontal: false, vertical: true)
-                        Spacer(minLength: 12)
-                    }
+                    AirTypeSectionHeading(title: guide.title, theme: guide)
                     VStack(alignment: .leading, spacing: 26) {
                         if guide == .settings { bonjourSettings }
                         else if guide == .privacy { privacyPolicy }
@@ -343,7 +368,7 @@ private struct AirTypeGuideScreen: View {
                     Spacer(minLength: 60)
                 }
             }
-            }.background(Color.black.ignoresSafeArea())
+            }.background(Color.white.ignoresSafeArea())
             .tint(guide.tint)
             .onDisappear { networkCheck.stop() }
             .onChange(of: scenePhase) {
@@ -500,12 +525,14 @@ private struct TypingTutorialView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(spacing: 0) {
+                AirTypeSectionHeading(title: "Typing guide", theme: .typing)
+                VStack(alignment: .leading, spacing: 24) {
                 Text(L10n.format("Step %1$@ of 4", String(step + 1)))
                     .font(.subheadline).foregroundStyle(.secondary)
                 HStack(spacing: 6) {
                     ForEach(0..<4, id: \.self) { number in
-                        Capsule().fill(number <= step ? Color.accentColor : Color.secondary.opacity(0.15))
+                        Capsule().fill(number <= step ? AirTypeGuide.typing.tint : Color.secondary.opacity(0.15))
                             .frame(height: 5)
                     }
                 }.accessibilityHidden(true)
@@ -536,10 +563,10 @@ private struct TypingTutorialView: View {
                         Label(L10n.text(step == 3 ? "Replay" : "Next step"), systemImage: step == 3 ? "arrow.counterclockwise" : "chevron.right")
                     }
                 }.buttonStyle(.bordered).frame(minHeight: 44)
-            }.padding(24).frame(maxWidth: 560).frame(maxWidth: .infinity)
+                }.padding(24).frame(maxWidth: 560).frame(maxWidth: .infinity)
+            }.frame(maxWidth: 900).frame(maxWidth: .infinity)
         }
-        .background(Color(.systemGroupedBackground))
-        .navigationTitle(L10n.text("Typing guide")).navigationBarTitleDisplayMode(.inline)
+        .background(.white).clipped().tint(AirTypeGuide.typing.tint)
         .task(id: shouldPlay) {
             guard shouldPlay else { return }
             while !Task.isCancelled {
@@ -592,7 +619,7 @@ private struct TypingTutorialView: View {
                     .foregroundStyle(.secondary)
             }.padding(16)
                 .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 20))
-                .overlay { RoundedRectangle(cornerRadius: 20).stroke(Color.accentColor.opacity(sent ? 1 : 0.2), lineWidth: 2) }
+                .overlay { RoundedRectangle(cornerRadius: 20).stroke(AirTypeGuide.typing.tint.opacity(sent ? 1 : 0.2), lineWidth: 2) }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: step)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: sent)

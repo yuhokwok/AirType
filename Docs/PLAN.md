@@ -128,3 +128,12 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Put Watch the typing guide beneath Try AirType within Step 3 as a plain purple text button.
 - [x] Remove the duplicate standalone entries; retain 44-point minimum targets and text wrapping.
 - [x] Build app/extension, inspect the rendered cards and confirm the relocated Bonjour entry opens Settings.
+
+
+## Match settings and tutorial sheet styling — 18 October 2026
+
+- [x] Rename the secondary action to Set connection name in English and Chinese.
+- [x] Use Step 2 blue for the Bonjour settings title, mosaic and controls.
+- [x] Make the paper and overscroll canvas white.
+- [x] Give the typing tutorial the shared mosaic heading, Step 3 purple and a fixed close button.
+- [x] Build app/extension, inspect both popup layouts and pass all 50 tests.

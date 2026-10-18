@@ -5199,6 +5199,29 @@
           }
         }
       }
+    },
+    "Set connection name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set connection name"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定連線名稱"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置连接名称"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

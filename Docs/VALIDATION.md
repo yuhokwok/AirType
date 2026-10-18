@@ -187,3 +187,10 @@ App/extension build and rendered checks pass on iPhone SE (iOS 18.2) and the ded
 Connection name is now a plain, unfilled blue button inside Step 2, immediately below Allow Local Network. Watch the typing guide is a plain purple button inside Step 3, immediately below Try AirType. Each uses its step tint and a 44-point minimum hit height. The previous standalone tutorial pill and connection-name row were removed; privacy and contacts remain below the cards.
 
 The app/extension build passes. Rendered Pro Max inspection verifies both placements and colors; native CUA confirms the relocated connection button opens the Bonjour-name form. The tutorial retains the existing showTutorial sheet action. No input/network logic changed, and the full suite was not rerun for this placement/style edit. Evidence: [secondary actions](Validation/step-secondary-actions.jpg).
+
+
+## Settings and tutorial popup colors — 18 October 2026
+
+The Step 2 secondary action and Bonjour screen now say Set connection name, with Traditional/Simplified Chinese translations. Settings uses the Step 2 blue title, mosaic and controls. The reference paper screens use a white scroll canvas and light appearance, removing the black background exposed by overscroll. The typing tutorial shares the reference mosaic heading, with Step 3 purple for the heading, controls, progress and animated highlights. Its close button remains outside scrolling content.
+
+Build/install/launch passes on the dedicated iPhone 17 Pro Max simulator (iOS 27). Device Hub rendering and semantic navigation confirm the blue settings screen and purple tutorial heading, and settings closes back to the home. All 50 XCTest cases pass on the final source. The last progress/border tint adjustment was build/test verified. Physical-device overscroll has not been separately checked.
