@@ -142,3 +142,14 @@ Both the built app and embedded keyboard extension report CFBundleShortVersionSt
 The localized in-app guide illustrates the keyboard, browser address, six-digit pairing and text delivery over four steps. Values are explicitly examples. It supports automatic playback, pause/resume, manual previous/next and replay; Reduce Motion uses manual static steps, and inactive scenes cancel the playback task. App/extension build and all 50 XCTest cases pass. Native simulator CUA checks cover homepage disclosures, tutorial navigation and playback controls. This is an illustrated native animation, not a video of physical-device pairing.
 
 Evidence: [version 1.1 home](Validation/setup-v1.1.jpg), [typing guide](Validation/typing-guide-v1.1.jpg).
+
+
+## Screenshot-led home and Bonjour settings — 18 October 2026
+
+The app home now follows owner-supplied IMG_0152–0156: a white paper panel on black, gradient Wi-Fi mark, cyan/blue/purple three-column tiles with numbered circles, and separate closeable color-block instruction/policy/settings screens. Modern safe-area, scrolling, system text and six-digit pairing behavior are retained. No legacy iOS status-bar/back-to-App-Store image is baked into the UI.
+
+A Settings gear opens the Bonjour-name field. CUA entered `Study AirType.local`, saved its normalized value `study-airtype`, and verified it persisted after relaunch. The test then restored `airtype`. Save now resigns focus and retains the confirmation after normalization. Existing App Group persistence, safe-name and hostname-conflict tests remain green. App/extension compile without warnings; all 50 XCTest cases pass. English and Chinese reference layouts and instruction navigation were inspected in the dedicated iPhone simulator. Physical-device App Group provisioning, DNS visibility and real connection acceptance remain separate hardware gates.
+
+The bundled privacy screen follows the previously committed legacy policy in nine sections and retains the 2014 update date. It does not represent a newly revised policy for the current HTTP transport. Website edits already present in the worktree were left untouched.
+
+Evidence: [Chinese home](Validation/reference-home-zh.jpg), [English home](Validation/reference-home-en.jpg), [connection guide](Validation/reference-connection-guide.jpg), [Bonjour save confirmation](Validation/reference-bonjour-settings.jpg).

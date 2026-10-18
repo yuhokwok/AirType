@@ -82,3 +82,13 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Put expandable connection naming and privacy directly on the homepage.
 - [x] Add a localized four-step animated typing guide, with pause/play, replay, previous/next and Reduce Motion support. Stop animation offscreen/inactive.
 - [x] Build app/extension, pass all 50 XCTest cases and inspect the revised native flow.
+
+
+## Owner screenshot home and Bonjour settings — 18 October 2026
+
+- [x] Match IMG_0152’s three cyan/blue/purple number columns, Wi-Fi wordmark, tagline, privacy link and paper/black surround.
+- [x] Match IMG_0153–0155’s closeable instruction pages, color-block titles and highlighted settings/key names; retain modern pairing instructions and empty-draft shortcuts.
+- [x] Add a top-right Settings gear with shared Bonjour-name persistence/normalization, save feedback and reopen-keyboard instruction; retain contact links here.
+- [x] Bundle the committed bilingual nine-section privacy policy for the reference-style policy screen, retaining its original date; provide Simplified Chinese UI as well.
+- [x] Keep installed-keyboard Try and animated typing guide on the Type page, and Local Network permission check on Setup for AirType.
+- [x] Build app/extension, pass 50 existing tests, visually inspect Chinese/English home and guide pages, and verify name persistence through UI.
