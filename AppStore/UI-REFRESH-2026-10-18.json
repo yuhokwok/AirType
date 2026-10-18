@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Hong_Kong",
+  "gitHead": "9229b16ea3817e13de49748906b53fce7cb61342",
+  "build": "Simulator build succeeded via XcodeBuildMCP",
+  "captures": "iPhone 17 Pro Max and iPad Pro 13-inch (M5); zh-Hant and en-US app launch languages; live local Web Access pairing and text delivery; dark keyboard selected using UI control",
+  "sourceSHA256": {
+    "AirTypeApp/AirTypeApp.swift": "93f0d77dc4d496d4d1959cb2a1a3db3bf7f0e1de018f714b102b685293a619ad",
+    "AirTypeApp/KeyboardTestController.swift": "c5682fabdabcf99749f001375cc170a48d8757cbbf0dfdc42b045b2d212e64af",
+    "Shared/AirKeyboardView.swift": "96355ff3545807a52707fc4a433fa8fe4bc5a9e4e804f3a746dccd4b42f7ac6e",
+    "Shared/LocalKeyboardView.swift": "1c0ea19dd1ac433115eb7779adfcffa8f319b7d5714822b38a3eeacbdc7aca22",
+    "Shared/L10n.swift": "863e043cdea3e87399c0c8f35fd5b9770e225dcf0f3eeef8d005ded5e55f5aeb",
+    "Shared/Localizable.xcstrings": "a9e731f6e2815cfcba60863f6e89e2fa555d7e1fa0d8ba25cf1e10fd9826f32d",
+    "Shared/Resources/Portal.html": "580a64bf3d8ec5cecd718c8415081a53c083fe3d3305487dd4e84d8743d6981e",
+    "Shared/Resources/PortalLocales.json": "5b116f757fd86804da329e8a0ddb05d5e30c927daacc5e6d4f40eaf8f6dc0deb"
+  },
+  "finalSetupBuildVersion": "1.1",
+  "captureProvenance": "Keyboard/browser captures from initial compiled snapshot; setup recaptured from latest 1.1 build after concurrent UI changes. Keyboard renderer, test controller, portal and portal locales remained unchanged."
+}

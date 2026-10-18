@@ -1,0 +1,122 @@
+[
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "slide": 1,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "slide": 2,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "slide": 3,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "slide": 4,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "slide": 5,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "ipad",
+    "slide": 1,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "ipad",
+    "slide": 2,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "ipad",
+    "slide": 3,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "ipad",
+    "slide": 4,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "ipad",
+    "slide": 5,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "slide": 1,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "slide": 2,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "slide": 3,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "slide": 4,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "slide": 5,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "iphone",
+    "slide": 1,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "iphone",
+    "slide": 2,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "iphone",
+    "slide": 3,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "iphone",
+    "slide": 4,
+    "allElementsInsideCanvas": true
+  },
+  {
+    "locale": "en-US",
+    "device": "iphone",
+    "slide": 5,
+    "allElementsInsideCanvas": true
+  }
+]

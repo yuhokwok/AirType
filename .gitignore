@@ -6,3 +6,7 @@ xcuserdata/
 .xcodebuildmcp/
 website/*.zip
 DerivedDataMac/
+
+# Generated build/export working files
+/output/
+/website/airtype-website/

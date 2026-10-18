@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-10-18",
+  "method": "Parsed the Art Safe Area layer bounds from Apple Photoshop templates (16-bit PSD Lr16 layer records).",
+  "header": {
+    "templateURL": "https://devimages-cdn.apple.com/design/resources/download/app-store/creative_assets-product_page_header_template-static.psd",
+    "canvas": [
+      3840,
+      1646
+    ],
+    "artSafeArea": {
+      "x": 1097,
+      "y": 493,
+      "width": 1646,
+      "height": 661
+    }
+  },
+  "search-results": {
+    "templateURL": "https://devimages-cdn.apple.com/design/resources/download/app-store/creative_assets-search_results_template-static.psd",
+    "canvas": [
+      3840,
+      2560
+    ],
+    "artSafeArea": {
+      "x": 836,
+      "y": 765,
+      "width": 2168,
+      "height": 1030
+    }
+  }
+}

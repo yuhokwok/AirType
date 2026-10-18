@@ -1,0 +1,5 @@
+A refreshed Web Access pairing and typing experience.
+• Connect your browser with a six-digit pairing code.
+• Browse and search emoji in the browser.
+• Keep unsent drafts through disconnections and reconnect manually.
+• Improved local QWERTY typing, spelling suggestions, and cursor control.

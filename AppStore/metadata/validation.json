@@ -1,0 +1,98 @@
+[
+  {
+    "locale": "zh-Hant",
+    "field": "name",
+    "count": 17,
+    "limit": 30,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "zh-Hant",
+    "field": "subtitle",
+    "count": 28,
+    "limit": 30,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "zh-Hant",
+    "field": "promotional_text",
+    "count": 85,
+    "limit": 170,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "zh-Hant",
+    "field": "keywords",
+    "count": 86,
+    "limit": 100,
+    "unit": "UTF-8 bytes",
+    "passed": true
+  },
+  {
+    "locale": "zh-Hant",
+    "field": "description",
+    "count": 908,
+    "limit": 4000,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "zh-Hant",
+    "field": "whats_new",
+    "count": 115,
+    "limit": 4000,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "name",
+    "count": 27,
+    "limit": 30,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "subtitle",
+    "count": 30,
+    "limit": 30,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "promotional_text",
+    "count": 164,
+    "limit": 170,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "keywords",
+    "count": 74,
+    "limit": 100,
+    "unit": "UTF-8 bytes",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "description",
+    "count": 2156,
+    "limit": 4000,
+    "unit": "characters",
+    "passed": true
+  },
+  {
+    "locale": "en-US",
+    "field": "whats_new",
+    "count": 291,
+    "limit": 4000,
+    "unit": "characters",
+    "passed": true
+  }
+]

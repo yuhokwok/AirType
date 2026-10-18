@@ -1,0 +1,150 @@
+[
+  {
+    "file": "upload/airtype-header-zh-Hant-3840x1646.png",
+    "locale": "zh-Hant",
+    "placement": "header",
+    "width": 3840,
+    "height": 1646,
+    "space": "srgb",
+    "hasAlpha": false,
+    "safeArea": {
+      "x": 1097,
+      "y": 493,
+      "w": 1646,
+      "h": 661
+    },
+    "keyElementBounds": [
+      {
+        "x": 1140,
+        "y": 546,
+        "w": 750,
+        "h": 471.5625
+      },
+      {
+        "x": 2439,
+        "y": 528,
+        "w": 246,
+        "h": 513.375
+      },
+      {
+        "x": 1932,
+        "y": 633,
+        "w": 603,
+        "h": 502.640625
+      }
+    ],
+    "safeAreaPassed": true,
+    "layoutPolicy": "template-safe-area"
+  },
+  {
+    "file": "upload/airtype-search-results-zh-Hant-3840x2560.png",
+    "locale": "zh-Hant",
+    "placement": "search-results",
+    "width": 3840,
+    "height": 2560,
+    "space": "srgb",
+    "hasAlpha": false,
+    "safeArea": {
+      "x": 0,
+      "y": 0,
+      "w": 3840,
+      "h": 2560
+    },
+    "keyElementBounds": [
+      {
+        "x": 360,
+        "y": 608.4000244140625,
+        "w": 1464,
+        "h": 1024.9500732421875
+      },
+      {
+        "x": 2913.60009765625,
+        "y": 579.5999755859375,
+        "w": 542.39990234375,
+        "h": 1133.4000244140625
+      },
+      {
+        "x": 1896,
+        "y": 858,
+        "w": 1296,
+        "h": 1082.7000732421875
+      }
+    ],
+    "safeAreaPassed": true,
+    "layoutPolicy": "expanded-content-full-canvas"
+  },
+  {
+    "file": "upload/airtype-header-en-US-3840x1646.png",
+    "locale": "en-US",
+    "placement": "header",
+    "width": 3840,
+    "height": 1646,
+    "space": "srgb",
+    "hasAlpha": false,
+    "safeArea": {
+      "x": 1097,
+      "y": 493,
+      "w": 1646,
+      "h": 661
+    },
+    "keyElementBounds": [
+      {
+        "x": 1140,
+        "y": 546,
+        "w": 750,
+        "h": 436.125
+      },
+      {
+        "x": 2439,
+        "y": 528,
+        "w": 246,
+        "h": 513.375
+      },
+      {
+        "x": 1932,
+        "y": 633,
+        "w": 603,
+        "h": 498.46875
+      }
+    ],
+    "safeAreaPassed": true,
+    "layoutPolicy": "template-safe-area"
+  },
+  {
+    "file": "upload/airtype-search-results-en-US-3840x2560.png",
+    "locale": "en-US",
+    "placement": "search-results",
+    "width": 3840,
+    "height": 2560,
+    "space": "srgb",
+    "hasAlpha": false,
+    "safeArea": {
+      "x": 0,
+      "y": 0,
+      "w": 3840,
+      "h": 2560
+    },
+    "keyElementBounds": [
+      {
+        "x": 360,
+        "y": 608.4000244140625,
+        "w": 1464,
+        "h": 911.7000732421875
+      },
+      {
+        "x": 2913.60009765625,
+        "y": 579.5999755859375,
+        "w": 542.39990234375,
+        "h": 1133.4000244140625
+      },
+      {
+        "x": 1896,
+        "y": 858,
+        "w": 1296,
+        "h": 1073.7000732421875
+      }
+    ],
+    "safeAreaPassed": true,
+    "layoutPolicy": "expanded-content-full-canvas"
+  }
+]

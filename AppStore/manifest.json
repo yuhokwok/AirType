@@ -1,0 +1,182 @@
+[
+  {
+    "file": "screenshots/zh-Hant/ipad/01-computer-typing.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "title": "電腦打字。\n手機收到。",
+    "sourceScreenshot": "sources/zh-Hant/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/02-pairing.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "title": "輸入配對碼，\n開始連接。",
+    "sourceScreenshot": "sources/zh-Hant/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/03-emoji.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "title": "中文、英文，\n加點表情。",
+    "sourceScreenshot": "sources/zh-Hant/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/04-local-keyboard.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "title": "離開電腦，\n繼續打字。",
+    "sourceScreenshot": "sources/zh-Hant/ipad-qwerty-dark.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/05-setup.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "zh-Hant",
+    "device": "ipad",
+    "title": "幾個步驟，\n準備就緒。",
+    "sourceScreenshot": "sources/zh-Hant/ipad-setup.png"
+  },
+  {
+    "file": "screenshots/en-US/ipad/01-computer-typing.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "en-US",
+    "device": "ipad",
+    "title": "Your keyboard.\nYour device.",
+    "sourceScreenshot": "sources/en-US/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/ipad/02-pairing.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "en-US",
+    "device": "ipad",
+    "title": "One code.\nYou’re connected.",
+    "sourceScreenshot": "sources/en-US/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/ipad/03-emoji.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "en-US",
+    "device": "ipad",
+    "title": "More words.\nMore expression.",
+    "sourceScreenshot": "sources/en-US/ipad-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/ipad/04-local-keyboard.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "en-US",
+    "device": "ipad",
+    "title": "Keep typing.\nAnywhere.",
+    "sourceScreenshot": "sources/en-US/ipad-qwerty-dark.png"
+  },
+  {
+    "file": "screenshots/en-US/ipad/05-setup.png",
+    "width": 2064,
+    "height": 2752,
+    "locale": "en-US",
+    "device": "ipad",
+    "title": "A few steps.\nReady to type.",
+    "sourceScreenshot": "sources/en-US/ipad-setup.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/01-computer-typing.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "title": "電腦打字。\n手機收到。",
+    "sourceScreenshot": "sources/zh-Hant/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/02-pairing.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "title": "輸入配對碼，\n開始連接。",
+    "sourceScreenshot": "sources/zh-Hant/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/03-emoji.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "title": "中文、英文，\n加點表情。",
+    "sourceScreenshot": "sources/zh-Hant/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/04-local-keyboard.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "title": "離開電腦，\n繼續打字。",
+    "sourceScreenshot": "sources/zh-Hant/iphone-qwerty-dark.png"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/05-setup.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "zh-Hant",
+    "device": "iphone",
+    "title": "幾個步驟，\n準備就緒。",
+    "sourceScreenshot": "sources/zh-Hant/iphone-setup.png"
+  },
+  {
+    "file": "screenshots/en-US/iphone/01-computer-typing.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "en-US",
+    "device": "iphone",
+    "title": "Your keyboard.\nYour device.",
+    "sourceScreenshot": "sources/en-US/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/iphone/02-pairing.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "en-US",
+    "device": "iphone",
+    "title": "One code.\nYou’re connected.",
+    "sourceScreenshot": "sources/en-US/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/iphone/03-emoji.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "en-US",
+    "device": "iphone",
+    "title": "More words.\nMore expression.",
+    "sourceScreenshot": "sources/en-US/iphone-connected.png"
+  },
+  {
+    "file": "screenshots/en-US/iphone/04-local-keyboard.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "en-US",
+    "device": "iphone",
+    "title": "Keep typing.\nAnywhere.",
+    "sourceScreenshot": "sources/en-US/iphone-qwerty-dark.png"
+  },
+  {
+    "file": "screenshots/en-US/iphone/05-setup.png",
+    "width": 1206,
+    "height": 2622,
+    "locale": "en-US",
+    "device": "iphone",
+    "title": "A few steps.\nReady to type.",
+    "sourceScreenshot": "sources/en-US/iphone-setup.png"
+  }
+]

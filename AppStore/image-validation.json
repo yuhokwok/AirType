@@ -1,0 +1,210 @@
+[
+  {
+    "file": "screenshots/zh-Hant/ipad/01-computer-typing.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/02-pairing.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/03-emoji.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/04-local-keyboard.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/05-setup.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/ipad/01-computer-typing.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/ipad/02-pairing.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/ipad/03-emoji.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/ipad/04-local-keyboard.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/ipad/05-setup.png",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/01-computer-typing.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/02-pairing.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/03-emoji.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/04-local-keyboard.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/05-setup.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/iphone/01-computer-typing.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/iphone/02-pairing.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/iphone/03-emoji.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/iphone/04-local-keyboard.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "screenshots/en-US/iphone/05-setup.png",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-square-zh-Hant.png",
+    "width": 1080,
+    "height": 1080,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-story-zh-Hant.png",
+    "width": 1080,
+    "height": 1920,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-landscape-zh-Hant.png",
+    "width": 1200,
+    "height": 630,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-square-en-US.png",
+    "width": 1080,
+    "height": 1080,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-story-en-US.png",
+    "width": 1080,
+    "height": 1920,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  },
+  {
+    "file": "promo/social-landscape-en-US.png",
+    "width": 1200,
+    "height": 630,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "passed": true
+  }
+]

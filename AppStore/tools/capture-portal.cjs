@@ -1,0 +1,30 @@
+const {chromium}=require('playwright');
+const {execFileSync}=require('child_process');
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const [locale,device,port,code,simulatorId]=process.argv.slice(2);
+if(!locale||!device||!/^\d+$/.test(port)||!/^\d{6}$/.test(code)||!simulatorId)throw Error('Usage: node capture-portal.cjs <zh-Hant|en-US> <iphone|ipad> <current-port> <current-code> <simulator-id>');
+const out=path.join(root,'sources',locale);fs.mkdirSync(out,{recursive:true});
+function shot(kind){execFileSync('xcrun',['simctl','io',simulatorId,'screenshot',path.join(out,`${device}-${kind}.png`)],{stdio:'pipe'});}
+(async()=>{
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1000,height:1000},deviceScaleFactor:2});
+await page.goto(`http://127.0.0.1:${port}/`);
+await page.locator('#code').fill(code);
+await page.locator('#portal').screenshot({path:path.join(out,`${device}-browser-pair.png`)});
+shot('web');
+await page.locator('#connect').click();
+await page.locator('#text').waitFor({state:'visible'});
+const sample=locale==='zh-Hant'?'下班後，一起去看日落。\nSee you at sunset. ☀️':'Let’s catch the sunset after work. ☀️';
+await page.locator('#text').fill(sample);
+await page.locator('#send').click();
+await page.waitForFunction(()=>document.querySelector('#text').value==='');
+await page.locator('#text').fill(locale==='zh-Hant'?'用熟悉的鍵盤，寫下每個想法。':'Your familiar keyboard. Every new idea.');
+await page.locator('#portal').screenshot({path:path.join(out,`${device}-browser-connected.png`)});
+shot('connected');
+await page.locator('#emoji-toggle').click();
+await page.locator('#emoji-picker').screenshot({path:path.join(out,`${device}-browser-emoji.png`)});
+const audit={locale,device,simulatorId,capturedAt:new Date().toISOString(),sampleSent:sample,paired:true,sendClearedDraft:true,portalLanguage:await page.locator('#pair-title').textContent(),source:'Current Simulator build, in-app keyboard preview, live local Web Access server'};
+fs.writeFileSync(path.join(out,`${device}-capture.json`),JSON.stringify(audit,null,2)+'\n');
+await browser.close();console.log(JSON.stringify(audit));
+})().catch(e=>{console.error(e);process.exit(1)});

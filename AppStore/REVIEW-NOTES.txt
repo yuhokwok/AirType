@@ -1,0 +1,18 @@
+AirType is an iOS/iPadOS custom keyboard with a local-network browser typing interface. No account, login, subscription or demo credentials are required.
+
+Review steps:
+1. Install and open AirType. In the Allow Local Network card, tap Allow Local Network and allow Local Network access.
+2. Open Settings > General > Keyboard > Keyboards > Add New Keyboard > AirType. Enable AirType and Allow Full Access. Full Access is required for the keyboard extension to accept local-network input.
+3. Connect a computer and the iPhone/iPad to the same trusted Wi-Fi network, with client isolation disabled.
+4. Open a normal text field in an app that supports third-party keyboards. Use the globe key to select AirType, and keep the Web Access panel visible.
+5. On the computer, open the complete HTTP address shown on the keyboard, including the port. Enter the six-digit pairing code shown on the device. The code is generated at runtime; no permanent review code is required.
+6. Enter a test sentence in the computer browser and press Enter or Send. It is inserted into the device's current text field. Shift+Enter adds a line break to the browser draft. Separate delete and return controls affect the device field.
+7. Tap the keyboard button to use local English QWERTY typing. Use its Wi-Fi button to return to Web Access.
+
+The containing app includes a Watch the typing guide tutorial. Use Try AirType to test the installed keyboard extension. The source also contains a developer preview used for screenshot capture; this is not the installed-keyboard acceptance test.
+
+The connection stops when Web Access is hidden or the keyboard is dismissed. Secure/password fields and certain phone fields use the system keyboard. Some host apps disable third-party keyboards.
+
+The browser portal is served by the device; no public server or cloud account is needed. Web Access uses unencrypted local HTTP and should be used on trusted Wi-Fi. If Bonjour hostname access is unavailable, tap the address on the keyboard and use its IP fallback with the displayed port.
+
+The native Mac sender, Direct Wi-Fi and Bluetooth transports in development source are hidden from the current release UI and are not advertised in the listing.

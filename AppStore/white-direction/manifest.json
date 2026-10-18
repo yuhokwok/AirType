@@ -1,0 +1,1818 @@
+[
+  {
+    "file": "screenshots/zh-Hant/iphone/01-computer-typing.png",
+    "locale": "zh-Hant",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 257.559814453125,
+        "right": 1151.1817092895508,
+        "bottom": 564.5416259765625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 104.15454864501953,
+        "y": 937.3909301757812,
+        "width": 537.2182006835938,
+        "height": 1109.340087890625,
+        "right": 641.3727493286133,
+        "bottom": 2046.7310180664062
+      },
+      {
+        "element": "browser critical",
+        "x": 411.1363525390625,
+        "y": 1397.8636474609375,
+        "width": 729.081787109375,
+        "height": 605.869384765625,
+        "right": 1140.2181396484375,
+        "bottom": 2003.7330322265625
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/iphone/01-computer-typing.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/02-pairing.png",
+    "locale": "zh-Hant",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 257.559814453125,
+        "right": 1151.1817092895508,
+        "bottom": 564.5416259765625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "browser critical",
+        "x": 76.74545288085938,
+        "y": 1000.4318237304688,
+        "width": 1052.509033203125,
+        "height": 652.8502807617188,
+        "right": 1129.2544860839844,
+        "bottom": 1653.2821044921875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/iphone/02-pairing.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/03-emoji.png",
+    "locale": "zh-Hant",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 257.559814453125,
+        "right": 1151.1817092895508,
+        "bottom": 564.5416259765625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "browser critical",
+        "x": 65.78181457519531,
+        "y": 1068.95458984375,
+        "width": 1074.436279296875,
+        "height": 860.3455810546875,
+        "right": 1140.2180938720703,
+        "bottom": 1929.3001708984375
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/iphone/03-emoji.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/04-local-keyboard.png",
+    "locale": "zh-Hant",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 257.559814453125,
+        "right": 1151.1817092895508,
+        "bottom": 564.5416259765625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 301.5,
+        "y": 888.0545654296875,
+        "width": 603,
+        "height": 1252.2957763671875,
+        "right": 904.5,
+        "bottom": 2140.350341796875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/iphone/04-local-keyboard.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/iphone/05-setup.png",
+    "locale": "zh-Hant",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 257.559814453125,
+        "right": 1151.1817092895508,
+        "bottom": 564.5416259765625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 301.5,
+        "y": 888.0545654296875,
+        "width": 603,
+        "height": 1252.2957763671875,
+        "right": 904.5,
+        "bottom": 2140.350341796875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/iphone/05-setup.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/01-computer-typing.png",
+    "locale": "zh-Hant",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 192,
+        "y": 1014,
+        "width": 930,
+        "height": 1219.96875,
+        "right": 1122,
+        "bottom": 2233.96875
+      },
+      {
+        "element": "browser critical",
+        "x": 930,
+        "y": 1422,
+        "width": 990,
+        "height": 806.484375,
+        "right": 1920,
+        "bottom": 2228.484375
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/ipad/01-computer-typing.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/02-pairing.png",
+    "locale": "zh-Hant",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "browser critical",
+        "x": 162,
+        "y": 1050,
+        "width": 1740,
+        "height": 1044.234375,
+        "right": 1902,
+        "bottom": 2094.234375
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/ipad/02-pairing.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/03-emoji.png",
+    "locale": "zh-Hant",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "browser critical",
+        "x": 228,
+        "y": 990,
+        "width": 1608,
+        "height": 1262.8125,
+        "right": 1836,
+        "bottom": 2252.8125
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/ipad/03-emoji.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/04-local-keyboard.png",
+    "locale": "zh-Hant",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 552,
+        "y": 978,
+        "width": 960,
+        "height": 1260,
+        "right": 1512,
+        "bottom": 2238
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/ipad/04-local-keyboard.html"
+  },
+  {
+    "file": "screenshots/zh-Hant/ipad/05-setup.png",
+    "locale": "zh-Hant",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 552,
+        "y": 978,
+        "width": 960,
+        "height": 1260,
+        "right": 1512,
+        "bottom": 2238
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/zh-Hant/ipad/05-setup.html"
+  },
+  {
+    "file": "promo/airtype-social-square-zh-Hant-1080x1080.png",
+    "locale": "zh-Hant",
+    "placement": "social-square",
+    "width": 1080,
+    "height": 1080,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 460.5703125,
+        "y": 54,
+        "width": 158.859375,
+        "height": 46,
+        "right": 619.4296875,
+        "bottom": 100
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 160,
+        "width": 960,
+        "height": 182.875,
+        "right": 1020,
+        "bottom": 342.875
+      },
+      {
+        "element": "desc critical",
+        "x": 40,
+        "y": 360,
+        "width": 1000,
+        "height": 40,
+        "right": 1040,
+        "bottom": 400
+      },
+      {
+        "element": "device iphone critical",
+        "x": 142,
+        "y": 475,
+        "width": 200,
+        "height": 413.421875,
+        "right": 342,
+        "bottom": 888.421875
+      },
+      {
+        "element": "browser critical",
+        "x": 390,
+        "y": 500,
+        "width": 560,
+        "height": 440.5,
+        "right": 950,
+        "bottom": 940.5
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-square-zh-Hant-1080x1080.html"
+  },
+  {
+    "file": "promo/airtype-social-story-zh-Hant-1080x1920.png",
+    "locale": "zh-Hant",
+    "placement": "social-story",
+    "width": 1080,
+    "height": 1920,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 460.5703125,
+        "y": 92,
+        "width": 158.859375,
+        "height": 46,
+        "right": 619.4296875,
+        "bottom": 138
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 252,
+        "width": 960,
+        "height": 182.875,
+        "right": 1020,
+        "bottom": 434.875
+      },
+      {
+        "element": "desc critical",
+        "x": 40,
+        "y": 485,
+        "width": 1000,
+        "height": 40,
+        "right": 1040,
+        "bottom": 525
+      },
+      {
+        "element": "device iphone critical",
+        "x": 240,
+        "y": 680,
+        "width": 320,
+        "height": 674.15625,
+        "right": 560,
+        "bottom": 1354.15625
+      },
+      {
+        "element": "browser critical",
+        "x": 420,
+        "y": 930,
+        "width": 570,
+        "height": 447.96875,
+        "right": 990,
+        "bottom": 1377.96875
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-story-zh-Hant-1080x1920.html"
+  },
+  {
+    "file": "promo/airtype-social-landscape-zh-Hant-1200x630.png",
+    "locale": "zh-Hant",
+    "placement": "social-landscape",
+    "width": 1200,
+    "height": 630,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 64,
+        "y": 52,
+        "width": 132.953125,
+        "height": 38,
+        "right": 196.953125,
+        "bottom": 90
+      },
+      {
+        "element": "critical",
+        "x": 64,
+        "y": 156,
+        "width": 306.015625,
+        "height": 157.46875,
+        "right": 370.015625,
+        "bottom": 313.46875
+      },
+      {
+        "element": "desc critical",
+        "x": 66,
+        "y": 355,
+        "width": 219.9375,
+        "height": 32,
+        "right": 285.9375,
+        "bottom": 387
+      },
+      {
+        "element": "device iphone critical",
+        "x": 660,
+        "y": 60,
+        "width": 176,
+        "height": 361.28125,
+        "right": 836,
+        "bottom": 421.28125
+      },
+      {
+        "element": "browser critical",
+        "x": 820,
+        "y": 196,
+        "width": 330,
+        "height": 268.828125,
+        "right": 1150,
+        "bottom": 464.828125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-landscape-zh-Hant-1200x630.html"
+  },
+  {
+    "file": "creative/airtype-header-zh-Hant-3840x1646.png",
+    "locale": "zh-Hant",
+    "placement": "header",
+    "width": 3840,
+    "height": 1646,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 1140,
+        "y": 531,
+        "width": 298.40625,
+        "height": 78,
+        "right": 1438.40625,
+        "bottom": 609
+      },
+      {
+        "element": "critical",
+        "x": 1140,
+        "y": 657,
+        "width": 438.046875,
+        "height": 228.5625,
+        "right": 1578.046875,
+        "bottom": 885.5625
+      },
+      {
+        "element": "desc critical",
+        "x": 1140,
+        "y": 951,
+        "width": 362.90625,
+        "height": 52.78125,
+        "right": 1502.90625,
+        "bottom": 1003.78125
+      },
+      {
+        "element": "device iphone critical",
+        "x": 2349,
+        "y": 531,
+        "width": 249,
+        "height": 477.65625,
+        "right": 2598,
+        "bottom": 1008.65625
+      },
+      {
+        "element": "browser critical",
+        "x": 1974,
+        "y": 717,
+        "width": 525,
+        "height": 423.375,
+        "right": 2499,
+        "bottom": 1140.375
+      }
+    ],
+    "safeArea": {
+      "x": 1097,
+      "y": 493,
+      "w": 1646,
+      "h": 661
+    },
+    "passed": true,
+    "source": "sources/creative/airtype-header-zh-Hant-3840x1646.html"
+  },
+  {
+    "file": "creative/airtype-search-results-zh-Hant-3840x2560.png",
+    "locale": "zh-Hant",
+    "placement": "search-results",
+    "width": 3840,
+    "height": 2560,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 1720.5703125,
+        "y": 156,
+        "width": 398.859375,
+        "height": 114,
+        "right": 2119.4296875,
+        "bottom": 270
+      },
+      {
+        "element": "critical",
+        "x": 240,
+        "y": 375,
+        "width": 3360,
+        "height": 419.0625,
+        "right": 3600,
+        "bottom": 794.0625
+      },
+      {
+        "element": "desc critical",
+        "x": 180,
+        "y": 834,
+        "width": 3480,
+        "height": 91.171875,
+        "right": 3660,
+        "bottom": 925.171875
+      },
+      {
+        "element": "device iphone critical",
+        "x": 804,
+        "y": 1026,
+        "width": 498,
+        "height": 1018.6875,
+        "right": 1302,
+        "bottom": 2044.6875
+      },
+      {
+        "element": "browser critical",
+        "x": 1605,
+        "y": 1182,
+        "width": 1350,
+        "height": 1075.171875,
+        "right": 2955,
+        "bottom": 2257.171875
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/creative/airtype-search-results-zh-Hant-3840x2560.html"
+  },
+  {
+    "file": "screenshots/en-US/iphone/01-computer-typing.png",
+    "locale": "en-US",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 201.88510131835938,
+        "right": 1151.1817092895508,
+        "bottom": 508.8669128417969
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 104.15454864501953,
+        "y": 937.3909301757812,
+        "width": 537.2182006835938,
+        "height": 1109.340087890625,
+        "right": 641.3727493286133,
+        "bottom": 2046.7310180664062
+      },
+      {
+        "element": "browser critical",
+        "x": 411.1363525390625,
+        "y": 1397.8636474609375,
+        "width": 729.081787109375,
+        "height": 600.6873779296875,
+        "right": 1140.2181396484375,
+        "bottom": 1998.551025390625
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/iphone/01-computer-typing.html"
+  },
+  {
+    "file": "screenshots/en-US/iphone/02-pairing.png",
+    "locale": "en-US",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 236.660400390625,
+        "right": 1151.1817092895508,
+        "bottom": 543.6422119140625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "browser critical",
+        "x": 76.74545288085938,
+        "y": 1000.4318237304688,
+        "width": 1052.509033203125,
+        "height": 679.0173950195312,
+        "right": 1129.2544860839844,
+        "bottom": 1679.44921875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/iphone/02-pairing.html"
+  },
+  {
+    "file": "screenshots/en-US/iphone/03-emoji.png",
+    "locale": "en-US",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 236.660400390625,
+        "right": 1151.1817092895508,
+        "bottom": 543.6422119140625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "browser critical",
+        "x": 65.78181457519531,
+        "y": 1068.95458984375,
+        "width": 1074.436279296875,
+        "height": 858.332763671875,
+        "right": 1140.2180938720703,
+        "bottom": 1927.287353515625
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/iphone/03-emoji.html"
+  },
+  {
+    "file": "screenshots/en-US/iphone/04-local-keyboard.png",
+    "locale": "en-US",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 236.660400390625,
+        "right": 1151.1817092895508,
+        "bottom": 543.6422119140625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 301.5,
+        "y": 888.0545654296875,
+        "width": 603,
+        "height": 1252.2957763671875,
+        "right": 904.5,
+        "bottom": 2140.350341796875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/iphone/04-local-keyboard.html"
+  },
+  {
+    "file": "screenshots/en-US/iphone/05-setup.png",
+    "locale": "en-US",
+    "placement": "iphone",
+    "width": 1206,
+    "height": 2622,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 456.297119140625,
+        "y": 87.70909118652344,
+        "width": 293.40576171875,
+        "height": 82.22727966308594,
+        "right": 749.702880859375,
+        "bottom": 169.93637084960938
+      },
+      {
+        "element": "critical",
+        "x": 54.81818389892578,
+        "y": 306.9818115234375,
+        "width": 1096.363525390625,
+        "height": 236.660400390625,
+        "right": 1151.1817092895508,
+        "bottom": 543.6422119140625
+      },
+      {
+        "element": "desc critical",
+        "x": 65.78181457519531,
+        "y": 657.8181762695312,
+        "width": 1074.436279296875,
+        "height": 54.81817626953125,
+        "right": 1140.2180938720703,
+        "bottom": 712.6363525390625
+      },
+      {
+        "element": "device iphone critical",
+        "x": 301.5,
+        "y": 888.0545654296875,
+        "width": 603,
+        "height": 1252.2957763671875,
+        "right": 904.5,
+        "bottom": 2140.350341796875
+      },
+      {
+        "element": "tag critical",
+        "x": 43.85454559326172,
+        "y": 2180.478759765625,
+        "width": 1118.291015625,
+        "height": 48.222900390625,
+        "right": 1162.1455612182617,
+        "bottom": 2228.70166015625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/iphone/05-setup.html"
+  },
+  {
+    "file": "screenshots/en-US/ipad/01-computer-typing.png",
+    "locale": "en-US",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 192,
+        "y": 1014,
+        "width": 930,
+        "height": 1219.96875,
+        "right": 1122,
+        "bottom": 2233.96875
+      },
+      {
+        "element": "browser critical",
+        "x": 930,
+        "y": 1422,
+        "width": 990,
+        "height": 799.453125,
+        "right": 1920,
+        "bottom": 2221.453125
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/ipad/01-computer-typing.html"
+  },
+  {
+    "file": "screenshots/en-US/ipad/02-pairing.png",
+    "locale": "en-US",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "browser critical",
+        "x": 162,
+        "y": 1050,
+        "width": 1740,
+        "height": 1087.59375,
+        "right": 1902,
+        "bottom": 2137.59375
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/ipad/02-pairing.html"
+  },
+  {
+    "file": "screenshots/en-US/ipad/03-emoji.png",
+    "locale": "en-US",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "browser critical",
+        "x": 228,
+        "y": 990,
+        "width": 1608,
+        "height": 1259.765625,
+        "right": 1836,
+        "bottom": 2249.765625
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/ipad/03-emoji.html"
+  },
+  {
+    "file": "screenshots/en-US/ipad/04-local-keyboard.png",
+    "locale": "en-US",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 552,
+        "y": 978,
+        "width": 960,
+        "height": 1260,
+        "right": 1512,
+        "bottom": 2238
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/ipad/04-local-keyboard.html"
+  },
+  {
+    "file": "screenshots/en-US/ipad/05-setup.png",
+    "locale": "en-US",
+    "placement": "ipad",
+    "width": 2064,
+    "height": 2752,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 871.4296875,
+        "y": 96,
+        "width": 321.140625,
+        "height": 90,
+        "right": 1192.5703125,
+        "bottom": 186
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 309,
+        "width": 1944,
+        "height": 335.25,
+        "right": 2004,
+        "bottom": 644.25
+      },
+      {
+        "element": "desc critical",
+        "x": 72,
+        "y": 720,
+        "width": 1920,
+        "height": 81.5625,
+        "right": 1992,
+        "bottom": 801.5625
+      },
+      {
+        "element": "device ipad critical",
+        "x": 552,
+        "y": 978,
+        "width": 960,
+        "height": 1260,
+        "right": 1512,
+        "bottom": 2238
+      },
+      {
+        "element": "tag critical",
+        "x": 48,
+        "y": 2272.03125,
+        "width": 1968,
+        "height": 67.171875,
+        "right": 2016,
+        "bottom": 2339.203125
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/screenshots/en-US/ipad/05-setup.html"
+  },
+  {
+    "file": "promo/airtype-social-square-en-US-1080x1080.png",
+    "locale": "en-US",
+    "placement": "social-square",
+    "width": 1080,
+    "height": 1080,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 460.5703125,
+        "y": 54,
+        "width": 158.859375,
+        "height": 46,
+        "right": 619.4296875,
+        "bottom": 100
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 160,
+        "width": 960,
+        "height": 157.46875,
+        "right": 1020,
+        "bottom": 317.46875
+      },
+      {
+        "element": "desc critical",
+        "x": 40,
+        "y": 360,
+        "width": 1000,
+        "height": 40,
+        "right": 1040,
+        "bottom": 400
+      },
+      {
+        "element": "device iphone critical",
+        "x": 142,
+        "y": 475,
+        "width": 200,
+        "height": 413.421875,
+        "right": 342,
+        "bottom": 888.421875
+      },
+      {
+        "element": "browser critical",
+        "x": 390,
+        "y": 500,
+        "width": 560,
+        "height": 436.515625,
+        "right": 950,
+        "bottom": 936.515625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-square-en-US-1080x1080.html"
+  },
+  {
+    "file": "promo/airtype-social-story-en-US-1080x1920.png",
+    "locale": "en-US",
+    "placement": "social-story",
+    "width": 1080,
+    "height": 1920,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 460.5703125,
+        "y": 92,
+        "width": 158.859375,
+        "height": 46,
+        "right": 619.4296875,
+        "bottom": 138
+      },
+      {
+        "element": "critical",
+        "x": 60,
+        "y": 252,
+        "width": 960,
+        "height": 157.46875,
+        "right": 1020,
+        "bottom": 409.46875
+      },
+      {
+        "element": "desc critical",
+        "x": 40,
+        "y": 485,
+        "width": 1000,
+        "height": 40,
+        "right": 1040,
+        "bottom": 525
+      },
+      {
+        "element": "device iphone critical",
+        "x": 240,
+        "y": 680,
+        "width": 320,
+        "height": 674.15625,
+        "right": 560,
+        "bottom": 1354.15625
+      },
+      {
+        "element": "browser critical",
+        "x": 420,
+        "y": 930,
+        "width": 570,
+        "height": 443.90625,
+        "right": 990,
+        "bottom": 1373.90625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-story-en-US-1080x1920.html"
+  },
+  {
+    "file": "promo/airtype-social-landscape-en-US-1200x630.png",
+    "locale": "en-US",
+    "placement": "social-landscape",
+    "width": 1200,
+    "height": 630,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 64,
+        "y": 52,
+        "width": 132.953125,
+        "height": 38,
+        "right": 196.953125,
+        "bottom": 90
+      },
+      {
+        "element": "critical",
+        "x": 64,
+        "y": 156,
+        "width": 426.796875,
+        "height": 157.46875,
+        "right": 490.796875,
+        "bottom": 313.46875
+      },
+      {
+        "element": "desc critical",
+        "x": 66,
+        "y": 355,
+        "width": 329.15625,
+        "height": 32,
+        "right": 395.15625,
+        "bottom": 387
+      },
+      {
+        "element": "device iphone critical",
+        "x": 660,
+        "y": 60,
+        "width": 176,
+        "height": 361.28125,
+        "right": 836,
+        "bottom": 421.28125
+      },
+      {
+        "element": "browser critical",
+        "x": 820,
+        "y": 196,
+        "width": 330,
+        "height": 266.484375,
+        "right": 1150,
+        "bottom": 462.484375
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/promo/airtype-social-landscape-en-US-1200x630.html"
+  },
+  {
+    "file": "creative/airtype-header-en-US-3840x1646.png",
+    "locale": "en-US",
+    "placement": "header",
+    "width": 3840,
+    "height": 1646,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 1140,
+        "y": 531,
+        "width": 298.40625,
+        "height": 78,
+        "right": 1438.40625,
+        "bottom": 609
+      },
+      {
+        "element": "critical",
+        "x": 1140,
+        "y": 657,
+        "width": 602.203125,
+        "height": 228.5625,
+        "right": 1742.203125,
+        "bottom": 885.5625
+      },
+      {
+        "element": "desc critical",
+        "x": 1140,
+        "y": 951,
+        "width": 526.03125,
+        "height": 52.78125,
+        "right": 1666.03125,
+        "bottom": 1003.78125
+      },
+      {
+        "element": "device iphone critical",
+        "x": 2349,
+        "y": 531,
+        "width": 249,
+        "height": 477.65625,
+        "right": 2598,
+        "bottom": 1008.65625
+      },
+      {
+        "element": "browser critical",
+        "x": 1974,
+        "y": 717,
+        "width": 525,
+        "height": 419.671875,
+        "right": 2499,
+        "bottom": 1136.671875
+      }
+    ],
+    "safeArea": {
+      "x": 1097,
+      "y": 493,
+      "w": 1646,
+      "h": 661
+    },
+    "passed": true,
+    "source": "sources/creative/airtype-header-en-US-3840x1646.html"
+  },
+  {
+    "file": "creative/airtype-search-results-en-US-3840x2560.png",
+    "locale": "en-US",
+    "placement": "search-results",
+    "width": 3840,
+    "height": 2560,
+    "colourSpace": "srgb",
+    "hasAlpha": false,
+    "bounds": [
+      {
+        "element": "brand critical",
+        "x": 1720.5703125,
+        "y": 156,
+        "width": 398.859375,
+        "height": 114,
+        "right": 2119.4296875,
+        "bottom": 270
+      },
+      {
+        "element": "critical",
+        "x": 240,
+        "y": 375,
+        "width": 3360,
+        "height": 373.3125,
+        "right": 3600,
+        "bottom": 748.3125
+      },
+      {
+        "element": "desc critical",
+        "x": 180,
+        "y": 834,
+        "width": 3480,
+        "height": 91.171875,
+        "right": 3660,
+        "bottom": 925.171875
+      },
+      {
+        "element": "device iphone critical",
+        "x": 804,
+        "y": 1026,
+        "width": 498,
+        "height": 1018.6875,
+        "right": 1302,
+        "bottom": 2044.6875
+      },
+      {
+        "element": "browser critical",
+        "x": 1605,
+        "y": 1182,
+        "width": 1350,
+        "height": 1065.5625,
+        "right": 2955,
+        "bottom": 2247.5625
+      }
+    ],
+    "safeArea": null,
+    "passed": true,
+    "source": "sources/creative/airtype-search-results-en-US-3840x2560.html"
+  }
+]

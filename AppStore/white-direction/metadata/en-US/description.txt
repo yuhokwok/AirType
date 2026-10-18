@@ -1,0 +1,32 @@
+Type on your computer. Receive it on your iPhone or iPad.
+
+Keep using the keyboard you know when writing a long message, taking notes, or entering a paragraph on your phone. AirType sends text from your computer browser to the active text field on your iPhone or iPad over the same Wi-Fi network.
+
+JUST OPEN A BROWSER
+No desktop software or account is required. Open the address displayed on the AirType keyboard and enter its six-digit pairing code to connect.
+
+USE YOUR FAMILIAR INPUT METHOD
+Compose text with your computer’s input method, then press Enter or click Send. The browser also offers delete and newline controls, plus a searchable emoji picker for adding emoji to your draft.
+
+TYPE LOCALLY, TOO
+Switch to the built-in English QWERTY keyboard with light and dark appearances, numbers, symbols, and English spelling suggestions. Hold the space bar and drag horizontally to move the cursor.
+
+KEEP YOUR UNSENT DRAFT
+If the connection drops, the browser attempts to reconnect for up to 10 seconds, then offers a manual Reconnect button. Unsent text stays in the current page so you can continue editing.
+
+GET STARTED
+1. Add AirType in Keyboard settings and enable Allow Full Access.
+2. Open AirType and enable its local network connection. Allow Local Network access.
+3. Connect your computer and iPhone or iPad to the same Wi-Fi.
+4. Open a text field in a supported app, switch to AirType, and keep Web Access visible.
+5. Open the keyboard’s address on your computer, enter the pairing code, and type.
+
+PLEASE NOTE
+• Requires iOS or iPadOS 17 or later.
+• Remote typing requires Full Access and Local Network permission. Local typing works without Full Access.
+• The receiving connection runs only while the Web Access keyboard is visible.
+• Some apps do not allow third-party keyboards. Secure text fields and certain phone fields use the system keyboard.
+• Web Access uses unencrypted local HTTP. Use a trusted Wi-Fi network.
+• No cloud account is needed. AirType does not upload your typing to its own cloud service. Browser drafts remain only in the current page and may be lost if you refresh or close it.
+
+Support: info@invivointeractive.com

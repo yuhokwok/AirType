@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#5862c7">
+  <meta name="description" content="Type in your computer browser and send text to your iPhone or iPad over the same Wi-Fi. No desktop app needed. AirType by invivo.">
+  <meta property="og:title" content="AirType — Your computer keyboard, on your iPhone.">
+  <meta property="og:description" content="Open a browser and send text to your iPhone or iPad. Keep using the keyboard you know.">
+  <meta property="og:type" content="website">
+  <title>AirType — Your computer keyboard, on your iPhone.</title>
+  <link rel="canonical" href="https://www.invivointeractive.com/airtype/en/">
+  <link rel="alternate" hreflang="zh-Hant" href="https://www.invivointeractive.com/airtype/">
+  <link rel="alternate" hreflang="en" href="https://www.invivointeractive.com/airtype/en/">
+  <link rel="alternate" hreflang="x-default" href="https://www.invivointeractive.com/airtype/">
+  <link rel="icon" href="../assets/app-icon.png">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../app.js" defer></script>
+</head>
+<body>
+<svg class="svg-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+  <symbol id="arrow" viewbox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  <symbol id="external" viewbox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+  <symbol id="wifi" viewbox="0 0 24 24"><path d="M2 8a16 16 0 0 1 20 0M5 12a11 11 0 0 1 14 0m-11 4a6 6 0 0 1 8 0"/><circle cx="12" cy="20" r=".8" fill="currentColor"/></symbol>
+  <symbol id="send" viewbox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="keyboard" viewbox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/></symbol>
+  <symbol id="globe" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
+  <symbol id="apple" viewbox="0 0 24 24"><path fill="currentColor" stroke="none" d="M17.4 12.7c0-2.3 1.9-3.5 2-3.6-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.2-2.7.9-3.4.9-.7 0-1.8-.9-2.9-.9-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.7 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 1.9-1.1 2.6-2.2.9-1.2 1.2-2.4 1.2-2.5-.1 0-2.1-.8-2.1-3.3ZM15.2 5.9c.6-.8 1.1-1.9 1-2.9-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.8 1.1.1 2.2-.6 2.9-1.4Z"/></symbol>
+</defs></svg>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="wrap site-header">
+  <a class="brand" href="./" aria-label="AirType home"><img src="../assets/app-icon.png" width="46" height="46" alt=""><span>AirType</span></a>
+  <nav aria-label="Main navigation"><a href="#features">Features</a><button data-dialog="guide">Setup guide</button><button data-dialog="faq">FAQ</button><a href="../privacy/en/">Privacy Policy</a></nav>
+  <!-- language-switch -->
+  <div class="language-switch" role="navigation" aria-label="Website language"><a href="../" lang="zh-Hant">繁體中文</a><a href="./" lang="en" aria-current="page">English</a></div>
+  <!-- /language-switch -->
+  <a class="download-small" href="https://apps.apple.com/hk/app/id922932291" target="_blank" rel="noopener noreferrer">Download <svg aria-hidden="true"><use href="#external"/></svg></a>
+</header>
+<main id="main">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <h1 id="hero-title">Your keyboard.<br><span>Your iPhone.</span></h1>
+      <p class="intro">Stay with the work in front of you.<br>Open a browser. Send your words to your phone.</p>
+      <a class="button primary" href="https://apps.apple.com/hk/app/id922932291" target="_blank" rel="noopener noreferrer"><svg class="apple" aria-hidden="true"><use href="#apple"/></svg>Download on the App Store</a>
+      <p class="free-note">For iPhone and iPad. Both devices must use the same Wi-Fi.</p>
+    </div>
+    <div class="showcase">
+      <div class="showcase-top"><span>One browser. Two devices.</span><svg aria-hidden="true"><use href="#wifi"/></svg></div>
+      <div class="demo-stage">
+        <div class="browser-window">
+          <div class="browser-chrome"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="browser-address">AirType Web Access</span><svg aria-hidden="true"><use href="#globe"/></svg></div>
+          <div class="browser-title">AirType</div>
+          <form id="demo-form">
+            <label class="sr-only" for="demo-text">Demo: enter text to send</label>
+            <textarea id="demo-text" maxlength="140" rows="3" spellcheck="false">See you at seven 👋</textarea>
+            <button id="demo-send" type="submit" aria-label="Send demo text" title="Try sending"><svg aria-hidden="true"><use href="#send"/></svg></button>
+          </form>
+          <div class="demo-status"><span class="status-dot" aria-hidden="true"></span><span id="demo-status">Type a message, then press Send.</span></div>
+        </div>
+        <div class="phone" aria-label="Illustration of an iPhone receiving text">
+          <div class="phone-top" aria-hidden="true"><span>9:41</span><span class="island"></span><svg><use href="#wifi"/></svg></div>
+          <div class="phone-content"><span class="note-date">My notes</span><p id="phone-message" aria-live="polite">Your message will appear here after you send it.</p></div>
+          <div class="phone-keyboard"><img src="../assets/app-icon.png" width="42" height="42" alt="AirType"><span>Web Access</span><div><i class="status-dot"></i> <span id="phone-status">Waiting for text</span></div><div class="phone-address">AirType</div></div>
+          <span class="home-indicator" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="showcase-bottom"><span>Try it yourself <svg aria-hidden="true"><use href="#arrow"/></svg></span><p>Interactive illustration · Does not connect to your device</p></div>
+    </div>
+  </section>
+  <div class="platform-strip wrap" aria-label="AirType requirements">
+    <span class="strip-title">Use the computer you have.<br>Just open a browser.</span>
+    <span><svg aria-hidden="true"><use href="#keyboard"/></svg>Mac / Windows / Linux</span>
+    <span><svg aria-hidden="true"><use href="#globe"/></svg>No desktop app needed</span>
+    <span><svg aria-hidden="true"><use href="#wifi"/></svg>Connect over the same Wi-Fi</span>
+    <button class="text-link" data-dialog="guide">Get started <svg aria-hidden="true"><use href="#arrow"/></svg></button>
+  </div>
+  <section class="feature-section wrap" id="features" aria-labelledby="feature-title">
+    <div class="workflow-visual" aria-label="Workflow: type on your computer and send to your phone">
+      <span class="visual-label">From your computer to your phone.</span>
+      <div class="draft-example"><span>Type in your browser</span><p>The notes are ready.<br>Sending them over now.<span class="text-cursor" aria-hidden="true"></span></p><div><svg aria-hidden="true"><use href="#keyboard"/></svg><span>Use your familiar keyboard and input method</span></div></div>
+      <div class="transfer-line" aria-hidden="true"><span></span><svg><use href="#arrow"/></svg><span></span></div>
+      <div class="received-example"><img src="../assets/app-icon.png" alt="" width="34" height="34"><div><span>Receive on your iPhone or iPad</span><p>The notes are ready. Sending them over now.</p></div><span class="received-check" aria-hidden="true">✓</span></div>
+      <p class="visual-caption">Type, send, and your words appear in the active text field.</p>
+    </div>
+    <div class="section-copy"><span class="section-number">01 / Type on your computer. Receive on your phone.</span><h2 id="feature-title">More to write?<br>Use the keyboard you know.</h2><p>Reply to a message, take notes, or write a longer paragraph. Stay at your computer, compose with your usual keyboard and input method, then send it to your iPhone or iPad.</p><div class="copy-divider"></div><h3>No extra software on your computer.</h3><p>Switch to AirType on your phone, then open the keyboard’s address on your computer. On Mac, Windows, or Linux, a compatible browser is all you need.</p><button class="text-link" data-dialog="guide">See how to connect <svg aria-hidden="true"><use href="#arrow"/></svg></button></div>
+  </section>
+  <section class="local-section wrap" aria-labelledby="local-title"><div class="section-copy"><span class="section-number">02 / Keep typing on your phone</span><h2 id="local-title">A few quick edits?<br>Make them on your phone.</h2><p>AirType also includes a QWERTY keyboard. Switch back to local typing for a quick edit, or keep writing when you step away from your computer.</p><p>Web Access connects only while the keyboard is visible. Keep both devices on the same Wi-Fi and use a network you trust.</p><button class="text-link" data-dialog="faq">Questions before you connect? <svg aria-hidden="true"><use href="#arrow"/></svg></button></div><figure class="keyboard-showcase"><div class="keyboard-crop"><img src="../assets/keyboard-dark.jpg" width="368" height="800" loading="lazy" alt="AirType dark QWERTY keyboard showing English letters, a space bar, and the Wi-Fi switch"></div><figcaption>AirType QWERTY keyboard · Development build in Simulator</figcaption></figure></section>
+  <section class="setup-section wrap" aria-labelledby="setup-title"><div class="setup-heading"><span class="section-number">03 / Get started in three steps</span><h2 id="setup-title">Set up your phone.<br>Connect your computer.</h2><button class="text-link" data-dialog="guide">Read the full setup guide <svg aria-hidden="true"><use href="#arrow"/></svg></button></div><ol class="setup-steps"><li><span class="step-number">01</span><div><h3>Download and add the keyboard</h3><p>Install AirType, add it in your system keyboard settings, and enable Allow Full Access for networking.</p></div></li><li><span class="step-number">02</span><div><h3>Open Web Access</h3><p>Connect both devices to the same Wi-Fi. Open a text field and switch to AirType to see its connection address.</p></div></li><li><span class="step-number">03</span><div><h3>Start typing on your computer</h3><p>Open the keyboard’s address in your browser and follow the pairing instructions. Type your text, then press Enter to send.</p></div></li></ol></section>
+  <section class="closing wrap"><div><h2>One desk.<br>Your own rhythm.</h2><p>AirType connects your computer keyboard to your iPhone.</p></div><a class="button primary" href="https://apps.apple.com/hk/app/id922932291" target="_blank" rel="noopener noreferrer">Download AirType <svg aria-hidden="true"><use href="#external"/></svg></a></section>
+</main>
+<footer class="wrap"><a class="brand" href="./"><img src="../assets/app-icon.png" width="34" height="34" alt=""><span>AirType</span></a><div class="footer-links"><button data-dialog="guide">Setup guide</button><button data-dialog="faq">FAQ</button><button data-dialog="privacy">Website privacy</button><a href="../privacy/en/">Privacy Policy</a><a href="mailto:info@invivointeractive.com">Contact us</a></div><div class="social-links" aria-label="invivo on social media"><a href="https://www.instagram.com/invivointeractive/" target="_blank" rel="noopener noreferrer" aria-label="invivo Instagram (opens in a new tab)"><img src="../assets/instagram.svg" width="18" height="18" alt="">Instagram ↗</a><a href="https://www.threads.com/@invivointeractive" target="_blank" rel="noopener noreferrer" aria-label="invivo Threads (opens in a new tab)"><img src="../assets/threads.svg" width="18" height="18" alt="">Threads ↗</a></div><small><a href="https://www.invivointeractive.com/">© 2026 invivo interactive limited</a></small></footer>
+<dialog id="guide" aria-labelledby="guide-title"><div class="dialog-top"><h2 id="guide-title">Get started with AirType</h2><button data-close aria-label="Close setup guide">×</button></div><ol class="guide-steps"><li><strong>Download and open AirType</strong><p>Download AirType from the App Store. If asked for Local Network access, choose Allow.</p></li><li><strong>Add the system keyboard</strong><p>Go to Settings → General → Keyboard → Keyboards → Add New Keyboard and choose AirType. Open its keyboard settings and enable Allow Full Access so it can use the network.</p></li><li><strong>Switch to AirType on your phone</strong><p>Open a normal text field, hold the globe key, and select AirType. Open Web Access and keep it visible.</p></li><li><strong>Open the connection address on your computer</strong><p>Your computer and phone must use the same Wi-Fi. Enter the keyboard’s complete address in your browser, including the port. If asked for a pairing code, enter the six digits shown on the keyboard.</p></li><li><strong>Type your message and press Enter</strong><p>Type your text and press Enter or click Send. It appears in the phone’s active text field. Press Shift + Enter to add a line break to your draft.</p></li></ol><p class="dialog-note">Addresses and connection steps may vary by app version. Follow what your keyboard shows. Some apps, secure password fields, and certain phone fields do not allow third-party keyboards.</p></dialog>
+<dialog id="faq" aria-labelledby="faq-title"><div class="dialog-top"><h2 id="faq-title">FAQ</h2><button data-close aria-label="Close FAQ">×</button></div><details open><summary>Do I need to install anything on my computer?</summary><p>No. Open a compatible browser and enter the address shown on the AirType keyboard. Your computer and iPhone or iPad must be on the same Wi-Fi network.</p></details><details><summary>Can I type Chinese and emoji?</summary><p>Yes. Use your computer’s input method to compose Chinese, other languages, or emoji, then send the text to your phone. AirType’s local keyboard uses an English QWERTY and symbol layout.</p></details><details><summary>Why does AirType need Full Access?</summary><p>Third-party iOS keyboards need Full Access to use networking. If iOS also asks for Local Network access, allow it too. Use AirType only on Wi-Fi networks you trust.</p></details><details><summary>What if the page won’t open or the connection drops?</summary><p>Keep Web Access visible, check that both devices use the same Wi-Fi, and verify the address and port. If the .local address fails, try the IP address shown on the keyboard. Guest Wi-Fi, client isolation, or a VPN may block the connection. If the page shows Reconnect, reopen the keyboard and click it.</p></details><details><summary>Does this website’s demo send my text anywhere?</summary><p>No. The demo runs only in this page and resets when you refresh. To send text to your phone, download AirType and open the local address shown on its keyboard.</p></details></dialog>
+<dialog id="privacy" aria-labelledby="privacy-title"><div class="dialog-top"><h2 id="privacy-title">Privacy and connections</h2><button data-close aria-label="Close privacy information">×</button></div><h3>This website’s interactive demo</h3><p>Demo text is processed only in this page. It is not sent to an AirType device or server and is not kept after a refresh. This page does not include analytics, advertising trackers, or cookies.</p><h3>AirType Privacy Policy</h3><p>Read the full policy: <a href="../privacy/" lang="zh-Hant">繁體中文</a> · <a href="../privacy/en/" lang="en">English</a>.</p><h3>Using AirType</h3><p>Web Access sends text over your local network to the active text field on your phone. Use trusted Wi-Fi. Local HTTP connections are unencrypted; do not send sensitive content over public or untrusted networks.</p><p>For app version, support, and privacy information, visit the <a href="https://apps.apple.com/hk/app/id922932291" target="_blank" rel="noopener noreferrer">App Store product page</a>. For help, email <a href="mailto:info@invivointeractive.com">info@invivointeractive.com</a>.</p></dialog>
+</body></html>
