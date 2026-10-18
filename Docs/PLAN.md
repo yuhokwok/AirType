@@ -120,3 +120,11 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Draw circular arcs with rounded endpoints, reference proportions, differing outer/inner stroke weights and a blue-cyan to turquoise gradient.
 - [x] Keep “Type, over the air”, its Chinese translations and the vertical setup cards.
 - [x] Build app/extension and inspect iPhone SE and Pro Max simulator rendering.
+
+
+## Group secondary actions with their steps — 18 October 2026
+
+- [x] Put Connection name beneath the Step 2 main action as a plain blue text button.
+- [x] Put Watch the typing guide beneath Try AirType within Step 3 as a plain purple text button.
+- [x] Remove the duplicate standalone entries; retain 44-point minimum targets and text wrapping.
+- [x] Build app/extension, inspect the rendered cards and confirm the relocated Bonjour entry opens Settings.

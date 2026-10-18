@@ -50,14 +50,7 @@ struct SetupView: View {
                 }
                 homeCard(.typing, title: "Try AirType", message: L10n.text("Open a text field and use the globe key to select AirType."), actionTitle: "Try AirType", symbol: "text.cursor") { showTry = true }
 
-                Button { showTutorial = true } label: {
-                    Label(L10n.text("Watch the typing guide"), systemImage: "play.circle")
-                        .frame(maxWidth: .infinity, minHeight: 44).padding(.vertical, 4)
-                        .background(accent.opacity(0.14), in: .capsule)
-                }.buttonStyle(.plain).foregroundStyle(accent)
                 VStack(spacing: 0) {
-                    homeLink("Connection name", destination: .settings)
-                    Divider().padding(.horizontal, 16)
                     homeLink("Privacy", destination: .privacy)
                 }.background(.white, in: .rect(cornerRadius: 18))
                 AirTypeContactLinks().padding(.top, 4)
@@ -110,6 +103,23 @@ struct SetupView: View {
                     .background(step == .addKeyboard ? step.tint : step.tint.opacity(0.13), in: .capsule)
             }.buttonStyle(.plain).accessibilityIdentifier("HomeStep\(step.number)")
                 .disabled(step == .connection && networkCheck.state == .checking)
+            if step == .connection {
+                Button { destination = .settings } label: {
+                    Label(L10n.text("Connection name"), systemImage: "slider.horizontal.3")
+                        .font(.subheadline).multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }.buttonStyle(.plain).foregroundStyle(step.tint)
+                    .accessibilityIdentifier("HomeConnectionName")
+            } else if step == .typing {
+                Button { showTutorial = true } label: {
+                    Label(L10n.text("Watch the typing guide"), systemImage: "play.circle")
+                        .font(.subheadline).multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }.buttonStyle(.plain).foregroundStyle(step.tint)
+                    .accessibilityIdentifier("HomeTypingGuide")
+            }
         }.padding(16).background(.white, in: .rect(cornerRadius: 18))
     }
     private func homeLink(_ title: String, destination: AirTypeGuide) -> some View {

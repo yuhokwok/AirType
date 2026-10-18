@@ -180,3 +180,10 @@ Evidence: [English](Validation/vertical-home-en.jpg), [Chinese](Validation/verti
 The header now centers a three-arc Wi-Fi mark over “Type, over the air” on white, with no side-by-side app-name row. The previous shallow freehand curves were replaced by circular cubic arc segments with round endpoints and the reference’s outer/inner stroke proportions. The vector shape fills a 300×176 reference coordinate space with a continuous blue-cyan to turquoise gradient. Vertical cards and their actions are unchanged.
 
 App/extension build and rendered checks pass on iPhone SE (iOS 18.2) and the dedicated Pro Max simulator (iOS 27). This is a visual-only change; the previously passing 50-case suite was not rerun for arc geometry/spacing. Evidence: [SE header](Validation/centered-wave-header-se.jpg), [Pro Max header](Validation/centered-wave-header-pro-max.jpg).
+
+
+## Step-specific secondary actions — 18 October 2026
+
+Connection name is now a plain, unfilled blue button inside Step 2, immediately below Allow Local Network. Watch the typing guide is a plain purple button inside Step 3, immediately below Try AirType. Each uses its step tint and a 44-point minimum hit height. The previous standalone tutorial pill and connection-name row were removed; privacy and contacts remain below the cards.
+
+The app/extension build passes. Rendered Pro Max inspection verifies both placements and colors; native CUA confirms the relocated connection button opens the Bonjour-name form. The tutorial retains the existing showTutorial sheet action. No input/network logic changed, and the full suite was not rerun for this placement/style edit. Evidence: [secondary actions](Validation/step-secondary-actions.jpg).
