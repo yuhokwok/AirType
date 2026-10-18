@@ -36,7 +36,7 @@ struct SetupView: View {
                         .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 20)
                 }.frame(maxWidth: .infinity).padding(.vertical, 24)
-                    .background(.white).padding(.horizontal, -20).padding(.top, -20)
+                    .padding(.horizontal, -20).padding(.top, -20)
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel("AirType. " + L10n.text("Type, over the air"))
 
