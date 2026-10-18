@@ -260,7 +260,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置 → 一般 → 键盘 → 键盘 → 加入新键盘 → AirType，再开启「允许完全访问」。"
+            "value": "设置 → 通用 → 键盘 → 键盘 → 添加新键盘 → AirType，再开启「允许完全访问」。"
           }
         }
       }
@@ -700,7 +700,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置 → 一般 → 键盘 → 键盘 → 加入新键盘 → AirType。在 AirType 键盘项目开启「允许完全访问」，以使用网络连接。"
+            "value": "设置 → 通用 → 键盘 → 键盘 → 添加新键盘 → AirType。打开 AirType 键盘设置并开启「允许完全访问」，以使用网络连接。"
           }
         }
       }
@@ -4131,13 +4131,13 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "加入新\n鍵盤。"
+            "value": "加入\n新鍵盤。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "加入新\n键盘。"
+            "value": "添加\n新键盘。"
           }
         }
       }
@@ -4246,13 +4246,13 @@
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "選擇「`一般`」→「`鍵盤`」→「`鍵盤`」→「`新增鍵盤⋯`」。"
+            "value": "選擇「`一般`」→「`鍵盤`」→「`鍵盤`」→「`加入新鍵盤⋯`」。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择「`一般`」→「`键盘`」→「`键盘`」→「`新增键盘⋯`」。"
+            "value": "选择「`通用`」→「`键盘`」→「`键盘`」→「`添加新键盘…`」。"
           }
         }
       }

@@ -236,3 +236,10 @@ The three step information buttons now present large native sheets with visible 
 ## Timed tutorial progress fill — 18 October 2026
 
 Each tutorial progress segment now has a gray track and left-aligned purple fill, interpolated linearly with the existing 150ms playback ticks over six seconds. Completed segments remain full; future segments stay gray. The timer gives the last fill interval time to complete before changing steps. Existing pause, scene-inactive and Reduce Motion playback rules remain. Build/install/launch passes. Two rendered simulator observations show partial fill on Step 1, then Step 2 with Step 1 full and Step 2 partially filled. This animation-only change did not rerun the full test suite.
+
+
+## Bilingual copy and typography review — 18 October 2026
+
+Reviewed current home, setup instructions, connection-name sheet, typing guide, Try, privacy entry and keyboard labels against English/Traditional Chinese/Simplified Chinese catalog entries. Owner-selected English labels remain unchanged. Traditional Chinese consistently uses 加入新鍵盤; Simplified Chinese settings paths now use 通用 and 添加新键盘. The add-keyboard heading breaks at 加入 / 新鍵盤 and 添加 / 新键盘. Chinese mosaic headings now use the system default design at regular weight for legibility; English keeps rounded light. Highlighted Chinese Settings terms use the system text face, while English keeps its monospaced face. Body and action text styles remain shared. Policy prose was not rewritten.
+
+App/extension build and 53 tests pass, including a new compiled-catalog regression check covering recent bilingual headings, the required two-line connection title and correct regional Settings terms. Rendered Traditional Chinese setup-sheet inspection confirms readable headings/instructions and natural wrapping. English launch was restored after review. Every device, accessibility text size and browser viewport was not individually rechecked.

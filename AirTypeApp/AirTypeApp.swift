@@ -172,7 +172,9 @@ private struct AirTypeSectionHeading: View {
     var body: some View {
         HStack(spacing: 10) {
             AirTypeMosaic(colors: theme.colors).frame(width: 48, height: 105)
-            Text(L10n.text(title)).font(.system(.largeTitle, design: .rounded).weight(.light))
+            Text(L10n.text(title))
+                .font(.system(.largeTitle, design: L10n.language == "en" ? .rounded : .default)
+                    .weight(L10n.language == "en" ? .light : .regular))
                 .foregroundStyle(theme.tint).fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 12)
         }
@@ -407,7 +409,7 @@ private struct AirTypeGuideScreen: View {
         for run in text.runs where run.inlinePresentationIntent?.contains(.code) == true {
             text[run.range].foregroundColor = .white
             text[run.range].backgroundColor = Color(white: 0.23)
-            text[run.range].font = .system(.title3, design: .monospaced)
+            text[run.range].font = .system(.title3, design: L10n.language == "en" ? .monospaced : .default)
         }
         return text
     }
