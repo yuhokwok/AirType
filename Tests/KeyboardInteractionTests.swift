@@ -69,7 +69,6 @@ final class KeyboardInteractionTests: XCTestCase {
         let toggle = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityIdentifier == "AirTypeAddressToggle" })
         XCTAssertEqual(text("AirTypePrimaryAddress"), "http://airtype.local:8307/")
         XCTAssertEqual(text("AirTypeSecondaryAddress"), "http://192.168.1.2:8307/")
-        XCTAssertFalse(try XCTUnwrap(descendants(keyboard).first { $0.accessibilityIdentifier == "AirTypeAddressSwapHint" }).isHidden)
         XCTAssertEqual(keyboard.backgroundColor, .clear)
         XCTAssertFalse(keyboard.isOpaque)
         toggle.sendActions(for: .touchUpInside)
@@ -95,7 +94,6 @@ final class KeyboardInteractionTests: XCTestCase {
         let secondary = try XCTUnwrap(labels.first { $0.accessibilityIdentifier == "AirTypeSecondaryAddress" })
         XCTAssertEqual(primary.text, "http://192.168.1.2:8307/")
         XCTAssertTrue(secondary.isHidden)
-        XCTAssertTrue(try XCTUnwrap(descendants(keyboard).first { $0.accessibilityIdentifier == "AirTypeAddressSwapHint" }).isHidden)
         keyboard.address = keyboard.ipAddress
         let toggle = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityIdentifier == "AirTypeAddressToggle" })
         toggle.sendActions(for: .touchUpInside)

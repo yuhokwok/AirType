@@ -77,7 +77,7 @@ This changes interface text; the local QWERTY layout and spelling suggestions re
 
 ## Bonjour and custom names
 
-The keyboard address strip shows Bonjour on the first line and a smaller IP address beneath it. The small ⇅ “Tap to swap addresses” hint indicates that a tap exchanges their positions; either address reaches the same server. Long-press for the complete address and QR code for the selected primary address.
+The keyboard address strip shows Bonjour on the first line and a smaller IP address beneath it. The ⇅ symbol beside the addresses indicates that a tap exchanges their positions; either address reaches the same server. Long-press for the complete address and QR code for the selected primary address.
 
 The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
 

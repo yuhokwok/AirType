@@ -41,7 +41,6 @@ final class AirKeyboardView: UIView {
     private var statusLabel: UILabel?
     private var addressLabel: UILabel?
     private var secondaryAddressLabel: UILabel?
-    private var addressSwapHint: UIStackView?
     private var addressSwapSymbol: UIImageView?
     private weak var connectionAddressButton: UIButton?
     private var prefersIPAddress = false
@@ -69,7 +68,7 @@ final class AirKeyboardView: UIView {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         localKeyboard = nil
-        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapHint = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
+        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
         backgroundColor = .clear
         isOpaque = false
         if pairing && webMode { renderPairing(); return }
@@ -181,20 +180,15 @@ final class AirKeyboardView: UIView {
         swapSymbol.tintColor = dark ? .lightGray : .gray
         swapSymbol.setContentCompressionResistancePriority(.required, for: .horizontal)
         addressSwapSymbol = swapSymbol
-        let swapCaption = label(L10n.text("Tap to swap addresses"), size: 10)
-        swapCaption.font = .systemFont(ofSize: 10)
-        let hint = UIStackView(arrangedSubviews: [swapCaption])
-        hint.axis = .horizontal; hint.alignment = .center; hint.spacing = 3
-        hint.accessibilityIdentifier = "AirTypeAddressSwapHint"; addressSwapHint = hint
         let addressLines = UIStackView(arrangedSubviews: [addressRow, secondary])
         addressLines.axis = .vertical; addressLines.alignment = .center; addressLines.spacing = 2
         let addressWithSymbol = UIStackView(arrangedSubviews: [addressLines, swapSymbol])
         addressWithSymbol.axis = .horizontal; addressWithSymbol.alignment = .center; addressWithSymbol.spacing = 8
-        let addresses = UIStackView(arrangedSubviews: [addressWithSymbol, hint])
+        let addresses = UIStackView(arrangedSubviews: [addressWithSymbol])
         addresses.axis = .vertical; addresses.alignment = .center; addresses.spacing = 2
         addresses.isUserInteractionEnabled = false; addresses.translatesAutoresizingMaskIntoConstraints = false
         addressButton.addSubview(addresses)
-        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addresses.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addresses.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addresses.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 4),addresses.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -4),addressWithSymbol.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor),addressRow.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor),secondary.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor),hint.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor)])
+        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addresses.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addresses.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addresses.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 4),addresses.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -4),addressWithSymbol.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor),addressRow.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor),secondary.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor)])
         let delete = deleteButton(); styleCircularControl(delete, symbolPointSize: 12)
         bar.addArrangedSubview(addressButton); bar.addArrangedSubview(delete)
         bar.heightAnchor.constraint(equalToConstant: 56).isActive = true
@@ -341,7 +335,6 @@ final class AirKeyboardView: UIView {
         let secondary = receiveMode == .web && alternate != primaryAddress ? alternate.map { String($0.split(separator: "#")[0]) } : nil
         secondaryAddressLabel?.text = secondary
         secondaryAddressLabel?.isHidden = secondary == nil
-        addressSwapHint?.isHidden = secondary == nil
         addressSwapSymbol?.isHidden = secondary == nil
         connectionAddressButton?.accessibilityHint = secondary == nil ? nil : L10n.text("Tap to swap addresses")
         connectionAddressButton?.accessibilityValue = [addressLabel?.text, secondary].compactMap { $0 }.joined(separator: ", ")
