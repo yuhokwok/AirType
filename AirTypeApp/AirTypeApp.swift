@@ -15,19 +15,23 @@ struct AirTypeApp: App {
 }
 
 struct SetupView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var destination: AirTypeGuide?
     var body: some View {
         GeometryReader { geometry in
             let width = min(geometry.size.width, 900)
-            let header = min(230.0, max(160.0, width * 0.46))
-            let band = min(150.0, width / 3)
+            let compact = geometry.size.width > geometry.size.height
+            let accessible = dynamicTypeSize.isAccessibilitySize
+            let header = compact && !accessible ? 110.0 : min(240, max(165, geometry.size.height * 0.28))
+            let band = compact ? 62.0 : min(150, width / 3)
+            let bodyHeight = max(compact ? 145 : 235, geometry.size.height - header - band - 16)
             AirTypePaper {
                 VStack(spacing: 0) {
                     ZStack(alignment: .topTrailing) {
-                        VStack(spacing: 20) {
-                            Spacer(minLength: 12)
+                        VStack(spacing: compact ? 6 : 18) {
+                            Spacer(minLength: 8)
                             AirTypeWirelessMark().stroke(LinearGradient(colors: [Color(red: 0.02, green: 0.68, blue: 0.84), Color(red: 0, green: 0.88, blue: 0.78)], startPoint: .top, endPoint: .bottom), style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                                .frame(width: 104, height: 60).accessibilityHidden(true)
+                                .frame(width: compact ? 60 : 104, height: compact ? 32 : 60).accessibilityHidden(true)
                             Text(L10n.text("Type, with your computer."))
                                 .font(.title3.weight(.regular)).foregroundStyle(.gray)
                                 .multilineTextAlignment(.center).padding(.horizontal, 20)
@@ -41,7 +45,24 @@ struct SetupView: View {
                             Image(systemName: "gearshape").font(.title3).frame(width: 44, height: 44)
                         }.foregroundStyle(.gray).padding(8)
                             .accessibilityLabel(L10n.text("Settings"))
-                    }.frame(height: header)
+                    }.frame(minHeight: header)
+                    if accessible {
+                        VStack(spacing: 0) {
+                            ForEach(AirTypeGuide.steps) { step in
+                                Button { destination = step } label: {
+                                    HStack(spacing: 18) {
+                                        Text(verbatim: String(step.number)).font(.title.weight(.light))
+                                            .frame(minWidth: 44, minHeight: 44)
+                                        Text(L10n.text(step.title).replacingOccurrences(of: "\n", with: " "))
+                                            .font(.title3).fixedSize(horizontal: false, vertical: true)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        Image(systemName: "arrow.right").font(.title3)
+                                    }.padding(20).foregroundStyle(step.tint)
+                                        .background(step.tint.opacity(0.07))
+                                }.buttonStyle(.plain).accessibilityIdentifier("HomeStep\(step.number)")
+                            }
+                        }
+                    } else {
                     HStack(spacing: 0) {
                         ForEach(AirTypeGuide.steps) { step in
                             Button { destination = step } label: {
@@ -53,23 +74,28 @@ struct SetupView: View {
                                             .frame(width: band * 0.62, height: band * 0.62)
                                             .background(.white, in: .circle)
                                     }.frame(height: band)
-                                    VStack(spacing: 22) {
-                                        Spacer(minLength: 30)
-                                        AirTypeStepSymbol(step: step).frame(height: 72)
-                                        Spacer(minLength: 18)
+                                    VStack(spacing: 0) {
+                                        Spacer(minLength: compact ? 2 : 16)
+                                        AirTypeStepSymbol(step: step)
+                                            .scaleEffect(compact ? 0.55 : 1)
+                                            .frame(height: compact ? 40 : 72)
+                                        Spacer(minLength: compact ? 2 : 12)
                                         Text(L10n.text(step.title)).font(.title3.weight(.regular))
-                                            .multilineTextAlignment(.center).lineLimit(3).minimumScaleFactor(0.75)
-                                            .frame(maxWidth: .infinity, minHeight: 74, alignment: .top)
-                                        Image(systemName: "arrow.right.square").font(.system(size: 29, weight: .regular))
-                                        Spacer(minLength: 38)
+                                            .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                                            .frame(maxWidth: .infinity, minHeight: compact ? 48 : 72)
+                                        Spacer(minLength: compact ? 2 : 8)
+                                        Image(systemName: "arrow.right.square").font(.system(size: compact ? 24 : 29, weight: .regular))
+                                            .frame(minWidth: 44, minHeight: 44)
+                                        Spacer(minLength: compact ? 2 : 16)
                                     }.padding(.horizontal, 8)
-                                        .frame(maxWidth: .infinity, minHeight: max(280, geometry.size.height - header - band - 40))
+                                        .frame(maxWidth: .infinity, minHeight: bodyHeight)
                                         .background(LinearGradient(colors: [step.tint.opacity(0.07), .white], startPoint: .top, endPoint: .bottom))
                                 }.foregroundStyle(step.tint)
                             }.buttonStyle(.plain).frame(maxWidth: .infinity)
                                 .accessibilityLabel("\(step.number). \(L10n.text(step.title))")
                                 .accessibilityIdentifier("HomeStep\(step.number)")
                         }
+                    }
                     }
                 }
             }.frame(width: width).frame(maxWidth: .infinity)
@@ -80,13 +106,19 @@ struct SetupView: View {
 }
 
 private struct AirTypePaper<Content: View>: View {
+    var verticalInset: CGFloat? = nil
     @ViewBuilder var content: Content
     var body: some View {
-        ScrollView {
-            content.environment(\.colorScheme, .light).frame(maxWidth: 900)
-                .background(.white, in: .rect(cornerRadius: 5))
-                .padding(.vertical, 18).frame(maxWidth: .infinity)
-        }.background(.black).preferredColorScheme(.dark)
+        GeometryReader { geometry in
+            let inset = verticalInset ?? (geometry.size.height < 400 ? 4.0 : 8.0)
+            ScrollView {
+                content.environment(\.colorScheme, .light)
+                    .frame(maxWidth: 900, minHeight: max(0, geometry.size.height - inset * 2), alignment: .top)
+                    .background(.white, in: .rect(cornerRadius: 5))
+                    .padding(.vertical, inset).frame(maxWidth: .infinity)
+            }.scrollDismissesKeyboard(.interactively).clipped()
+                .background(.black).preferredColorScheme(.dark)
+        }
     }
 }
 
@@ -215,15 +247,17 @@ private struct AirTypeGuideScreen: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-            AirTypePaper {
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Button { dismiss() } label: {
+                        Image(systemName: "xmark").font(.system(size: 24, weight: .light))
+                            .frame(width: 44, height: 44)
+                    }.foregroundStyle(Color(white: 0.6))
+                        .accessibilityLabel(L10n.text("Close"))
+                }.padding(8).frame(maxWidth: 900).background(.white, ignoresSafeAreaEdges: [])
+                AirTypePaper(verticalInset: 0) {
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Button { dismiss() } label: {
-                            Image(systemName: "xmark").font(.system(size: 24, weight: .light)).frame(width: 44, height: 44)
-                        }.foregroundStyle(Color(white: 0.68)).accessibilityLabel(L10n.text("Close"))
-                    }.padding(12)
                     HStack(spacing: 10) {
                         AirTypeMosaic(colors: guide.colors).frame(width: 48, height: 105)
                         Text(L10n.text(guide.title)).font(.system(.largeTitle, design: .rounded).weight(.light))
@@ -245,9 +279,9 @@ private struct AirTypeGuideScreen: View {
                         }
                     }.padding(22)
                     Spacer(minLength: 60)
-                }.frame(minHeight: max(620, geometry.size.height - 36), alignment: .top)
+                }
             }
-            }
+            }.background(Color.black.ignoresSafeArea())
             .tint(guide.tint)
             .onDisappear { networkCheck.stop() }
             .onChange(of: scenePhase) {

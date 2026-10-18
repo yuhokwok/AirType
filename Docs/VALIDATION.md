@@ -153,3 +153,12 @@ A Settings gear opens the Bonjour-name field. CUA entered `Study AirType.local`,
 The bundled privacy screen follows the previously committed legacy policy in nine sections and retains the 2014 update date. It does not represent a newly revised policy for the current HTTP transport. Website edits already present in the worktree were left untouched.
 
 Evidence: [Chinese home](Validation/reference-home-zh.jpg), [English home](Validation/reference-home-en.jpg), [connection guide](Validation/reference-connection-guide.jpg), [Bonjour save confirmation](Validation/reference-bonjour-settings.jpg).
+
+
+## Adaptive iPhone layout — 18 October 2026
+
+The home now measures the safe-area viewport and scales its header, number band and column spacing from available width/height. Landscape uses a smaller mark, number band and icons. Titles wrap naturally; accessibility text categories switch to full-width vertical rows. The paper fills the available viewport with a small adaptive inset, while long content scrolls. Guides/settings/policy no longer require a fixed 620-point page. Close sits outside the scrolling content in a fixed header. Scrolling is clipped at the viewport, and the header background no longer extends into the status-bar safe area.
+
+Build/install/launch and rendered inspection passed on iPhone SE (3rd generation) with iOS 18.2, the standard iPhone 17 QA simulator and a dedicated iPhone 17 Pro Max with iOS 27. SE portrait/landscape show all three controls without shrinking their titles. On Pro Max, Device Hub Text Size 9 visibly selects the vertical accessibility layout; the three rows remain readable. Long policy scrolling keeps Close available. Text Size was restored to 3, and the SE was restored to portrait. The iOS 18 inspector changed its value without visibly changing app typography, so the actual accessibility visual evidence comes from iOS 27. All 50 XCTest cases pass on the final source. Physical-device Display Zoom, call/hotspot status indicators and every iPhone model have not been individually checked.
+
+Evidence: [SE portrait](Validation/adaptive-iphone-se.jpg), [SE landscape](Validation/adaptive-iphone-se-landscape.jpg), [standard iPhone](Validation/adaptive-iphone-standard.jpg), [Pro Max](Validation/adaptive-iphone-pro-max.jpg), [accessibility text](Validation/adaptive-accessibility-text.jpg), [policy safe area](Validation/adaptive-policy-safe-area.jpg).

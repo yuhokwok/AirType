@@ -92,3 +92,13 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Bundle the committed bilingual nine-section privacy policy for the reference-style policy screen, retaining its original date; provide Simplified Chinese UI as well.
 - [x] Keep installed-keyboard Try and animated typing guide on the Type page, and Local Network permission check on Setup for AirType.
 - [x] Build app/extension, pass 50 existing tests, visually inspect Chinese/English home and guide pages, and verify name persistence through UI.
+
+
+## Adaptive iPhone screens — 18 October 2026
+
+- [x] Size the paper surface from the actual safe-area viewport rather than a fixed 620-point page.
+- [x] Distribute header, number band and column space using available height; use a compact layout in landscape.
+- [x] Allow titles to wrap without shrinking/truncating; use full-width vertical steps at accessibility text sizes.
+- [x] Keep Close in a fixed header, clip scrolling content to its viewport and allow interactive keyboard dismissal in Bonjour settings.
+- [x] Inspect iPhone SE (3rd generation, iOS 18.2), standard iPhone 17 and dedicated iPhone 17 Pro Max simulator; inspect SE landscape and accessibility text size on Pro Max.
+- [x] Restore test typography/orientation and pass all 50 XCTest cases.
