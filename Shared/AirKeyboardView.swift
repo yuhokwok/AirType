@@ -171,11 +171,12 @@ final class AirKeyboardView: UIView {
             connection.trailingAnchor.constraint(equalTo: codeHalf.trailingAnchor, constant: -8),
             connection.centerYAnchor.constraint(equalTo: codeHalf.centerYAnchor)
         ])
-        let toggle = button("", symbol: "number") { [weak self] in
+        let toggle = UIButton(type: .system)
+        toggle.addAction(UIAction { [weak self] _ in
             guard let self, self.connected else { return }
             self.showsCodeWhileConnected.toggle()
             self.updatePairingVisibility(animated: true)
-        }
+        }, for: .touchUpInside)
         var toggleConfiguration: UIButton.Configuration
         if #available(iOS 26, *) {
             toggleConfiguration = .glass()
@@ -185,7 +186,7 @@ final class AirKeyboardView: UIView {
         }
         toggleConfiguration.cornerStyle = .capsule
         toggleConfiguration.title = L10n.text("Pairing code")
-        toggleConfiguration.image = UIImage(systemName: "number")
+        toggleConfiguration.image = UIImage(systemName: "number", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .regular))
         toggleConfiguration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
         toggleConfiguration.imagePadding = 5
         toggleConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
@@ -268,7 +269,8 @@ final class AirKeyboardView: UIView {
         pairingToggle?.isHidden = !connected
         pairingToggle?.accessibilityLabel = L10n.text(visible ? "Hide pairing code" : "Show pairing code")
         if var configuration = pairingToggle?.configuration {
-            configuration.image = UIImage(systemName: visible ? "eye.slash" : "number")
+            configuration.title = L10n.text("Pairing code")
+            configuration.image = UIImage(systemName: visible ? "eye.slash" : "number", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .regular))
             pairingToggle?.configuration = configuration
         }
         code.accessibilityElementsHidden = !visible

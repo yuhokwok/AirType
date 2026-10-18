@@ -76,8 +76,10 @@ final class KeyboardInteractionTests: XCTestCase {
             XCTAssertEqual(code.alpha, 0)
             XCTAssertTrue(code.accessibilityElementsHidden)
             XCTAssertFalse(toggle.isHidden)
+            XCTAssertEqual(toggle.configuration?.title, "Pairing code")
             toggle.sendActions(for: .touchUpInside)
             XCTAssertEqual(code.alpha, 1)
+            XCTAssertEqual(toggle.configuration?.title, "Pairing code")
             XCTAssertEqual(status.bounds.width, size.width / 2, accuracy: 0.5)
             keyboard.connected = true // Heartbeats must preserve the user's choice.
             XCTAssertEqual(code.alpha, 1)

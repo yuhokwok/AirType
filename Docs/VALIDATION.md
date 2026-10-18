@@ -255,3 +255,8 @@ App/extension build and all 54 tests pass. A new interaction test covers initial
 ## Labeled pairing-code glass control — 18 October 2026
 
 The connected-state reveal control now combines its symbol with the localized Pairing code label. iOS 26+ uses UIButton.Configuration.glass with capsule corners; earlier versions use a plain capsule with the existing light/dark control surface. The label uses 12pt medium text, adaptive intrinsic width capped at half the panel, and a 44pt hit height. Show/hide updates the configuration image while retaining the title. App/extension build and all 54 tests pass. Physical-device glass rendering remains a visual acceptance check.
+
+
+## Pairing control symbol/title consistency — 18 October 2026
+
+The pairing toggle now uses a configuration-only system UIButton, avoiding the legacy helper’s21pt image/empty title competing with the glass configuration. Both show/hide states explicitly use a12pt symbol and retain the localized Pairing code title. Existing glass/fallback,44pt hit height and reveal behavior remain. App/extension build and all54 tests pass; the connected-state interaction test checks the title survives toggling.
