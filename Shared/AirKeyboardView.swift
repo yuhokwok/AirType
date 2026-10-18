@@ -176,7 +176,7 @@ final class AirKeyboardView: UIView {
         url.accessibilityIdentifier = "AirTypePrimaryAddress"
         let secondary = label("", size: 9); secondary.adjustsFontSizeToFitWidth = true
         secondary.accessibilityIdentifier = "AirTypeSecondaryAddress"; secondaryAddressLabel = secondary
-        let swapSymbol = UIImageView(image: UIImage(systemName: "arrow.up.arrow.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)))
+        let swapSymbol = UIImageView(image: UIImage(systemName: "arrow.trianglehead.swap", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)) ?? UIImage(systemName: "arrow.up.arrow.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)))
         swapSymbol.tintColor = dark ? .lightGray : .gray
         swapSymbol.setContentCompressionResistancePriority(.required, for: .horizontal)
         addressSwapSymbol = swapSymbol
