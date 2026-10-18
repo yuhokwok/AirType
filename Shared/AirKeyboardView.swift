@@ -42,6 +42,7 @@ final class AirKeyboardView: UIView {
     private var addressLabel: UILabel?
     private var secondaryAddressLabel: UILabel?
     private var addressSwapHint: UIStackView?
+    private var addressSwapSymbol: UIImageView?
     private weak var connectionAddressButton: UIButton?
     private var prefersIPAddress = false
     private var primaryAddress: String? { prefersIPAddress ? (ipAddress ?? address) : (address ?? ipAddress) }
@@ -68,7 +69,7 @@ final class AirKeyboardView: UIView {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         localKeyboard = nil
-        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapHint = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
+        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapHint = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
         backgroundColor = .clear
         isOpaque = false
         if pairing && webMode { renderPairing(); return }
@@ -151,7 +152,7 @@ final class AirKeyboardView: UIView {
         bar.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         let back = button("", symbol: "keyboard") { [weak self] in self?.pairing = false; self?.webMode = false }
         back.accessibilityLabel = L10n.text("Back to keyboard")
-        styleCircularControl(back, symbolPointSize: 14)
+        styleCircularControl(back, symbolPointSize: 12)
         bar.addArrangedSubview(back)
         if showsGlobe { let globe = globeButton(); styleCircularControl(globe); bar.addArrangedSubview(globe) }
         let addressButton = button("", symbol: nil) { [weak self] in
@@ -176,19 +177,25 @@ final class AirKeyboardView: UIView {
         url.accessibilityIdentifier = "AirTypePrimaryAddress"
         let secondary = label("", size: 9); secondary.adjustsFontSizeToFitWidth = true
         secondary.accessibilityIdentifier = "AirTypeSecondaryAddress"; secondaryAddressLabel = secondary
-        let swapSymbol = UIImageView(image: UIImage(systemName: "arrow.up.arrow.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 8, weight: .regular)))
+        let swapSymbol = UIImageView(image: UIImage(systemName: "arrow.up.arrow.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)))
         swapSymbol.tintColor = dark ? .lightGray : .gray
-        let swapCaption = label(L10n.text("Tap to swap addresses"), size: 8)
-        swapCaption.font = .systemFont(ofSize: 8)
-        let hint = UIStackView(arrangedSubviews: [swapSymbol, swapCaption])
+        swapSymbol.setContentCompressionResistancePriority(.required, for: .horizontal)
+        addressSwapSymbol = swapSymbol
+        let swapCaption = label(L10n.text("Tap to swap addresses"), size: 10)
+        swapCaption.font = .systemFont(ofSize: 10)
+        let hint = UIStackView(arrangedSubviews: [swapCaption])
         hint.axis = .horizontal; hint.alignment = .center; hint.spacing = 3
         hint.accessibilityIdentifier = "AirTypeAddressSwapHint"; addressSwapHint = hint
-        let addresses = UIStackView(arrangedSubviews: [addressRow, secondary, hint])
+        let addressLines = UIStackView(arrangedSubviews: [addressRow, secondary])
+        addressLines.axis = .vertical; addressLines.alignment = .center; addressLines.spacing = 2
+        let addressWithSymbol = UIStackView(arrangedSubviews: [addressLines, swapSymbol])
+        addressWithSymbol.axis = .horizontal; addressWithSymbol.alignment = .center; addressWithSymbol.spacing = 8
+        let addresses = UIStackView(arrangedSubviews: [addressWithSymbol, hint])
         addresses.axis = .vertical; addresses.alignment = .center; addresses.spacing = 2
         addresses.isUserInteractionEnabled = false; addresses.translatesAutoresizingMaskIntoConstraints = false
         addressButton.addSubview(addresses)
-        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addresses.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addresses.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addresses.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 4),addresses.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -4),addressRow.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor),secondary.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor)])
-        let delete = deleteButton(); styleCircularControl(delete, symbolPointSize: 14)
+        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addresses.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addresses.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addresses.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 4),addresses.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -4),addressWithSymbol.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor),addressRow.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor),secondary.widthAnchor.constraint(lessThanOrEqualTo: addressLines.widthAnchor),hint.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor)])
+        let delete = deleteButton(); styleCircularControl(delete, symbolPointSize: 12)
         bar.addArrangedSubview(addressButton); bar.addArrangedSubview(delete)
         bar.heightAnchor.constraint(equalToConstant: 56).isActive = true
         addressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
@@ -256,12 +263,14 @@ final class AirKeyboardView: UIView {
         key.widthAnchor.constraint(equalToConstant: 44).isActive = true
         key.heightAnchor.constraint(equalToConstant: 44).isActive = true
         let symbolSize = UIImage.SymbolConfiguration(pointSize: symbolPointSize, weight: .regular)
+        let symbolImage = key.image(for: .normal)?.applyingSymbolConfiguration(symbolSize)
+        key.setImage(symbolImage, for: .normal)
         key.setPreferredSymbolConfiguration(symbolSize, forImageIn: .normal)
         if #available(iOS 26, *) {
             var config = UIButton.Configuration.glass()
             config.preferredSymbolConfigurationForImage = symbolSize
             config.cornerStyle = .capsule
-            config.image = key.image(for: .normal)
+            config.image = symbolImage
             config.baseForegroundColor = ink
             key.backgroundColor = .clear
             key.configuration = config
@@ -333,6 +342,7 @@ final class AirKeyboardView: UIView {
         secondaryAddressLabel?.text = secondary
         secondaryAddressLabel?.isHidden = secondary == nil
         addressSwapHint?.isHidden = secondary == nil
+        addressSwapSymbol?.isHidden = secondary == nil
         connectionAddressButton?.accessibilityHint = secondary == nil ? nil : L10n.text("Tap to swap addresses")
         connectionAddressButton?.accessibilityValue = [addressLabel?.text, secondary].compactMap { $0 }.joined(separator: ", ")
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray

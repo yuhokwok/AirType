@@ -216,3 +216,8 @@ App/extension build and all 52 tests pass. Two added interaction tests cover swa
 ## Address swap hint and system keyboard canvas — 18 October 2026
 
 A small up/down symbol and localized Tap to swap addresses hint now appear below the two address lines, hidden when there is no alternate. VoiceOver exposes the same hint. AirKeyboardView and the extension root are transparent/nonopaque, removing the custom light/dark canvas so the system keyboard host supplies its background. Key/button backgrounds remain intact. App/extension build and 52 tests pass, including visibility checks for the alternate-address hint and the transparent shared keyboard canvas. Simulator runtime snapshot confirms the hint appears alongside both addresses. The in-app preview has a different host; physical extension material/blur appearance remains a device visual check.
+
+
+## Address hint legibility and smaller controls — 18 October 2026
+
+The swap symbol is now 14pt to the right of the two address lines; the caption beneath them increases from 8pt to 10pt. Both hide when no alternate address exists. Back/delete symbols use an explicitly reconfigured 12pt image as well as the button preferred configuration, preserving the 44pt hit targets. Build and rendered Pro Max preview inspection pass; all 52 tests pass.
