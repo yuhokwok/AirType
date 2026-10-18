@@ -56,7 +56,7 @@ AirType recreates invivo's [original AirType app](https://apps.apple.com/us/app/
 2. Tap **Open Keyboard Settings** on the home screen. In AirType settings choose Keyboards and enable AirType. If that option is unavailable, use Settings → General → Keyboard → Keyboards → Add New Keyboard → AirType.
 3. Open AirType's keyboard entry and enable **Allow Full Access** for networking. Basic local typing remains available without Full Access.
 4. Focus a normal text field and select AirType using the system globe key.
-5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also tap the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
+5. Keep your computer and device on the same Wi-Fi. Open the hostname (normally `http://airtype.local:8307/`) or IP address and port shown on the keyboard in your computer browser. The panel first asks for the six-digit **Pairing code** shown beside Web Access. Click **Connect**; once connected, the same panel switches to typing. You can also long-press the keyboard address bar to open the complete tokenized URL or QR code; a valid token skips code entry after connection is verified.
 6. Type and press Enter or the **paper-plane** Send button. With an empty draft, Enter sends Return to the device and Backspace sends Delete. With text present, Backspace edits the draft. Shift+Enter adds a line break to the draft; the **return-arrow** button always sends a newline to the device. The **backspace** button removes one character from the device. Icon buttons include accessible labels and tooltips. IME composition and Ctrl/Command/Alt combinations do not trigger these shortcuts; spaces count as draft text.
 
 Click **☺ Emoji** below the browser text box to open the emoji picker. Browse Smileys, People, Hearts, Nature, Food, and Activities, or search across all categories using English names or the current Chinese UI names. Picking an emoji inserts it into your draft at the cursor (replacing selected text); use Send or Enter when ready. Escape or × closes the picker. All choices are bundled with the portal and work without internet access.
@@ -77,6 +77,8 @@ This changes interface text; the local QWERTY layout and spelling suggestions re
 
 ## Bonjour and custom names
 
+The keyboard address strip shows Bonjour on the first line and a smaller IP address beneath it. Tap to exchange their positions; either address reaches the same server. Long-press for the complete address and QR code for the selected primary address.
+
 The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
 
 Tap **Setup for connection name** on the home screen, edit **Bonjour name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
@@ -85,7 +87,7 @@ Both targets include the shared App Group entitlement. Use your own unique group
 
 ## If the page loads but will not connect
 
-With the original build, opening only the IP and port loaded the public page but omitted the token required to connect. As a workaround for that build, tap the keyboard address bar and use the complete URL, including everything after `#`.
+With the original build, opening only the IP and port loaded the public page but omitted the token required to connect. As a workaround for that build, open the keyboard address details and use the complete URL, including everything after `#`.
 
 The updated build shows a Pairing code on the keyboard and a Connect form when you open the IP address. Rebuild/reinstall the app and refresh the browser page to use it. An outdated or invalid token also returns to this form. Keep Web Access visible while connecting and typing.
 
@@ -93,7 +95,7 @@ The updated build shows a Pairing code on the keyboard and a Connect form when y
 
 - Open the **AirType app** first and open **Setup for AirType** and tap **Allow Local Network**. If access is blocked, enable AirType under Settings → Privacy & Security → Local Network and return to the app to recheck. Local Network permission and the keyboard's **Allow Full Access** setting are separate.
 - Switch to the installed AirType keyboard in a text field and keep **Web Access** visible. The setup screen does not host the typing server.
-- Tap the keyboard address strip and try its **IP fallback**, including `http://` and the displayed port. Use the address shown now, because the IP or port may have changed. If IP works but `.local` does not, the problem is hostname discovery.
+- Tap the keyboard address strip to swap Bonjour and IP, then try its **IP fallback**, including `http://` and the displayed port. Use the address shown now, because the IP or port may have changed. If IP works but `.local` does not, the problem is hostname discovery.
 - Put the computer and iPhone on the same Wi-Fi network. Guest networks, client isolation, or a VPN can prevent devices from reaching one another.
 - Toggle to QWERTY and back to Web Access after changing settings. If it still fails, report the keyboard status, address tried, and browser error.
 

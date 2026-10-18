@@ -32,7 +32,7 @@ final class AirKeyboardView: UIView {
         if pairing && address != oldValue { render() } else { updateStatus() }
     } }
     var ipAddress: String? { didSet {
-        if pairing && ipAddress != oldValue { render() }
+        if pairing && ipAddress != oldValue { render() } else { updateStatus() }
     } }
     var pairingCode: String? { didSet { updateStatus() } }
     var connectionStatus = L10n.text("Disconnected") { didSet { updateStatus() } }
@@ -40,6 +40,10 @@ final class AirKeyboardView: UIView {
     private let content = UIStackView()
     private var statusLabel: UILabel?
     private var addressLabel: UILabel?
+    private var secondaryAddressLabel: UILabel?
+    private weak var connectionAddressButton: UIButton?
+    private var prefersIPAddress = false
+    private var primaryAddress: String? { prefersIPAddress ? (ipAddress ?? address) : (address ?? ipAddress) }
     private var dot: UIView?
     private var codeLabel: UILabel?
     private var deleteTimer: Timer?
@@ -64,7 +68,7 @@ final class AirKeyboardView: UIView {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         localKeyboard = nil
-        statusLabel = nil; addressLabel = nil; dot = nil; codeLabel = nil
+        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
         backgroundColor = bg
         if pairing && webMode { renderPairing(); return }
         if webMode { renderWeb() } else { renderKeys() }
@@ -146,24 +150,45 @@ final class AirKeyboardView: UIView {
         bar.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         let back = button("", symbol: "keyboard") { [weak self] in self?.pairing = false; self?.webMode = false }
         back.accessibilityLabel = L10n.text("Back to keyboard")
-        styleCircularControl(back)
+        styleCircularControl(back, symbolPointSize: 14)
         bar.addArrangedSubview(back)
         if showsGlobe { let globe = globeButton(); styleCircularControl(globe); bar.addArrangedSubview(globe) }
-        let addressButton = button("", symbol: nil) { [weak self] in self?.pairing = true; self?.render() }
+        let addressButton = button("", symbol: nil) { [weak self] in
+            guard let self else { return }
+            if let address = self.address, let ip = self.ipAddress, address != ip {
+                self.prefersIPAddress.toggle(); self.updateStatus()
+            }
+        }
+        connectionAddressButton = addressButton
+        addressButton.accessibilityIdentifier = "AirTypeAddressToggle"
+        addressButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(showConnectionDetails(_:))))
+        addressButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: L10n.text("Show computer connection address and QR code"), actionHandler: { [weak self] _ in
+            self?.pairing = true; self?.render(); return true
+        })]
         addressButton.backgroundColor = .clear
-        addressButton.accessibilityLabel = L10n.text("Show computer connection address and QR code")
+        addressButton.accessibilityLabel = L10n.text("Swap Bonjour and IP address")
         let addressRow = UIStackView(); addressRow.axis = .horizontal; addressRow.spacing = 5; addressRow.alignment = .center
-        addressRow.isUserInteractionEnabled = false; addressRow.translatesAutoresizingMaskIntoConstraints = false
+        addressRow.isUserInteractionEnabled = false
         let indicator = UIView(); indicator.layer.cornerRadius = 3; dot = indicator
         let url = label("", size: 12); url.textAlignment = .left; url.adjustsFontSizeToFitWidth = true; addressLabel = url
         addressRow.addArrangedSubview(indicator); addressRow.addArrangedSubview(url)
-        addressButton.addSubview(addressRow)
-        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addressRow.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addressRow.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addressRow.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 8),addressRow.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -8)])
-        let delete = deleteButton(); styleCircularControl(delete)
+        url.accessibilityIdentifier = "AirTypePrimaryAddress"
+        let secondary = label("", size: 9); secondary.adjustsFontSizeToFitWidth = true
+        secondary.accessibilityIdentifier = "AirTypeSecondaryAddress"; secondaryAddressLabel = secondary
+        let addresses = UIStackView(arrangedSubviews: [addressRow, secondary])
+        addresses.axis = .vertical; addresses.alignment = .center; addresses.spacing = 2
+        addresses.isUserInteractionEnabled = false; addresses.translatesAutoresizingMaskIntoConstraints = false
+        addressButton.addSubview(addresses)
+        NSLayoutConstraint.activate([indicator.widthAnchor.constraint(equalToConstant: 6),indicator.heightAnchor.constraint(equalToConstant: 6),addresses.centerXAnchor.constraint(equalTo: addressButton.centerXAnchor),addresses.centerYAnchor.constraint(equalTo: addressButton.centerYAnchor),addresses.leadingAnchor.constraint(greaterThanOrEqualTo: addressButton.leadingAnchor,constant: 4),addresses.trailingAnchor.constraint(lessThanOrEqualTo: addressButton.trailingAnchor,constant: -4),addressRow.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor),secondary.widthAnchor.constraint(lessThanOrEqualTo: addresses.widthAnchor)])
+        let delete = deleteButton(); styleCircularControl(delete, symbolPointSize: 14)
         bar.addArrangedSubview(addressButton); bar.addArrangedSubview(delete)
         bar.heightAnchor.constraint(equalToConstant: 56).isActive = true
         addressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(bar)
+    }
+    @objc private func showConnectionDetails(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        pairing = true; render()
     }
     private func renderPairing() {
         let row = UIStackView(); row.axis = .horizontal; row.spacing = 12; row.alignment = .center
@@ -171,15 +196,15 @@ final class AirKeyboardView: UIView {
         let details = UIStackView(); details.axis = .vertical; details.spacing = 8
         details.addArrangedSubview(label(receiveMode == .web ? L10n.text("Open on your computer") : L10n.text("Open AirType Desktop on Mac"),size: 17))
         let code = label("", size: 18); code.numberOfLines = 2; code.font = .monospacedSystemFont(ofSize: 16, weight: .medium); codeLabel = code; details.addArrangedSubview(code)
-        let url = label(receiveMode == .web ? (address ?? connectionStatus) : "Choose \(receiveMode.rawValue), select this keyboard, and enter its pairing key.",size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
-        if receiveMode == .web, let ipAddress, ipAddress != address {
-            let fallback = label(L10n.format("IP fallback: %@", String(ipAddress.split(separator: "#")[0])), size: 10)
+        let url = label(receiveMode == .web ? (primaryAddress ?? connectionStatus) : "Choose \(receiveMode.rawValue), select this keyboard, and enter its pairing key.",size: 11); url.numberOfLines = 0; url.font = .monospacedSystemFont(ofSize: 11,weight: .regular); details.addArrangedSubview(url)
+        if receiveMode == .web, let alternate = prefersIPAddress ? address : ipAddress, alternate != primaryAddress {
+            let fallback = label(String(alternate.split(separator: "#")[0]), size: 10)
             fallback.numberOfLines = 0
             details.addArrangedSubview(fallback)
         }
         let hint = label(receiveMode == .web ? L10n.text("Same Wi-Fi · Keep this keyboard open") : L10n.text("Keep this keyboard visible while receiving"),size: 11); hint.numberOfLines = 0; details.addArrangedSubview(hint)
         row.addArrangedSubview(details)
-        if receiveMode == .web, let address {
+        if receiveMode == .web, let address = primaryAddress {
             let filter = CIFilter.qrCodeGenerator(); filter.message = Data(address.utf8)
             if let output = filter.outputImage,
                let image = CIContext().createCGImage(output.transformed(by: CGAffineTransform(scaleX: 6,y: 6)),from:output.extent.applying(CGAffineTransform(scaleX: 6,y: 6))) {
@@ -219,10 +244,10 @@ final class AirKeyboardView: UIView {
         let key = button("",symbol:"globe") { [weak self] in self?.nextKeyboard?() }
         key.accessibilityLabel = L10n.text("Next keyboard"); configureGlobe?(key); return key
     }
-    private func styleCircularControl(_ key: UIButton) {
+    private func styleCircularControl(_ key: UIButton, symbolPointSize: CGFloat = 17) {
         key.widthAnchor.constraint(equalToConstant: 44).isActive = true
         key.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        let symbolSize = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular)
+        let symbolSize = UIImage.SymbolConfiguration(pointSize: symbolPointSize, weight: .regular)
         key.setPreferredSymbolConfiguration(symbolSize, forImageIn: .normal)
         if #available(iOS 26, *) {
             var config = UIButton.Configuration.glass()
@@ -294,7 +319,12 @@ final class AirKeyboardView: UIView {
         codeLabel?.accessibilityLabel = receiveMode == .web ? L10n.text("Pairing code") : L10n.text("Pairing key")
         codeLabel?.accessibilityValue = pairingCode
         statusLabel?.text = L10n.text(connectionStatus)
-        addressLabel?.text = receiveMode == .web ? (address.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
+        addressLabel?.text = receiveMode == .web ? (primaryAddress.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
+        let alternate = prefersIPAddress ? address : ipAddress
+        let secondary = receiveMode == .web && alternate != primaryAddress ? alternate.map { String($0.split(separator: "#")[0]) } : nil
+        secondaryAddressLabel?.text = secondary
+        secondaryAddressLabel?.isHidden = secondary == nil
+        connectionAddressButton?.accessibilityValue = [addressLabel?.text, secondary].compactMap { $0 }.joined(separator: ", ")
         dot?.backgroundColor = connected ? UIColor(red:0.5,green:0.95,blue:0.2,alpha:1) : .gray
     }
     func stopRepeating() { deleteTimer?.invalidate(); deleteTimer = nil; deleting = false; localKeyboard?.cancelTouches() }

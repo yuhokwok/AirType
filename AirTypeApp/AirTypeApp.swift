@@ -134,7 +134,7 @@ struct SetupView: View {
                 Spacer()
                 Image(systemName: "chevron.right").font(.footnote.weight(.semibold))
             }.padding(16).frame(minHeight: 52).contentShape(.rect)
-        }.buttonStyle(.plain).foregroundStyle(accent)
+        }.buttonStyle(.plain).foregroundStyle(destination.tint)
     }
     private func openSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -548,7 +548,7 @@ private struct TypingTutorialView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                AirTypeSectionHeading(title: "Typing guide", theme: .typing)
+                AirTypeSectionHeading(title: "Type guide.", theme: .typing)
                 VStack(alignment: .leading, spacing: 24) {
                 Text(L10n.format("Step %1$@ of 4", String(step + 1)))
                     .font(.subheadline).foregroundStyle(.secondary)

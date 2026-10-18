@@ -58,6 +58,49 @@ final class KeyboardInteractionTests: XCTestCase {
         }
     }
     @MainActor
+    func testAddressToggleUpdatesLiveAddressesAndQRDestination() throws {
+        let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
+        keyboard.showsGlobe = false
+        keyboard.address = "http://airtype.local:8307/#PAIRINGTOKEN"
+        keyboard.ipAddress = "http://192.168.1.2:8307/#PAIRINGTOKEN"
+        func text(_ id: String) -> String? {
+            descendants(keyboard).compactMap { $0 as? UILabel }.first { $0.accessibilityIdentifier == id }?.text
+        }
+        let toggle = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityIdentifier == "AirTypeAddressToggle" })
+        XCTAssertEqual(text("AirTypePrimaryAddress"), "http://airtype.local:8307/")
+        XCTAssertEqual(text("AirTypeSecondaryAddress"), "http://192.168.1.2:8307/")
+        toggle.sendActions(for: .touchUpInside)
+        XCTAssertEqual(text("AirTypePrimaryAddress"), "http://192.168.1.2:8307/")
+        XCTAssertEqual(text("AirTypeSecondaryAddress"), "http://airtype.local:8307/")
+        keyboard.ipAddress = "http://192.168.1.3:8307/#PAIRINGTOKEN"
+        XCTAssertEqual(text("AirTypePrimaryAddress"), "http://192.168.1.3:8307/")
+        let detailsAction = try XCTUnwrap(toggle.accessibilityCustomActions?.first)
+        XCTAssertTrue(detailsAction.actionHandler?(detailsAction) ?? false)
+        let labels = descendants(keyboard).compactMap { ($0 as? UILabel)?.text }
+        XCTAssertTrue(labels.contains("http://192.168.1.3:8307/#PAIRINGTOKEN"))
+        let qr = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIImageView }.first { $0.accessibilityLabel == "QR code for AirType connection address" })
+        XCTAssertNotNil(qr.image)
+    }
+
+    @MainActor
+    func testAddressToggleHandlesIPOnlyAndDuplicateAddresses() throws {
+        let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 320, height: 216))
+        keyboard.showsGlobe = false
+        keyboard.ipAddress = "http://192.168.1.2:8307/#TOKEN"
+        let labels = descendants(keyboard).compactMap { $0 as? UILabel }
+        let primary = try XCTUnwrap(labels.first { $0.accessibilityIdentifier == "AirTypePrimaryAddress" })
+        let secondary = try XCTUnwrap(labels.first { $0.accessibilityIdentifier == "AirTypeSecondaryAddress" })
+        XCTAssertEqual(primary.text, "http://192.168.1.2:8307/")
+        XCTAssertTrue(secondary.isHidden)
+        keyboard.address = keyboard.ipAddress
+        let toggle = try XCTUnwrap(descendants(keyboard).compactMap { $0 as? UIButton }.first { $0.accessibilityIdentifier == "AirTypeAddressToggle" })
+        toggle.sendActions(for: .touchUpInside)
+        XCTAssertEqual(primary.text, "http://192.168.1.2:8307/")
+        XCTAssertTrue(secondary.isHidden)
+        XCTAssertFalse(toggle.accessibilityValue?.contains("TOKEN") ?? true)
+    }
+
+    @MainActor
     func testBackButtonOpensLocalKeyboardAndWiFiReturnsToConnection() throws {
         let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
         keyboard.showsGlobe = false

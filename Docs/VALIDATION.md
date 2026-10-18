@@ -204,3 +204,10 @@ Set connection name now has a dedicated sheet route instead of the full-screen g
 ## Anchored information popovers — 18 October 2026
 
 Each step information button now owns a native popover anchored to that button. Compact-width adaptation explicitly retains popover presentation on iPhone. The preferred 320×460 size keeps the reference heading and scrollable instructions inside a floating card; existing Close and outside-tap dismissal remain available. Settings and tutorial retain their sheet routes. Build/install/launch passes. Rendered Pro Max inspection confirms the Step 1 arrow points to its information button, the home remains visible behind the floating card, and the accessibility tree exposes PopoverDismissRegion rather than Sheet Grabber. This presentation-only edit did not rerun the test suite or individually validate every device size.
+
+
+## Dual keyboard addresses and label refinements — 18 October 2026
+
+The Web Access strip shows the preferred address at 12pt and an alternate at 9pt. Tapping swaps Bonjour/IP; duplicate or missing alternates are hidden. Both fields refresh when server addresses change. Long-press (or the VoiceOver custom action) opens details and a QR code for the selected primary address. Back/delete symbols shrink from 17pt to 14pt, retaining their 44pt hit areas and circular/glass backgrounds. The tutorial heading is Type guide. and Privacy uses the same gray as its page heading.
+
+App/extension build and all 52 tests pass. Two added interaction tests cover swapping, live IP updates, IP-only/duplicate states, private-token omission in the strip, and selected-address details/QR availability. Dedicated Pro Max preview inspection verifies both address rows and a native tap exchanges their order. Both displayed Bonjour and IPv4 URLs return HTTP 200 from the running preview server. This is simulator/host network evidence, not a new physical-device connectivity check.
