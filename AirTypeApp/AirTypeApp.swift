@@ -96,10 +96,7 @@ struct SetupView: View {
                 }.frame(width: 34, height: 34).foregroundStyle(step.tint).accessibilityHidden(true)
                 Text(L10n.text(title)).font(.headline).fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
-                Button { destination = step } label: {
-                    Image(systemName: "info.circle").frame(width: 44, height: 44)
-                }.buttonStyle(.plain).foregroundStyle(step.tint)
-                    .accessibilityLabel(L10n.text(step.title))
+                AirTypeInfoButton(guide: step)
             }
             Text(message).font(.subheadline).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -157,6 +154,23 @@ private struct AirTypeHomeDestination<Content: View>: View {
                 }
             }
         }.preferredColorScheme(.light)
+    }
+}
+
+private struct AirTypeInfoButton: View {
+    let guide: AirTypeGuide
+    @State private var isPresented = false
+
+    var body: some View {
+        Button { isPresented = true } label: {
+            Image(systemName: "info.circle").frame(width: 44, height: 44)
+        }.buttonStyle(.plain).foregroundStyle(guide.tint)
+            .accessibilityLabel(L10n.text(guide.title))
+            .popover(isPresented: $isPresented, attachmentAnchor: .rect(.bounds)) {
+                AirTypeGuideScreen(guide: guide)
+                    .frame(idealWidth: 320, idealHeight: 460)
+                    .presentationCompactAdaptation(.popover)
+            }
     }
 }
 

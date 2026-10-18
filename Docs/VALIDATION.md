@@ -199,3 +199,8 @@ Build/install/launch passes on the dedicated iPhone 17 Pro Max simulator (iOS 27
 ## Secondary actions use sheets — 18 October 2026
 
 Set connection name now has a dedicated sheet route instead of the full-screen guide route. Both it and Watch the typing guide use the large native sheet detent with a visible grabber and their existing close buttons. App/extension build passes. Simulator semantic navigation confirms both presentations expose Sheet Grabber, settings closes to home, and the tutorial opens with its playback controls. The 50-case suite was not rerun for this presentation-only change.
+
+
+## Anchored information popovers — 18 October 2026
+
+Each step information button now owns a native popover anchored to that button. Compact-width adaptation explicitly retains popover presentation on iPhone. The preferred 320×460 size keeps the reference heading and scrollable instructions inside a floating card; existing Close and outside-tap dismissal remain available. Settings and tutorial retain their sheet routes. Build/install/launch passes. Rendered Pro Max inspection confirms the Step 1 arrow points to its information button, the home remains visible behind the floating card, and the accessibility tree exposes PopoverDismissRegion rather than Sheet Grabber. This presentation-only edit did not rerun the test suite or individually validate every device size.
