@@ -58,6 +58,45 @@ final class KeyboardInteractionTests: XCTestCase {
         }
     }
     @MainActor
+    func testConnectedPanelHidesCodeCentersLogoAndRestoresOnDisconnect() throws {
+        for size in [CGSize(width: 320, height: 216), CGSize(width: 852, height: 162), CGSize(width: 1024, height: 264)] {
+            let keyboard = AirKeyboardView(frame: CGRect(origin: .zero, size: size))
+            keyboard.showsGlobe = false; keyboard.pairingCode = "123456"
+            keyboard.layoutIfNeeded(); keyboard.layoutIfNeeded()
+            func view(_ id: String) throws -> UIView { try XCTUnwrap(descendants(keyboard).first { $0.accessibilityIdentifier == id }) }
+            let status = try view("AirTypeStatusHalf")
+            let code = try view("AirTypePairingHalf")
+            let toggle = try XCTUnwrap(try view("AirTypePairingCodeToggle") as? UIButton)
+            XCTAssertTrue(toggle.isHidden)
+            XCTAssertEqual(code.alpha, 1)
+            keyboard.connected = true
+            keyboard.layoutIfNeeded()
+            XCTAssertEqual(status.bounds.width, size.width, accuracy: 0.5, String(describing: status.superview?.constraints))
+            XCTAssertEqual(status.convert(CGPoint(x: status.bounds.midX, y: 0), to: keyboard).x, size.width / 2, accuracy: 0.5)
+            XCTAssertEqual(code.alpha, 0)
+            XCTAssertTrue(code.accessibilityElementsHidden)
+            XCTAssertFalse(toggle.isHidden)
+            toggle.sendActions(for: .touchUpInside)
+            XCTAssertEqual(code.alpha, 1)
+            XCTAssertEqual(status.bounds.width, size.width / 2, accuracy: 0.5)
+            keyboard.connected = true // Heartbeats must preserve the user's choice.
+            XCTAssertEqual(code.alpha, 1)
+            toggle.sendActions(for: .touchUpInside)
+            XCTAssertEqual(code.alpha, 0)
+            keyboard.connected = false
+            XCTAssertEqual(code.alpha, 1)
+            XCTAssertFalse(code.accessibilityElementsHidden)
+            XCTAssertTrue(toggle.isHidden)
+            XCTAssertEqual(status.bounds.width, size.width / 2, accuracy: 0.5)
+            keyboard.connected = true
+            XCTAssertEqual(code.alpha, 0)
+            keyboard.dark = true
+            XCTAssertEqual(try view("AirTypePairingHalf").alpha, 0)
+            XCTAssertFalse(keyboard.hasAmbiguousLayout)
+        }
+    }
+
+    @MainActor
     func testAddressToggleUpdatesLiveAddressesAndQRDestination() throws {
         let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
         keyboard.showsGlobe = false

@@ -36,7 +36,19 @@ final class AirKeyboardView: UIView {
     } }
     var pairingCode: String? { didSet { updateStatus() } }
     var connectionStatus = L10n.text("Disconnected") { didSet { updateStatus() } }
-    var connected = false { didSet { updateStatus() } }
+    var connected = false { didSet {
+        updateStatus()
+        if connected != oldValue {
+            showsCodeWhileConnected = false
+            updatePairingVisibility(animated: true)
+        }
+    } }
+    private var showsCodeWhileConnected = false
+    private weak var pairingPanel: UIView?
+    private weak var pairingHalf: UIView?
+    private weak var pairingToggle: UIButton?
+    private var halfStatusWidth: NSLayoutConstraint?
+    private var fullStatusWidth: NSLayoutConstraint?
     private let content = UIStackView()
     private var statusLabel: UILabel?
     private var addressLabel: UILabel?
@@ -68,6 +80,8 @@ final class AirKeyboardView: UIView {
         stopRepeating()
         content.arrangedSubviews.forEach { content.removeArrangedSubview($0); $0.removeFromSuperview() }
         localKeyboard = nil
+        pairingPanel = nil; pairingHalf = nil; pairingToggle = nil
+        halfStatusWidth = nil; fullStatusWidth = nil
         statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
         backgroundColor = .clear
         isOpaque = false
@@ -101,7 +115,7 @@ final class AirKeyboardView: UIView {
             ])
             content.addArrangedSubview(selectorRow)
         }
-        let panel = UIStackView(); panel.axis = .horizontal; panel.distribution = .fillEqually
+        let panel = UIView(); panel.clipsToBounds = true; pairingPanel = panel
         panel.accessibilityIdentifier = "AirTypeConnectionPanel"
         let logo = button("", symbol: nil, key: CircularAirTypeLogoButton(type: .custom)) { [weak self] in self?.webMode = false }
         logo.backgroundColor = .white
@@ -116,8 +130,15 @@ final class AirKeyboardView: UIView {
         badge.axis = .vertical; badge.alignment = .center; badge.spacing = 4
         let statusHalf = UIView(); statusHalf.accessibilityIdentifier = "AirTypeStatusHalf"
         badge.translatesAutoresizingMaskIntoConstraints = false; statusHalf.addSubview(badge)
-        panel.addArrangedSubview(statusHalf)
+        statusHalf.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(statusHalf)
+        halfStatusWidth = statusHalf.widthAnchor.constraint(equalTo: panel.widthAnchor, multiplier: 0.5)
+        fullStatusWidth = statusHalf.widthAnchor.constraint(equalTo: panel.widthAnchor)
+        halfStatusWidth?.isActive = true
         NSLayoutConstraint.activate([
+            statusHalf.leadingAnchor.constraint(equalTo: panel.leadingAnchor),
+            statusHalf.topAnchor.constraint(equalTo: panel.topAnchor),
+            statusHalf.bottomAnchor.constraint(equalTo: panel.bottomAnchor),
             logo.heightAnchor.constraint(equalTo: panel.heightAnchor, multiplier: compactPanel ? 0.40 : 0.48),
             logo.widthAnchor.constraint(equalTo: logo.heightAnchor),
             badge.leadingAnchor.constraint(equalTo: statusHalf.leadingAnchor, constant: 8),
@@ -139,13 +160,34 @@ final class AirKeyboardView: UIView {
         connection.alignment = .fill
         let codeHalf = UIView(); codeHalf.accessibilityIdentifier = "AirTypePairingHalf"
         connection.translatesAutoresizingMaskIntoConstraints = false; codeHalf.addSubview(connection)
-        panel.addArrangedSubview(codeHalf)
+        codeHalf.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(codeHalf); pairingHalf = codeHalf
         NSLayoutConstraint.activate([
+            codeHalf.leadingAnchor.constraint(equalTo: statusHalf.trailingAnchor),
+            codeHalf.widthAnchor.constraint(equalTo: panel.widthAnchor, multiplier: 0.5),
+            codeHalf.topAnchor.constraint(equalTo: panel.topAnchor),
+            codeHalf.bottomAnchor.constraint(equalTo: panel.bottomAnchor),
             connection.leadingAnchor.constraint(equalTo: codeHalf.leadingAnchor, constant: 8),
             connection.trailingAnchor.constraint(equalTo: codeHalf.trailingAnchor, constant: -8),
             connection.centerYAnchor.constraint(equalTo: codeHalf.centerYAnchor)
         ])
+        let toggle = button("", symbol: "number") { [weak self] in
+            guard let self, self.connected else { return }
+            self.showsCodeWhileConnected.toggle()
+            self.updatePairingVisibility(animated: true)
+        }
+        toggle.backgroundColor = .clear
+        toggle.accessibilityIdentifier = "AirTypePairingCodeToggle"
+        toggle.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(toggle); pairingToggle = toggle
+        NSLayoutConstraint.activate([
+            toggle.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -8),
+            toggle.topAnchor.constraint(equalTo: panel.topAnchor),
+            toggle.widthAnchor.constraint(equalToConstant: 44),
+            toggle.heightAnchor.constraint(equalToConstant: 44)
+        ])
         content.addArrangedSubview(panel)
+        updatePairingVisibility(animated: false)
         let bar = UIStackView(); bar.axis = .horizontal; bar.spacing = 8; bar.alignment = .center
         bar.isLayoutMarginsRelativeArrangement = true
         bar.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
@@ -195,6 +237,31 @@ final class AirKeyboardView: UIView {
         addressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         content.addArrangedSubview(bar)
     }
+    private func updatePairingVisibility(animated: Bool) {
+        guard receiveMode == .web, let panel = pairingPanel, let code = pairingHalf else { return }
+        let visible = !connected || showsCodeWhileConnected
+        let wasVisible = halfStatusWidth?.isActive == true
+        pairingToggle?.isHidden = !connected
+        pairingToggle?.accessibilityLabel = L10n.text(visible ? "Hide pairing code" : "Show pairing code")
+        pairingToggle?.setImage(UIImage(systemName: visible ? "eye.slash" : "number", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)), for: .normal)
+        code.accessibilityElementsHidden = !visible
+        if animated && wasVisible != visible { layoutIfNeeded() }
+        halfStatusWidth?.isActive = false
+        fullStatusWidth?.isActive = false
+        (visible ? halfStatusWidth : fullStatusWidth)?.isActive = true
+        panel.setNeedsLayout()
+        let changes = {
+            code.alpha = visible ? 1 : 0
+            if animated { self.layoutIfNeeded(); panel.layoutIfNeeded() }
+        }
+        if animated && wasVisible != visible && window != nil && !UIAccessibility.isReduceMotionEnabled {
+            UIView.animate(withDuration: 0.35, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut], animations: changes)
+        } else {
+            UIView.performWithoutAnimation(changes)
+        }
+        panel.setNeedsLayout()
+    }
+
     @objc private func showConnectionDetails(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
         pairing = true; render()
