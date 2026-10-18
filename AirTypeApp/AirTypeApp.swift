@@ -71,9 +71,12 @@ struct SetupView: View {
                 .presentationDragIndicator(.visible)
         }
         .fullScreenCover(isPresented: $showTry) {
-            AirTypeHomeDestination {
-                KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)
-                    .navigationTitle(L10n.text("Try AirType")).navigationBarTitleDisplayMode(.inline)
+            AirTypePopupFrame {
+                VStack(spacing: 0) {
+                    AirTypeSectionHeading(title: "Try AirType", theme: .typing)
+                        .frame(maxWidth: 900).frame(maxWidth: .infinity)
+                    KeyboardTestScreen(useSystemKeyboard: true).ignoresSafeArea(.keyboard)
+                }
             }
         }
         .onChange(of: scenePhase) {
@@ -142,21 +145,6 @@ struct SetupView: View {
     }
 }
 
-private struct AirTypeHomeDestination<Content: View>: View {
-    @Environment(\.dismiss) private var dismiss
-    @ViewBuilder var content: Content
-    var body: some View {
-        NavigationStack {
-            content.toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { dismiss() } label: { Image(systemName: "xmark") }
-                        .accessibilityLabel(L10n.text("Close"))
-                }
-            }
-        }.preferredColorScheme(.light)
-    }
-}
-
 private struct AirTypeInfoButton: View {
     let guide: AirTypeGuide
     @State private var isPresented = false
@@ -187,7 +175,8 @@ private struct AirTypeSectionHeading: View {
     }
 }
 
-private struct AirTypeTutorialPopup: View {
+private struct AirTypePopupFrame<Content: View>: View {
+    @ViewBuilder var content: Content
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack(spacing: 0) {
@@ -198,9 +187,15 @@ private struct AirTypeTutorialPopup: View {
                         .frame(width: 44, height: 44)
                 }.foregroundStyle(Color(white: 0.6)).accessibilityLabel(L10n.text("Close"))
             }.padding(8)
-            TypingTutorialView()
+            content
         }.background(Color.white.ignoresSafeArea())
             .preferredColorScheme(.light).tint(AirTypeGuide.typing.tint)
+    }
+}
+
+private struct AirTypeTutorialPopup: View {
+    var body: some View {
+        AirTypePopupFrame { TypingTutorialView() }
     }
 }
 

@@ -221,3 +221,8 @@ A small up/down symbol and localized Tap to swap addresses hint now appear below
 ## Address hint legibility and smaller controls — 18 October 2026
 
 The swap symbol is now 14pt to the right of the two address lines; the caption beneath them increases from 8pt to 10pt. Both hide when no alternate address exists. Back/delete symbols use an explicitly reconfigured 12pt image as well as the button preferred configuration, preserving the 44pt hit targets. Build and rendered Pro Max preview inspection pass; all 52 tests pass.
+
+
+## Try AirType header matches tutorial — 18 October 2026
+
+Try AirType uses the same shared popup frame as the typing tutorial: fixed light-gray close symbol and the purple Step 3 mosaic/large lightweight heading. The centered navigation-bar title is removed. The Try screen retains its existing full-screen presentation and installed-keyboard text field. Build/install/launch and rendered Pro Max inspection pass; the text field shows its insertion cursor under the new header. No input logic changed; the full suite was not repeated for this header-only change.
