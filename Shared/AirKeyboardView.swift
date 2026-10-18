@@ -176,6 +176,29 @@ final class AirKeyboardView: UIView {
             self.showsCodeWhileConnected.toggle()
             self.updatePairingVisibility(animated: true)
         }
+        var toggleConfiguration: UIButton.Configuration
+        if #available(iOS 26, *) {
+            toggleConfiguration = .glass()
+        } else {
+            toggleConfiguration = .plain()
+            toggleConfiguration.background.backgroundColor = dark ? UIColor(white: 0.25, alpha: 1) : UIColor(white: 0.95, alpha: 0.8)
+        }
+        toggleConfiguration.cornerStyle = .capsule
+        toggleConfiguration.title = L10n.text("Pairing code")
+        toggleConfiguration.image = UIImage(systemName: "number")
+        toggleConfiguration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
+        toggleConfiguration.imagePadding = 5
+        toggleConfiguration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+        toggleConfiguration.baseForegroundColor = ink
+        toggleConfiguration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+            var attributes = attributes
+            attributes.font = .systemFont(ofSize: 12, weight: .medium)
+            return attributes
+        }
+        toggle.configuration = toggleConfiguration
+        toggle.titleLabel?.numberOfLines = 1
+        toggle.titleLabel?.adjustsFontSizeToFitWidth = true
+        toggle.titleLabel?.minimumScaleFactor = 0.8
         toggle.backgroundColor = .clear
         toggle.accessibilityIdentifier = "AirTypePairingCodeToggle"
         toggle.translatesAutoresizingMaskIntoConstraints = false
@@ -183,7 +206,8 @@ final class AirKeyboardView: UIView {
         NSLayoutConstraint.activate([
             toggle.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -8),
             toggle.topAnchor.constraint(equalTo: panel.topAnchor),
-            toggle.widthAnchor.constraint(equalToConstant: 44),
+            toggle.widthAnchor.constraint(greaterThanOrEqualToConstant: 44),
+            toggle.widthAnchor.constraint(lessThanOrEqualTo: panel.widthAnchor, multiplier: 0.5, constant: -8),
             toggle.heightAnchor.constraint(equalToConstant: 44)
         ])
         content.addArrangedSubview(panel)
@@ -243,7 +267,10 @@ final class AirKeyboardView: UIView {
         let wasVisible = halfStatusWidth?.isActive == true
         pairingToggle?.isHidden = !connected
         pairingToggle?.accessibilityLabel = L10n.text(visible ? "Hide pairing code" : "Show pairing code")
-        pairingToggle?.setImage(UIImage(systemName: visible ? "eye.slash" : "number", withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .regular)), for: .normal)
+        if var configuration = pairingToggle?.configuration {
+            configuration.image = UIImage(systemName: visible ? "eye.slash" : "number")
+            pairingToggle?.configuration = configuration
+        }
         code.accessibilityElementsHidden = !visible
         if animated && wasVisible != visible { layoutIfNeeded() }
         halfStatusWidth?.isActive = false

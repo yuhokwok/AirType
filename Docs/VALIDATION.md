@@ -250,3 +250,8 @@ App/extension build and 53 tests pass, including a new compiled-catalog regressi
 Connecting now animates the Wi-Fi/status column from half width to the full panel, centring the logo while the pairing-code column fades and moves outside the clipped panel. A 44pt button in the upper-right shows/hides the code while connected. Each connection-state change resets the manual override: disconnect restores the two-column code view, and reconnect hides it again. Repeated heartbeats preserve the user choice; appearance rebuilds retain the state. Hidden code is excluded from accessibility. Reduce Motion changes layout without movement.
 
 App/extension build and all 54 tests pass. A new interaction test covers initial state, centring, code visibility, manual toggles, repeated connected updates, disconnect/reconnect, dark appearance and 320pt/landscape/iPad widths. A live preview server was paired over local HTTP; its connected rendering shows the centred logo, hidden code and # reveal button. Physical-device animation acceptance remains open.
+
+
+## Labeled pairing-code glass control — 18 October 2026
+
+The connected-state reveal control now combines its symbol with the localized Pairing code label. iOS 26+ uses UIButton.Configuration.glass with capsule corners; earlier versions use a plain capsule with the existing light/dark control surface. The label uses 12pt medium text, adaptive intrinsic width capped at half the panel, and a 44pt hit height. Show/hide updates the configuration image while retaining the title. App/extension build and all 54 tests pass. Physical-device glass rendering remains a visual acceptance check.
