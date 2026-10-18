@@ -226,3 +226,8 @@ The swap symbol is now 14pt to the right of the two address lines; the caption b
 ## Try AirType header matches tutorial — 18 October 2026
 
 Try AirType uses the same shared popup frame as the typing tutorial: fixed light-gray close symbol and the purple Step 3 mosaic/large lightweight heading. The centered navigation-bar title is removed. The Try screen retains its existing full-screen presentation and installed-keyboard text field. Build/install/launch and rendered Pro Max inspection pass; the text field shows its insertion cursor under the new header. No input logic changed; the full suite was not repeated for this header-only change.
+
+
+## Information pages return to sheets — 18 October 2026
+
+The three step information buttons now present large native sheets with visible grabbers, replacing the anchored popovers. Reference mosaic headings, colors, scrolling and close controls remain. Build/install/launch passes; simulator navigation confirms Add New Keyboard exposes Sheet Grabber and its setup instructions. The full suite was not rerun for this presentation-only change.

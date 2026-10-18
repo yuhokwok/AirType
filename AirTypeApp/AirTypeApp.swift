@@ -154,10 +154,10 @@ private struct AirTypeInfoButton: View {
             Image(systemName: "info.circle").frame(width: 44, height: 44)
         }.buttonStyle(.plain).foregroundStyle(guide.tint)
             .accessibilityLabel(L10n.text(guide.title))
-            .popover(isPresented: $isPresented, attachmentAnchor: .rect(.bounds)) {
+            .sheet(isPresented: $isPresented) {
                 AirTypeGuideScreen(guide: guide)
-                    .frame(idealWidth: 320, idealHeight: 460)
-                    .presentationCompactAdaptation(.popover)
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
             }
     }
 }
