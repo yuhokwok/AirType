@@ -260,3 +260,10 @@ The connected-state reveal control now combines its symbol with the localized Pa
 ## Pairing control symbol/title consistency — 18 October 2026
 
 The pairing toggle now uses a configuration-only system UIButton, avoiding the legacy helper’s21pt image/empty title competing with the glass configuration. Both show/hide states explicitly use a12pt symbol and retain the localized Pairing code title. Existing glass/fallback,44pt hit height and reveal behavior remain. App/extension build and all54 tests pass; the connected-state interaction test checks the title survives toggling.
+
+
+## Optional iOS Legacy mode — 21 October 2026
+
+Connection-name settings now includes a localized Legacy mode toggle stored in the shared App Group, off by default. Legacy portal HTML supplies a separate ephemeral session token so visiting either displayed address goes straight to connection/typing without code entry. Code-based mode never includes this bootstrap token. Origin validation, command bounds/deduplication and authorization headers remain. Mode changes clear contact state and reset pairing; disabling Legacy mode rejects previously issued Legacy credentials. Keyboard presentation centres the logo, hides code/reveal controls and labels Web Access · Legacy while enabled. Reload the browser after changing modes. Android has not adopted the option.
+
+App/extension build and all56 tests pass. New live HTTP coverage verifies default mode refuses unauthenticated status, Legacy bootstrap works without code entry, text reaches the input callback, foreign-origin access remains rejected, disabling the mode revokes Legacy credentials, and normal pairing works again. Keyboard tests verify code remains hidden in Legacy mode across connect/disconnect and returns in code mode. Native simulator navigation confirms the new toggle is available and defaults off. Physical-device local-network/extension and actual browser visual acceptance remain separate checks.

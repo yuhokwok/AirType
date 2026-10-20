@@ -5577,6 +5577,75 @@
           }
         }
       }
+    },
+    "Legacy mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legacy mode"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "舊版模式"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "旧版模式"
+          }
+        }
+      }
+    },
+    "Web Access · Legacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Web Access · Legacy"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "網頁輸入 · 舊版"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网页输入 · 旧版"
+          }
+        }
+      }
+    },
+    "Connect without a pairing code. Anyone on the same network with your address can type while AirType is open.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect without a pairing code. Anyone on the same network with your address can type while AirType is open."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "毋須配對碼即可連線。AirType 開啟時，同一網絡上知道地址的人都可以輸入文字。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无需配对码即可连接。AirType 开启时，同一网络上知道地址的人都可以输入文字。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

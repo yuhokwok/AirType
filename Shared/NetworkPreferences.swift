@@ -20,6 +20,11 @@ enum NetworkPreferences {
         get { AirTypeFeatures.availableInputMode(RemoteInputMode(rawValue: UserDefaults(suiteName: appGroup)?.string(forKey: "AirTypeInputMode") ?? "") ?? .web) }
         set { UserDefaults(suiteName: appGroup)?.set(newValue.rawValue, forKey: "AirTypeInputMode") }
     }
+    static let legacyModeKey = "AirTypeLegacyMode"
+    static var legacyMode: Bool {
+        get { UserDefaults(suiteName: appGroup)?.bool(forKey: legacyModeKey) ?? false }
+        set { UserDefaults(suiteName: appGroup)?.set(newValue, forKey: legacyModeKey) }
+    }
     static let nameKey = "AirTypeBonjourHostname"
     static var hostname: String {
         normalizedHostname(UserDefaults(suiteName: appGroup)?.string(forKey: nameKey) ?? "airtype")

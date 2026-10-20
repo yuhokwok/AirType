@@ -81,7 +81,9 @@ While connected, the pairing code fades out and the Wi-Fi logo moves to the cent
 
 The keyboard address strip shows Bonjour on the first line and a smaller IP address beneath it. The ⇅ symbol beside the addresses indicates that a tap exchanges their positions; either address reaches the same server. Long-press for the complete address and QR code for the selected primary address.
 
-The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is still required.
+**iOS Legacy mode (off by default):** Open **Setup for connection name** and enable **Legacy mode**. The keyboard centres its logo and hides the pairing code. Open either displayed Bonjour/IP address in a browser to start typing without entering a code. Anyone on that network who knows the address can type while the keyboard is open. Turn Legacy mode off and reload the browser to restore pairing-code entry; tokens issued by Legacy mode are rejected immediately. Android has not adopted this switch.
+
+The active keyboard advertises `_airtype._tcp` and publishes an IPv4 mDNS hostname, normally `airtype.local`. Open **the complete address shown on the keyboard**, including its port (normally 8307). The six-digit pairing code is required unless Legacy mode is enabled.
 
 Tap **Setup for connection name** on the home screen, edit **Bonjour name** and tap **Save connection name**. Reopen the keyboard to apply the name. Names are converted to lowercase DNS-safe labels; `.local` is added automatically. If another device owns the name, AirType tries `-2`, `-3`, etc. It displays the successfully registered hostname. If registration is unavailable, the server keeps working by IP; the address detail screen also shows the IP fallback. Bonjour works while Web Access is visible and requires a local network that supports mDNS. Routers and clients that block mDNS should use the IP fallback.
 

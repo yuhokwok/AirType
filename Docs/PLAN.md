@@ -137,3 +137,12 @@ Both local and Web keyboards follow UIInputViewController.needsInputModeSwitchKe
 - [x] Make the paper and overscroll canvas white.
 - [x] Give the typing tutorial the shared mosaic heading, Step 3 purple and a fixed close button.
 - [x] Build app/extension, inspect both popup layouts and pass all 50 tests.
+
+
+## Optional iOS Legacy mode — 21 October 2026
+
+- [x] Add an App Group preference, off by default, and localized toggle under connection settings.
+- [x] Bootstrap the browser without code entry only while Legacy mode is enabled.
+- [x] Keep origin validation, authenticated commands and deduplication; reject Legacy credentials after disabling the option.
+- [x] Centre the keyboard logo, hide code controls and label Legacy mode.
+- [x] Build app/extension and pass 56 tests including live HTTP insertion/revocation.

@@ -19,7 +19,11 @@ final class AirTypeServer {
     private var lastContact: Date?
     private var timer: Timer?
     private var pairing = PairingCode()
-    var pairingCode: String? { listener == nil ? nil : pairing.value }
+    var legacyMode: Bool { NetworkPreferences.legacyMode }
+    private var previousLegacyMode = NetworkPreferences.legacyMode
+    private var legacyToken = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+    private var activeToken: String { legacyMode ? legacyToken : token }
+    var pairingCode: String? { listener == nil || legacyMode ? nil : pairing.value }
     private let token: String
     var connected: Bool { lastContact.map { Date().timeIntervalSince($0) < 5 } ?? false }
 
@@ -67,6 +71,7 @@ final class AirTypeServer {
             server.start(queue: .main)
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
                 guard let self, self.listener?.state == .ready else { return }
+                self.refreshConnectionMode()
                 self.updateAddress()
                 self.status = self.connected ? L10n.text("Connected") : (self.address == nil ? L10n.text("Connect to Wi-Fi") : L10n.text("Waiting for computer"))
                 self.onStateChange?()
@@ -83,13 +88,20 @@ final class AirTypeServer {
         address = nil; ipAddress = nil; lastContact = nil; status = L10n.text("Disconnected")
         onStateChange?()
     }
+    private func refreshConnectionMode() {
+        guard previousLegacyMode != legacyMode else { return }
+        previousLegacyMode = legacyMode
+        legacyToken = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        lastContact = nil
+        pairing = PairingCode()
+    }
     private func updateAddress() {
         guard let port = listener?.port, let ip = Self.localAddress() else {
             hostnamePublisher.stop(); address = nil; ipAddress = nil; return
         }
-        ipAddress = "http://\(ip):\(port.rawValue)/#\(token)"
+        ipAddress = "http://\(ip):\(port.rawValue)/#\(activeToken)"
         hostnamePublisher.publish(name: advertisedName, ipv4: ip)
-        address = "http://\(hostnamePublisher.hostname ?? ip):\(port.rawValue)/#\(token)"
+        address = "http://\(hostnamePublisher.hostname ?? ip):\(port.rawValue)/#\(activeToken)"
     }
     static func localAddress() -> String? {
         var list: UnsafeMutablePointer<ifaddrs>?
@@ -138,10 +150,11 @@ final class AirTypeServer {
         }
     }
     private func handle(_ request: HTTPRequest, on connection: NWConnection) {
+        refreshConnectionMode()
         if request.method == "GET", request.path == "/" {
             let url = Bundle.main.url(forResource: "Portal", withExtension: "html")
             let html = url.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? L10n.text("Portal unavailable")
-            respond(connection, body: L10n.portalHTML(html), contentType: "text/html; charset=utf-8"); return
+            respond(connection, body: L10n.portalHTML(html, legacyToken: legacyMode ? activeToken : nil), contentType: "text/html; charset=utf-8"); return
         }
         if let origin = request.headers["origin"], origin != "http://" + (request.headers["host"] ?? "") {
             respond(connection, code: "403 Forbidden", body: L10n.text("Invalid origin")); return
@@ -153,7 +166,7 @@ final class AirTypeServer {
             }
             switch pairing.verify(code) {
             case .accepted:
-                let data = try! JSONEncoder().encode(["token": token])
+                let data = try! JSONEncoder().encode(["token": activeToken])
                 respond(connection, body: String(decoding: data, as: UTF8.self), contentType: "application/json")
             case .incorrect:
                 respond(connection, code: "403 Forbidden", body: L10n.text("Incorrect pairing code. Check the code on your keyboard."))
@@ -162,7 +175,7 @@ final class AirTypeServer {
             }
             return
         }
-        guard request.headers["authorization"] == "Bearer \(token)" else {
+        guard request.headers["authorization"] == "Bearer \(activeToken)" else {
             respond(connection, code: "403 Forbidden", body: L10n.text("Pair with the code shown on your AirType keyboard.")); return
         }
         if request.method == "GET", request.path == "/status" {

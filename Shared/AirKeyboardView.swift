@@ -34,6 +34,9 @@ final class AirKeyboardView: UIView {
     var ipAddress: String? { didSet {
         if pairing && ipAddress != oldValue { render() } else { updateStatus() }
     } }
+    var legacyMode = false { didSet {
+        if legacyMode != oldValue { updateStatus(); updatePairingVisibility(animated: true) }
+    } }
     var pairingCode: String? { didSet { updateStatus() } }
     var connectionStatus = L10n.text("Disconnected") { didSet { updateStatus() } }
     var connected = false { didSet {
@@ -51,6 +54,7 @@ final class AirKeyboardView: UIView {
     private var fullStatusWidth: NSLayoutConstraint?
     private let content = UIStackView()
     private var statusLabel: UILabel?
+    private var webTitleLabel: UILabel?
     private var addressLabel: UILabel?
     private var secondaryAddressLabel: UILabel?
     private var addressSwapSymbol: UIImageView?
@@ -82,7 +86,7 @@ final class AirKeyboardView: UIView {
         localKeyboard = nil
         pairingPanel = nil; pairingHalf = nil; pairingToggle = nil
         halfStatusWidth = nil; fullStatusWidth = nil
-        statusLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
+        statusLabel = nil; webTitleLabel = nil; addressLabel = nil; secondaryAddressLabel = nil; addressSwapSymbol = nil; connectionAddressButton = nil; dot = nil; codeLabel = nil
         backgroundColor = .clear
         isOpaque = false
         if pairing && webMode { renderPairing(); return }
@@ -124,6 +128,7 @@ final class AirKeyboardView: UIView {
         logo.clipsToBounds = true
         logo.accessibilityLabel = L10n.text("Switch to traditional keyboard")
         let title = label(receiveMode == .web ? L10n.text("Web Access") : receiveMode.rawValue, size: compactPanel ? 12 : 14)
+        webTitleLabel = title
         let status = label(connectionStatus, size: compactPanel ? 9 : 11); statusLabel = status
         status.adjustsFontSizeToFitWidth = true; status.minimumScaleFactor = 0.75
         let badge = UIStackView(arrangedSubviews: [logo, title, status])
@@ -264,9 +269,9 @@ final class AirKeyboardView: UIView {
     }
     private func updatePairingVisibility(animated: Bool) {
         guard receiveMode == .web, let panel = pairingPanel, let code = pairingHalf else { return }
-        let visible = !connected || showsCodeWhileConnected
+        let visible = !legacyMode && (!connected || showsCodeWhileConnected)
         let wasVisible = halfStatusWidth?.isActive == true
-        pairingToggle?.isHidden = !connected
+        pairingToggle?.isHidden = !connected || legacyMode
         pairingToggle?.accessibilityLabel = L10n.text(visible ? "Hide pairing code" : "Show pairing code")
         if var configuration = pairingToggle?.configuration {
             configuration.title = L10n.text("Pairing code")
@@ -425,6 +430,7 @@ final class AirKeyboardView: UIView {
         } else { codeLabel?.text = pairingCode ?? "— — —" }
         codeLabel?.accessibilityLabel = receiveMode == .web ? L10n.text("Pairing code") : L10n.text("Pairing key")
         codeLabel?.accessibilityValue = pairingCode
+        webTitleLabel?.text = L10n.text(legacyMode ? "Web Access · Legacy" : "Web Access")
         statusLabel?.text = L10n.text(connectionStatus)
         addressLabel?.text = receiveMode == .web ? (primaryAddress.map { String($0.split(separator:"#")[0]) } ?? connectionStatus) : "\(receiveMode.rawValue) · Connection details"
         let alternate = prefersIPAddress ? address : ipAddress

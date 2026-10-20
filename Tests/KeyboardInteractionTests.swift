@@ -99,6 +99,24 @@ final class KeyboardInteractionTests: XCTestCase {
     }
 
     @MainActor
+    func testLegacyPanelKeepsCodeHiddenUntilSecureModeReturns() throws {
+        let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
+        keyboard.showsGlobe = false
+        keyboard.layoutIfNeeded()
+        keyboard.legacyMode = true
+        let views = descendants(keyboard)
+        let code = try XCTUnwrap(views.first { $0.accessibilityIdentifier == "AirTypePairingHalf" })
+        let toggle = try XCTUnwrap(views.first { $0.accessibilityIdentifier == "AirTypePairingCodeToggle" })
+        XCTAssertEqual(code.alpha, 0)
+        XCTAssertTrue(toggle.isHidden)
+        keyboard.connected = true
+        keyboard.connected = false
+        XCTAssertEqual(code.alpha, 0)
+        keyboard.legacyMode = false
+        XCTAssertEqual(code.alpha, 1)
+    }
+
+    @MainActor
     func testAddressToggleUpdatesLiveAddressesAndQRDestination() throws {
         let keyboard = AirKeyboardView(frame: CGRect(x: 0, y: 0, width: 390, height: 216))
         keyboard.showsGlobe = false

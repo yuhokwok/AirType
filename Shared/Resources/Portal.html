@@ -47,7 +47,8 @@ Object.entries(localizedElements).forEach(([selector, attributes]) => {
         else element.setAttribute(attribute, t(key));
     });
 });
-let token = location.hash.slice(1);
+const legacyToken = /*AIRTYPE_LEGACY_TOKEN*/"";
+let token = legacyToken || location.hash.slice(1);
 const text = document.querySelector('#text');
 const status = document.querySelector('#status');
 const pairing = document.querySelector('#pairing');
@@ -283,7 +284,7 @@ document.querySelector('#return').onclick = () => send('newline');
 addEventListener('hashchange', () => {
     connectionVersion += 1;
     clearRetries(); activeRequests.forEach(controller => controller.abort());
-    token = location.hash.slice(1); needsPairing = !token;
+    token = legacyToken || location.hash.slice(1); needsPairing = !token;
     if (needsPairing) showPairing();
     else beginConnecting();
 });

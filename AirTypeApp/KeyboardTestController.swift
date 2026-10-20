@@ -113,6 +113,7 @@ final class KeyboardTestController: UIViewController, UITextViewDelegate {
     }
     private func syncPreviewState() {
         if keyboard.receiveMode == .web {
+            keyboard.legacyMode = server.legacyMode
             keyboard.pairingCode = server.pairingCode; keyboard.ipAddress = server.ipAddress; keyboard.address = server.address
             keyboard.connectionStatus = server.status; keyboard.connected = server.connected
         } else {

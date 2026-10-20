@@ -355,6 +355,7 @@ private struct AirTypeGuideScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var networkCheck = LocalNetworkCheck()
     @State private var bonjourName = NetworkPreferences.hostname
+    @State private var legacyMode = NetworkPreferences.legacyMode
     @State private var nameSaved = false
     @State private var savedName: String?
     @FocusState private var editingBonjour: Bool
@@ -449,6 +450,11 @@ private struct AirTypeGuideScreen: View {
             Text(L10n.text("Use the address shown on your keyboard. Reopen the keyboard after changing its name."))
                 .font(.subheadline).foregroundStyle(.secondary)
             Divider().padding(.vertical, 12)
+            Toggle(L10n.text("Legacy mode"), isOn: $legacyMode)
+                .accessibilityIdentifier("AirTypeLegacyMode")
+                .onChange(of: legacyMode) { NetworkPreferences.legacyMode = legacyMode }
+            Text(L10n.text("Connect without a pairing code. Anyone on the same network with your address can type while AirType is open."))
+                .font(.footnote).foregroundStyle(.secondary)
             AirTypeContactLinks()
         }
     }
